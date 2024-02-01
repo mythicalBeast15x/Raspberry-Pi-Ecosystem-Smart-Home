@@ -10,6 +10,23 @@ This projected is being developed by the graduating Computer Science Majors at P
 heavily emphasized through all development stages of the application.
 **More will be added**
 
+## Mission Statement
+“Creating a secure network of interconnected devices in order to automate lives.”
+Our mission is to add simplicity into the home automation space while also delivering security and reliability. Our product will feature a user-friendly design so that those who may not be experts in this domain will be able to effortlessly introduce smart technology into their homes. Our product will be able to adapt to the new technologies that are installed and seamlessly add them to the network to create a customizable ecosystem that enhances the quality of life.
+
+### Problem Definition
+More and more homes are taking advantage of new smart technologies and integrating them into their homes to automate parts of their lives. However, integrating smart technologies has a couple drawbacks and challenges when setting it up. Problems like the evolution of technology cause people to have to control their devices with multiple applications, which takes away from the convenience of having the smart technologies. Other problems such as security of the network become a concern when there are multiple devices connected. This creates distrust in people considering integrating smart technology. While solutions exist to solve aspects of these problems, they are often incomplete, complicated, or very expensive. 
+Our goal is to create an adaptable, user-friendly system that integrates the different technologies in a smart home in a reliable and secure way that removes the barrier to entry. Our system will allow a user to control, manage, and monitor each device from a single place, removing the need to manage multiple applications to control every device. This system will allow for multiple ways to manage the smart devices: a mobile website that one can access from anywhere, and a physical input one can use from inside the house. 
+
+### Objectives and Features
+Our objectives are to create a mesh network made up of Raspberry Pi’s that will communicate with each other using Zigbee. Each Raspberry Pi will have a different device connected to it and will control it according to the user. To ensure that the history of events will not be tampered, every Raspberry Pi will log the events using blockchain with Sha256. To ensure that the data is not read in between devices, each Raspberry Pi will encrypt data using AES Encryption. 
+The main feature of our system is the reliability of the network. Any number of devices will be able to go offline at any time, and the system and remaining devices will still function normally. And when the devices come back online, it will receive an up-to-date history of the logs, and will function normally.
+Lastly, our objective is to be open with the documentation, so that others can add new capabilities to the system with relative ease. In order to do this, all the functions and classes will be heavily documented.
+
+### Additional Features
+The product we have is the base system, but we hope to add certain features to the system to enhance its usability. One such improvement is the ability to add several profiles and preferences for one system, so that the user can switch between certain settings for the system without having to remember each setting for every device. Another improvement would be to add scheduling to the system. This would allow certain devices to be activated by a specific time, or when a specific event occurs. We would also like to optimize the energy consumption of the system, by powering the devices when the energy rate is lower. Lastly, we would like to allow new devices to join the system without having to reset the system. This would allow the user to add as many devices as possible without having to restart their home system.
+
+
 ## Thursday Team Starting Groups
 
 ### Important Note
