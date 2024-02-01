@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -45,7 +46,7 @@ func CalculateHash(block Block, difficulty int) string {
 		leadingStr = result[:difficulty]
 
 		// If the hash has the required number of leading zeroes, break the loop, otherwise increment the nonce
-		if leadingStr == "0000" {
+		if leadingStr == strings.Repeat("0", difficulty) {
 			break
 		} else {
 			nonce += 1
