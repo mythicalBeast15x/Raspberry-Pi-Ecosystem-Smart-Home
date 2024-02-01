@@ -10,6 +10,9 @@ This projected is being developed by the graduating Computer Science Majors at P
 heavily emphasized through all development stages of the application.
 **More will be added**
 
+### The Professor Behind the Project
+**Professor Joesph Oakes**: Program Chair, Cybersecurity Analytics and Operations, Associate Teaching Professor, Computer Science
+
 ## Mission Statement
 “Creating a secure network of interconnected devices in order to automate lives.”
 Our mission is to add simplicity into the home automation space while also delivering security and reliability. Our product will feature a user-friendly design so that those who may not be experts in this domain will be able to effortlessly introduce smart technology into their homes. Our product will be able to adapt to the new technologies that are installed and seamlessly add them to the network to create a customizable ecosystem that enhances the quality of life.
