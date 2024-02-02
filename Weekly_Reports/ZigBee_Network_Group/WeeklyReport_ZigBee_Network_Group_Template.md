@@ -1,4 +1,4 @@
-# Weekly Report 1/29/2024
+# Weekly Report Template
 Follow this template exactly for every report including the name of the document. Use this to help delegate tasks to each member. Everytime has one weekly report. There should be 1 team section and multiple individual sections for each person.
 Format this well, just copy and paste this all and remove all the boiler plate stuff. Make it look professional and nice. This is seperate from the documentation you may be keeping in the Microsoft Teams. Although, you can talk about that in this. These are due every Monday unless stated otherwise. They will be placed within your team's respective folder.
 
