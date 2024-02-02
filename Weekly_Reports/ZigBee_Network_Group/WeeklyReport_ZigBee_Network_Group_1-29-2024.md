@@ -30,7 +30,6 @@ This is the entire team and what you have worked on. Make these all bullet point
 - Communicate with other Zigbee members and collaborate to better understand how to connect all the raspberry pi to build an overall system.
 - Learn and try to attempt to work with the Zigbee devices and attempt to mess around to understand how they work.
 - Try to have some code to test on the raspberry for the Appliances system.
-- 
 ### ❖ Deep Patel
 
 #### Previous Individual Goals/Objectives
