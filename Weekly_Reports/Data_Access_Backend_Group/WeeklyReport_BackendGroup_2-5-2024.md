@@ -48,3 +48,9 @@ This is the entire team and what you have worked on. Make these all bullet point
 ### Next Week Goals
 - Get a prototype of the consensus algorithm.
 
+## Individual Report - David Weisman
+### Previous Goals
+
+### Key Points
+
+### Next Week Goals
