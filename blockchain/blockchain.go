@@ -1,9 +1,8 @@
-package main
+package blockchain
 
 import (
 	"crypto/sha256"
 	"encoding/hex"
-	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -24,12 +23,25 @@ type Blockchain struct {
 	Chain      []Block
 }
 
-// EncryptData encrypts the data in a block. TODO: Implement function
+// EncryptData encrypts the data in a block.
+//TODO: Implement function
+/*
+Purpose: To Encrypt Data for Block Creation
+	data: string - data to be encrypted
+	returns: string
+*/
 func EncryptData(data string) string {
 	return data
 }
 
 // CalculateHash calculates the SHA-256 hash of a block. TODO: Refactor?
+/*
+Purpose: Calculates the hash of a block with sha256.
+uses the fields of Block to generate hash of a defined difficulty
+	block : Block - input block
+	difficulty : int - difficulty requirement of hash
+	returns: string
+*/
 func CalculateHash(block Block, difficulty int) string {
 	hasher := sha256.New()
 	nonce := 0
@@ -57,12 +69,29 @@ func CalculateHash(block Block, difficulty int) string {
 }
 
 // VerifyBlock verifies the hash of a block.
-func VerifyBlock(block Block, difficulty int) bool {
+/*
+Purpose: Verifies given Block data has not been tampered.
+uses the fields of Block to generate hash and verifies that both hashes match.
+compares both previous block's hash with this block to ensure that they match
+	block : Block - input block
+	difficulty : int - difficulty requirement of hash
+	returns: string
+*/
+func (bc *Blockchain) VerifyBlock(block Block, difficulty int) bool {
 	result := CalculateHash(block, difficulty)
-	return result == block.Hash
+	previousHash := bc.Chain[len(bc.Chain)-1].Hash
+	return result == block.Hash && previousHash == block.PrevHash
 }
 
 // CreateBlock creates a new block in the blockchain.
+/*
+Purpose: Creates a new block and adds it into the blockchain
+creates a new block based on the given data, time, and previous hash and calculated hash
+encrypts hash with EncryptData()
+calculates hash with CalculateHash()
+inserts the block into the blockchain with AddToBlockchain()
+	data : string - input data for hash
+*/
 func (bc *Blockchain) CreateBlock(data string) {
 	prevBlock := bc.Chain[len(bc.Chain)-1]
 	newBlock := Block{
@@ -73,10 +102,24 @@ func (bc *Blockchain) CreateBlock(data string) {
 		Hash:      "",
 	}
 	newBlock.Hash = CalculateHash(newBlock, bc.Difficulty)
-	bc.Chain = append(bc.Chain, newBlock)
+	bc.AddToBlockchain(newBlock)
+}
+
+// AddToBlockchain adds a new block into the blockchain
+/*
+Purpose: Adds a given block into the blockchain
+	block : Block - input block to be inserted
+*/
+func (bc *Blockchain) AddToBlockchain(block Block) {
+	bc.Chain = append(bc.Chain, block)
 }
 
 // NewBlockchain creates a new blockchain with a genesis block.
+/*
+Purpose: Creates a new Blockchain and initializes it with a genesis block.
+	difficulty : determines the difficulty requirement of the hash
+	returns: Blockchain
+*/
 func NewBlockchain(difficulty int) *Blockchain {
 	genesisBlock := Block{
 		Index:     0,
@@ -89,6 +132,7 @@ func NewBlockchain(difficulty int) *Blockchain {
 	return &Blockchain{Chain: []Block{genesisBlock}, Difficulty: difficulty}
 }
 
+/*
 func main() {
 	// Create a new blockchain
 	blockchain := NewBlockchain(4)
@@ -98,6 +142,10 @@ func main() {
 	blockchain.CreateBlock("Block 2 Data")
 	blockchain.CreateBlock("Block 3 Data")
 
+	fmt.Println(blockchain.Chain[0].Data)
+	fmt.Println(blockchain.Chain[0].Hash)
+	fmt.Println(blockchain.Chain[1].Data)
+	fmt.Println(blockchain.Chain[1].PrevHash)
 	// Print the blockchain
 	blockchainJSON, _ := json.MarshalIndent(blockchain, "", "  ")
 	fmt.Println(string(blockchainJSON))
@@ -112,4 +160,4 @@ func main() {
 			fmt.Println("Block", i, "is valid")
 		}
 	}
-}
+}*/
