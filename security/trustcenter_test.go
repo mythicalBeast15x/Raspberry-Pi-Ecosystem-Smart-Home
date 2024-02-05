@@ -26,3 +26,42 @@ func TestUserJoiningProcess(t *testing.T) {
 		t.Errorf("Expected '%s', got '%s'", expectedMessage, joinMessage)
 	}
 }
+
+func TestMotionDetectionAndAlarmTrigger(t *testing.T) {
+	// Initialize the TrustCenter and authorize a user.
+	tc := NewTrustCenter()
+	tc.AuthorizeUser("AuthorizedUser")
+
+	// Create an alarm and a motion sensor with a callback to trigger the alarm.
+	alarmed := false // Use a flag to capture if the alarm was triggered.
+	securityAlarm := NewAlarm("Security Alarm")
+	motionSensor := NewMotionSensor("Motion Sensor", func(sensorName string) {
+		if securityAlarm.Armed {
+			securityAlarm.Trigger()
+			alarmed = true // Set the flag if the alarm is triggered.
+		}
+	})
+
+	// Arm the security system.
+	securityAlarm.Arm()
+
+	// Simulate motion detection.
+	motionSensor.DetectMotion()
+
+	// Check if the alarm was triggered.
+	if !alarmed {
+		t.Error("Expected the alarm to be triggered upon motion detection when armed.")
+	}
+
+	// Reset for disarmed scenario.
+	alarmed = false
+	securityAlarm.Disarm()
+
+	// Simulate motion detection again with the system disarmed.
+	motionSensor.DetectMotion()
+
+	// The alarm should not be triggered this time.
+	if alarmed {
+		t.Error("Expected the alarm not to be triggered upon motion detection when disarmed.")
+	}
+}

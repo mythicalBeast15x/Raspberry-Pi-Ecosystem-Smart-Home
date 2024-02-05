@@ -6,14 +6,16 @@ import (
 
 // MotionSensor represents a motion sensor component.
 type MotionSensor struct {
-	Name           string
-	MotionDetected bool
+	Name             string
+	MotionDetected   bool
+	OnMotionDetected func(string) // Callback function to execute when motion is detected
 }
 
 // NewMotionSensor creates a new MotionSensor instance with the given name.
-func NewMotionSensor(name string) *MotionSensor {
+func NewMotionSensor(name string, onMotionDetected func(string)) *MotionSensor {
 	return &MotionSensor{
-		Name: name,
+		Name:             name,
+		OnMotionDetected: onMotionDetected,
 	}
 }
 
@@ -21,6 +23,15 @@ func NewMotionSensor(name string) *MotionSensor {
 func (m *MotionSensor) DetectMotion() {
 	m.MotionDetected = true
 	fmt.Printf("%s detected motion!\n", m.Name)
+	if m.OnMotionDetected != nil {
+		m.OnMotionDetected(m.Name)
+	}
+}
+
+// Callback function that could be used to trigger an alarm when motion is detected.
+func alarmTriggerCallback(sensorName string) {
+	fmt.Printf("Alarm triggered by %s.\n", sensorName)
+	// going to call the alarm's Trigger method here
 }
 
 // Alarm represents a simple alarm component.
@@ -93,34 +104,35 @@ func (tc *TrustCenter) AttemptJoin(userName string) string {
 func main() {
 	tc := NewTrustCenter()
 
-	// Example: Authorizing users and attempting to join the network.
+	// Authorizing users and attempting to join the network.
 	tc.AuthorizeUser("AuthorizedUser")
-
-	// Simulate an authorized user attempting to join.
 	fmt.Println(tc.AttemptJoin("AuthorizedUser"))
-
-	// Simulate an unauthorized user attempting to join.
 	fmt.Println(tc.AttemptJoin("UnauthorizedUser"))
 
-	// Create a motion sensor and an alarm
-	motionSensor := NewMotionSensor("Motion Sensor")
+	// Create an alarm instance and arm it.
 	securityAlarm := NewAlarm("Security Alarm")
-
-	// Arm the security system
 	securityAlarm.Arm()
 
-	// Simulate motion detection
+	// Create a motion sensor with a callback to automatically trigger the alarm on motion detection.
+	motionSensor := NewMotionSensor("Motion Sensor", func(sensorName string) {
+		if securityAlarm.Armed {
+			securityAlarm.Trigger()
+		}
+	})
+
+	// Simulate motion detection, which should automatically trigger the alarm if it's armed.
 	motionSensor.DetectMotion()
 
-	// Check if the alarm is triggered
+	// Explicitly trigger the alarm to demonstrate manual activation, regardless of motion detection.
+	// This call might represent a direct interaction, like a panic button being pressed.
+	fmt.Println("Manually triggering the alarm to test behavior when armed.")
 	securityAlarm.Trigger()
 
-	// Disarm the security system
+	// Disarm the security system to prevent the alarm from sounding on further motion detection.
 	securityAlarm.Disarm()
 
-	// Simulate motion detection again
-	motionSensor.DetectMotion()
-
-	// Check if the alarm is triggered (it should not be triggered this time)
+	// Attempt to manually trigger the alarm again to illustrate it doesn't sound when disarmed.
+	// This might be useful for testing the disarm functionality.
+	fmt.Println("Attempting to manually trigger the alarm after disarming to test behavior.")
 	securityAlarm.Trigger()
 }
