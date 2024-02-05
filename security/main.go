@@ -113,17 +113,17 @@ func main() {
 	securityAlarm := NewAlarm("Security Alarm")
 	securityAlarm.Arm()
 
-	// Create a motion sensor with a callback to automatically trigger the alarm on motion detection.
+	// Creating a motion sensor with a callback to automatically trigger the alarm on motion detection.
 	motionSensor := NewMotionSensor("Motion Sensor", func(sensorName string) {
 		if securityAlarm.Armed {
 			securityAlarm.Trigger()
 		}
 	})
 
-	// Simulate motion detection, which should automatically trigger the alarm if it's armed.
+	// Simulate motion detection,should automatically trigger the alarm if it's armed.
 	motionSensor.DetectMotion()
 
-	// Explicitly trigger the alarm to demonstrate manual activation, regardless of motion detection.
+	// Trigger the alarm to demonstrate manual activation, regardless of motion detection.
 	// This call might represent a direct interaction, like a panic button being pressed.
 	fmt.Println("Manually triggering the alarm to test behavior when armed.")
 	securityAlarm.Trigger()
