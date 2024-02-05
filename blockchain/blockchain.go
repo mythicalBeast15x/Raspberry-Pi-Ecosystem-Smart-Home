@@ -1,4 +1,4 @@
-package blockchain
+package main
 
 import (
 	"crypto/sha256"
@@ -73,6 +73,11 @@ func CalculateHash(block Block, difficulty int) string {
 Purpose: Verifies given Block data has not been tampered.
 uses the fields of Block to generate hash and verifies that both hashes match.
 compares both previous block's hash with this block to ensure that they match
+verifies block by mining given block and checking previous block in blockchain
+***
+	--NOTE: The block must not be in the blockchain
+	This Function should be called before the block is added to the Blockchain--
+***
 	block : Block - input block
 	difficulty : int - difficulty requirement of hash
 	returns: string
@@ -154,10 +159,11 @@ func main() {
 	blockchain.Chain[3].Data = "Block 3 Data has been tampered with" // Tamper with the blockchain to test verification
 	fmt.Println("\nVerifying blockchain...")
 	for i := 1; i < len(blockchain.Chain); i++ {
-		if !VerifyBlock(blockchain.Chain[i], blockchain.Difficulty) {
+		if !blockchain.VerifyBlock(blockchain.Chain[i], blockchain.Difficulty) {
 			fmt.Println("Block", i, "is invalid")
 		} else {
 			fmt.Println("Block", i, "is valid")
 		}
 	}
-}*/
+}
+*/
