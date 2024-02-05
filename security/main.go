@@ -58,7 +58,50 @@ func (a *Alarm) Trigger() {
 	}
 }
 
+// TrustCenter now keeps track of users allowed to join and communicate within the network.
+type TrustCenter struct {
+	// authorizedUsers maps user names to their authorization status.
+	authorizedUsers map[string]bool
+}
+
+// NewTrustCenter initializes and returns a new instance of TrustCenter.
+func NewTrustCenter() *TrustCenter {
+	return &TrustCenter{
+		authorizedUsers: make(map[string]bool), // Initialize the map to track authorized users.
+	}
+}
+
+// AuthorizeUser marks a user as authorized within the network.
+func (tc *TrustCenter) AuthorizeUser(userName string) {
+	tc.authorizedUsers[userName] = true
+}
+
+// IsUserAuthorized checks if a given user is authorized to operate within the network.
+func (tc *TrustCenter) IsUserAuthorized(userName string) bool {
+	authorized, exists := tc.authorizedUsers[userName]
+	return exists && authorized
+}
+
+// AttemptJoin simulates a user attempting to join the network.
+func (tc *TrustCenter) AttemptJoin(userName string) string {
+	if tc.IsUserAuthorized(userName) {
+		return fmt.Sprintf("%s has successfully joined the network.", userName)
+	}
+	return fmt.Sprintf("%s failed to join the network. Unauthorized user.", userName)
+}
+
 func main() {
+	tc := NewTrustCenter()
+
+	// Example: Authorizing users and attempting to join the network.
+	tc.AuthorizeUser("AuthorizedUser")
+
+	// Simulate an authorized user attempting to join.
+	fmt.Println(tc.AttemptJoin("AuthorizedUser"))
+
+	// Simulate an unauthorized user attempting to join.
+	fmt.Println(tc.AttemptJoin("UnauthorizedUser"))
+
 	// Create a motion sensor and an alarm
 	motionSensor := NewMotionSensor("Motion Sensor")
 	securityAlarm := NewAlarm("Security Alarm")
