@@ -36,10 +36,19 @@ This is the entire team and what you have worked on. Make these all bullet point
 ### ❖ Deep Patel
 
 #### Previous Individual Goals/Objectives
+- Set up VirtualBox and load the image.
+- Get fimiliarize with Golang and research HCI.
+- Contribute to group contract and phase 1 document.
 
 #### Key Points
+- Engaged in the configuration of a Raspberry Pi, navigating through onscreen instructions to comprehend the setup.
+- Accomplished the establishment of SSH and made an effort to remotely access the Raspberry Pi using my macOS.
 
 #### Next Week Goals
+- Begin the setup process for the HCI (Human-Computer Interaction) part and outline the codebase structure.
+- Collaborate with other members in Zigbee group focusing on Xgbee communication with Raspberry Pi units to comprehend the integration for creating an overarching system.
+- Dedicate time to learning and experimenting with Xgbee devices, aiming to gain insight into their functionalities.
+- Work towards generating code for testing on the Raspberry Pi within the context of the HCI.
 
 ### ❖ Timothy Enders
 
