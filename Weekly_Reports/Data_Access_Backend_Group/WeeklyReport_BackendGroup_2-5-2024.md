@@ -33,3 +33,24 @@ This is the entire team and what you have worked on. Make these all bullet point
 ### Next Week Goals
 - Continue testing and implementing core blockchain functionality.
 - Create a simple way for other teams to log actions with the blockchain.
+
+## Individual Report - Xingyu Jiang
+### Previous Goals
+- Getting familiar with Golang.
+- Get Raspberry pi working on virtualbox.
+- Setup GitHub and go on virtual Raspberry.
+### Key Points
+- Understand what blockchain is and how we can implement it.
+- Implement a simple blockchain program that keep track of activities
+- Attempt to Implement a simple consensus algorithms
+- Wasn't able to find a proper consensus algorithm that best fit the situation we’re having
+
+### Next Week Goals
+- Get a prototype of the consensus algorithm.
+
+## Individual Report - David Weisman
+### Previous Goals
+
+### Key Points
+
+### Next Week Goals
