@@ -66,3 +66,19 @@ This is the entire team and what you have worked on. Make these all bullet point
 #### Key Points
 
 #### Next Week Goals
+
+### ❖ Jahidul Robin
+
+#### Previous Individual Goals/Objectives
+- Understand GoLang better.
+- Began preliminary research on security systems compatible with Zigbee technology.
+
+#### Key Points
+- Conducted an extensive study on the latest Zigbee security devices and protocols to ensure our system's security and reliability. This included understanding how Zigbee's security features can be integrated with our mesh network to protect against unauthorized access and data breaches.
+- Initiated the design phase for the security system by mapping out potential integration strategies for various security devices (e.g., smart locks, surveillance cameras) within the Zigbee network. This involved collaboration with the Mesh Home Zigbee Network Devices team to ensure compatibility and seamless communication between devices.
+- Faced challenges in identifying security devices that would be most compatible with our envisioned network structure and the blockchain logging mechanism. Some devices showed limited compatibility with the Zigbee protocol, requiring additional research into workarounds or alternative solutions.
+
+#### Next Week Goals
+- Collaborate more closely with the Network Traffic Analysis System group to develop a monitoring system that alerts us to any unusual activity within the network, enhancing our security measures.
+- Start implementing the blockchain logging mechanism for the security system to ensure that the history of security-related events is immutable and securely logged. This will involve understanding SHA256 encryption and how it can be applied to our use case.
+- Plan for a small-scale test of the security system integration with the overall mesh 
