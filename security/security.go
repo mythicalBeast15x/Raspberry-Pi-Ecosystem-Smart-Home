@@ -1,4 +1,4 @@
-package main
+package security
 
 import (
 	"fmt"
@@ -101,6 +101,7 @@ func (tc *TrustCenter) AttemptJoin(userName string) string {
 	return fmt.Sprintf("%s failed to join the network. Unauthorized user.", userName)
 }
 
+/*
 func main() {
 	tc := NewTrustCenter()
 
@@ -136,3 +137,4 @@ func main() {
 	fmt.Println("Attempting to manually trigger the alarm after disarming to test behavior.")
 	securityAlarm.Trigger()
 }
+*/

@@ -71,7 +71,7 @@ func (a *Appliance) TurnOff() {
 	The solar panel feeds electricity to the battery and the appliances contain a name,
 	power rating of how much power it uses and a boolean value of its on/off state.
 
-	NOTE: The energy main.go file is not the only file to contain functions to turn on/off
+	NOTE: The energy security.go file is not the only file to contain functions to turn on/off
 		  appliances. This leaves me to believe that the energy file is mainly a source of
 		  documenting the usage of power by each appliance if they are turned on/off instead
 		  of physically turning them on/off.

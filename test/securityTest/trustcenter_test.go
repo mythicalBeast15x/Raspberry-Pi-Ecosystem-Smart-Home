@@ -1,11 +1,12 @@
-package main
+package securityTest
 
 import (
+	"CMPSC488SP24SecThursday/security"
 	"testing"
 )
 
 func TestUserJoiningProcess(t *testing.T) {
-	tc := NewTrustCenter()
+	tc := security.NewTrustCenter()
 
 	// Authorize one user
 	authorizedUser := "AuthorizedUser"
@@ -29,13 +30,13 @@ func TestUserJoiningProcess(t *testing.T) {
 
 func TestMotionDetectionAndAlarmTrigger(t *testing.T) {
 	// Initialize the TrustCenter and authorize a user.
-	tc := NewTrustCenter()
+	tc := security.NewTrustCenter()
 	tc.AuthorizeUser("AuthorizedUser")
 
 	// Create an alarm and a motion sensor with a callback to trigger the alarm.
 	alarmed := false // Use a flag to capture if the alarm was triggered.
-	securityAlarm := NewAlarm("Security Alarm")
-	motionSensor := NewMotionSensor("Motion Sensor", func(sensorName string) {
+	securityAlarm := security.NewAlarm("Security Alarm")
+	motionSensor := security.NewMotionSensor("Motion Sensor", func(sensorName string) {
 		if securityAlarm.Armed {
 			securityAlarm.Trigger()
 			alarmed = true // Set the flag if the alarm is triggered.
