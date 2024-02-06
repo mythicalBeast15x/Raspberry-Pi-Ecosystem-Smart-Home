@@ -8,13 +8,13 @@ Format this well, just copy and paste this all and remove all the boiler plate s
 This is the entire team and what you have worked on. Make these all bullet points.
 
 ### Previous Team Goals
-- Include the goals of the team last week.
+- Set up Raspberry Pi
+- Gain better understanding of GoLang
+- Gain better understanding of Blockchain
 
 ### Key Points
-- What was the major thing you all worked on.
-- What did work.
-- What did not work if there were any.
-- Anything important from a team perspective.
+- Optimized the blockchain for this project
+- 
 
 ### Next Week Team Goals
 - Team next week goals that you plan to focus on or learn about. These are 2 week sprints, so keep that in mind.
@@ -50,7 +50,16 @@ This is the entire team and what you have worked on. Make these all bullet point
 
 ## Individual Report - David Weisman
 ### Previous Goals
+- Work and practice Golang
+- Familarize myself with repository
+- Learn more about blockchain
 
 ### Key Points
-
+- Practiced with Golang via small projects and examples
+- Gained better understanding of Blockchain
+- Adapted some functionality for our specific blockchain adaptation
+  
 ### Next Week Goals
+- Set up better communication as a team
+- Add more testing for the blockchain
+  
