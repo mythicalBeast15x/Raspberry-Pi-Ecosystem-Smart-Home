@@ -39,33 +39,46 @@ func EncryptData(data string) string {
 Purpose: Calculates the hash of a block with sha256.
 uses the fields of Block to generate hash of a defined difficulty
 	block : Block - input block
+	nonce : int - takes input nonce to include nonce in encoded string
+	returns: string
+*/
+
+func CalculateHash(block Block, nonce int) string {
+	hasher := sha256.New()
+	var data string   // The data to be hashed
+	var result string // The resulting hash
+
+	data = fmt.Sprintf("%d%s%s%s%d", block.Index, block.Timestamp, block.Data, block.PrevHash, nonce)
+	hasher.Write([]byte(data))
+	result = hex.EncodeToString(hasher.Sum(nil))
+
+	return result
+}
+
+// Proof of Work Algorithm Base
+/*
+Purpose: Helper function//consensus and validation algorithm to ensure a valid hash is generated.
+	block : Block - input block
 	difficulty : int - difficulty requirement of hash
 	returns: string
 */
-func CalculateHash(block Block, difficulty int) string {
-	hasher := sha256.New()
+func ProofOfWork(block Block, difficulty int) string {
+	var leadingStr string
 	nonce := 0
-	var data string       // The data to be hashed
-	var result string     // The resulting hash
-	var leadingStr string // The leading string of the hash (used to check for difficulty)
-
-	// Loop until the hash has the required number of leading zeroes
+	hash := CalculateHash(block, nonce)
+	leadingStr = hash[:difficulty]
 	for {
-		hasher.Reset()
-		data = fmt.Sprintf("%d%s%s%s%d", block.Index, block.Timestamp, block.Data, block.PrevHash, nonce)
-		hasher.Write([]byte(data))
-		result = hex.EncodeToString(hasher.Sum(nil))
-		leadingStr = result[:difficulty]
-
 		// If the hash has the required number of leading zeroes, break the loop, otherwise increment the nonce
 		if leadingStr == strings.Repeat("0", difficulty) {
 			break
 		} else {
 			nonce += 1
+			hash = CalculateHash(block, nonce)
+			leadingStr = hash[:difficulty]
 		}
 	}
+	return hash
 
-	return result
 }
 
 // VerifyBlock verifies the hash of a block.
@@ -83,7 +96,7 @@ verifies block by mining given block and checking previous block in blockchain
 	returns: string
 */
 func (bc *Blockchain) VerifyBlock(block Block, difficulty int) bool {
-	result := CalculateHash(block, difficulty)
+	result := ProofOfWork(block, difficulty)
 	previousHash := bc.Chain[len(bc.Chain)-1].Hash
 	return result == block.Hash && previousHash == block.PrevHash
 }
@@ -106,7 +119,7 @@ func (bc *Blockchain) CreateBlock(data string) {
 		PrevHash:  prevBlock.Hash,
 		Hash:      "",
 	}
-	newBlock.Hash = CalculateHash(newBlock, bc.Difficulty)
+	newBlock.Hash = ProofOfWork(newBlock, bc.Difficulty)
 	bc.AddToBlockchain(newBlock)
 }
 
@@ -133,7 +146,7 @@ func NewBlockchain(difficulty int) *Blockchain {
 		PrevHash:  "",
 		Hash:      "",
 	}
-	genesisBlock.Hash = CalculateHash(genesisBlock, difficulty)
+	genesisBlock.Hash = ProofOfWork(genesisBlock, difficulty)
 	return &Blockchain{Chain: []Block{genesisBlock}, Difficulty: difficulty}
 }
 

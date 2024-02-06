@@ -55,7 +55,7 @@ func TestVerifyBlockChain(t *testing.T) {
 		"Block 4 Data", mainBlockchain.Chain[len(mainBlockchain.Chain)-1].Hash,
 		"",
 	}
-	newBlock.Hash = blockchain.CalculateHash(newBlock, 4)
+	newBlock.Hash = blockchain.ProofOfWork(newBlock, 4)
 	tamperedBlock := blockchain.Block{1,
 		time.Now().String(),
 		"Block -5 Data", "0000000000000000000",
@@ -66,7 +66,7 @@ func TestVerifyBlockChain(t *testing.T) {
 	expectedBlockValidity := mainBlockchain.VerifyBlock(newBlock, 4)
 	expectedTamperedValidity := mainBlockchain.VerifyBlock(tamperedBlock, 4)
 	expectedBlockchainLength := len(mainBlockchain.Chain)
-	// Test for Validating a correct block
+	//Test for Validating a correct block
 	if expectedBlockValidity != true {
 		t.Errorf("Expected: %t, Got: %t", true, expectedBlockValidity)
 	} else {
