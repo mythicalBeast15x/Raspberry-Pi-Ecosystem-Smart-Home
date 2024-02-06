@@ -73,10 +73,22 @@
 ### ❖ Joshua Murillo
 
 #### Previous Individual Goals/Objectives
+- Familiarize myself with Golang/Goland.
+- Experiment with the Raspberry Pi emulator.
+- Familiarize myself with Zigbee products.
+- Familiarize myself with the Go-Zigbee Package.
+- Familiarize myself with our group contract and attach my digital signature.
+- Contribute to the Discovery and Orientation Module document.
 
 #### Key Points
+- I was able to easily SSH into the Raspberry Pi assigned to me and added our assigned repository to its file contents.
+- Utilised the given structures and functions supplied by Professor Oakes to simulate a possible structure for how the added appliances would be saved, checked, and serviced in the energy - main.go file.
+- Currently, the added functions do not implement the Go-Zigbee package. This means that actually asking the Raspberry Pi to turn on an appliance would not work at the moment.
 
 #### Next Week Goals
+- Form a solid communication network with the rest of my team.
+- Integrate the Go-Zigbee package into my current appliance state change functions to both receive and service requests from multiple device nodes.
+- Implement Blockchain logging into each step of the appliance creation and modification process.
 
 ### ❖ Jahidul Robin
 
