@@ -1,19 +1,21 @@
 <h1 align="center"> Weekly Report 1/29/2024 </h1>
 
 ## ❖ Team Report
-This is the entire team and what you have worked on. Make these all bullet points.
 
 ### Previous Team Goals
-- Include the goals of the team last week.
+- Achieve the signing of group contract and Memorandum of Understanding (MOU).
+- Advance progress on the Discovery and Orientation Module document, including contributions from all team members.
+- Conduct initial research on Zigbee technology and its applications in a smart home system.
 
 ### Key Points
-- What was the major thing you all worked on?
-- What did work?
-- What did not work if there were any.
-- Anything important from a team perspective.
+- The team collectively worked on setting up Raspberry Pi environments and configuring SSH.
+- Successful collaboration on group contracts and phase 1 documents.
+- Initial steps were taken towards learning and understanding Zigbee technology and its integration with Raspberry Pi.
   
 ### Next Week Goals
-- Team next week's goals that you plan to focus on or learn about. These are 2-week sprints, so keep that in mind.
+- Prioritize the development and testing of code for Raspberry Pi.
+- Establish communication pathways for Zigbee devices to interact with Raspberry Pi.
+- Manage the operation of tangible devices from each unit.
 
 ## ❖ Individual Report
 
@@ -37,16 +39,16 @@ This is the entire team and what you have worked on. Make these all bullet point
 
 #### Previous Individual Goals/Objectives
 - Set up VirtualBox and load the image.
-- Get fimiliarize with Golang and research HCI.
+- Get familiar with Golang and research HCI.
 - Contribute to group contract and phase 1 document.
 
 #### Key Points
 - Engaged in the configuration of a Raspberry Pi, navigating through onscreen instructions to comprehend the setup.
-- Accomplished the establishment of SSH and made an effort to remotely access the Raspberry Pi using my macOS.
+- Accomplished the establishment of SSH and made an effort to remotely access the Raspberry Pi using macOS.
 
 #### Next Week Goals
 - Begin the setup process for the HCI (Human-Computer Interaction) part and outline the codebase structure.
-- Collaborate with other members in Zigbee group focusing on Xgbee communication with Raspberry Pi units to comprehend the integration for creating an overarching system.
+- Collaborate with other members of the Zigbee group focusing on Xgbee communication with Raspberry Pi units to comprehend the integration for creating an overarching system.
 - Dedicate time to learning and experimenting with Xgbee devices, aiming to gain insight into their functionalities.
 - Work towards generating code for testing on the Raspberry Pi within the context of the HCI.
 
@@ -84,10 +86,10 @@ This is the entire team and what you have worked on. Make these all bullet point
 
 #### Key Points
 - Conducted an extensive study on the latest Zigbee security devices and protocols to ensure our system's security and reliability. This included understanding how Zigbee's security features can be integrated with our mesh network to protect against unauthorized access and data breaches.
-- Initiated the design phase for the security system by mapping out potential integration strategies for various security devices (e.g., smart locks, surveillance cameras) within the Zigbee network. This involved collaboration with the Mesh Home Zigbee Network Devices team to ensure compatibility and seamless communication between devices.
+- Initiated the design phase for the security system by mapping out potential integration strategies for various security devices (e.g., smart locks, surveillance cameras). within the Zigbee network. This involved collaboration with the Mesh Home Zigbee Network Devices team to ensure compatibility and seamless communication between devices.
 - Faced challenges in identifying security devices that would be most compatible with our envisioned network structure and the blockchain logging mechanism. Some devices showed limited compatibility with the Zigbee protocol, requiring additional research into workarounds or alternative solutions.
 
 #### Next Week Goals
 - Collaborate more closely with the Network Traffic Analysis System group to develop a monitoring system that alerts us to any unusual activity within the network, enhancing our security measures.
 - Start implementing the blockchain logging mechanism for the security system to ensure that the history of security-related events is immutable and securely logged. This will involve understanding SHA256 encryption and how it can be applied to our use case.
-- Plan for a small-scale test of the security system integration with the overall mesh 
+- Plan for a small-scale test of the security system integration with the overall mesh.
