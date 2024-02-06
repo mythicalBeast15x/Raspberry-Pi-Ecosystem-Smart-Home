@@ -34,3 +34,17 @@
 - research and learn about API.
 - Implement more code.
 
+### Elizabeth Johney
+- Talked to my teammate and did some research on home security and possibilities of making a webpage.
+- Talked to Joshua regarding the features we can add to our website to make it more user friendly. 
+
+### Previous Team Goals
+- Do some research on frontend user interfaces we can use in home security systems
+
+ ### Key Points
+  - Start implementing our ideas into code.
+  - Still trying to figure out which language is the best
+### Next Week Goals
+- Finialize which language we have to use for the webpage and start coding
+- Do more reasearch on home security system webpages
+  
