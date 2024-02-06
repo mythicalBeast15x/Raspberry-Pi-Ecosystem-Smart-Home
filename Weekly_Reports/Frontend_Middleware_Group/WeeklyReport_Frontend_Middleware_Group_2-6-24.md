@@ -16,7 +16,7 @@
 - Research about API and how to use it.
 
 ## Individual Report
-# Joshua Delva
+## Joshua Delva
 - Did research about home security websites.
 - Started to make a prototype along with Elizabeth on how to structure the website.
 - Started working on some code.
