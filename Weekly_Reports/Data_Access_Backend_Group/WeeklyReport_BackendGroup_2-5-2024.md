@@ -62,4 +62,18 @@ This is the entire team and what you have worked on. Make these all bullet point
 ### Next Week Goals
 - Set up better communication as a team
 - Add more testing for the blockchain
-  
+
+## Individual Report - Catherine Monteith
+### Previous Goals
+- Get familiar with Blockchain
+- Get Familiar with Go
+
+### Key Points
+- Reviewed Code made by Cait (Refer to above)
+- Attempted to Make small adjustments to functions, hopefully making them a little more modular
+    - specifically attempted to divide hashing and consensus algorithm (basic Proof of Work setup) into two
+    - One of my adjustments is failing testing, need more time to determine why
+### Next Week Goals
+- Understand Consensus Algorithms
+- Research and Gain better understanding of how Zigbee group/devices will interact with the blockchain
+- Gain understanding of how blockchain is agreed upon by multiple nodes beyond
