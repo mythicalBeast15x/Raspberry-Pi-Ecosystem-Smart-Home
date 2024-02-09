@@ -101,6 +101,33 @@ func (bc *Blockchain) VerifyBlock(block Block, difficulty int) bool {
 	return result == block.Hash && previousHash == block.PrevHash
 }
 
+// VerifyBlockChain verifies an entire chain using VerifyBlock
+/*
+Purpose: Uses VerifyBlock (see above) and Cycles through every block on the blockchain. This function
+is a prototype for verifying an entire blockchain. This could be run at certain intervals to verify
+the integrity and continuity of an entire chain.
+***
+	--NOTE: This is a Prototype for functionality that might be needed to verify a chain
+that already exists--
+***
+	returns: bool
+*/
+// verifies the entire chain
+func (bc *Blockchain) VerifyBlockChain() bool {
+
+	badBlocks := 0
+	for i := 1; i < len(bc.Chain); i++ {
+		if !bc.VerifyBlock(bc.Chain[i], bc.Difficulty) {
+			badBlocks += 1
+		}
+	}
+	if badBlocks > 0 {
+		return true
+	} else {
+		return false
+	}
+}
+
 // CreateBlock creates a new block in the blockchain.
 /*
 Purpose: Creates a new block and adds it into the blockchain
@@ -149,6 +176,29 @@ func NewBlockchain(difficulty int) *Blockchain {
 	genesisBlock.Hash = ProofOfWork(genesisBlock, difficulty)
 	return &Blockchain{Chain: []Block{genesisBlock}, Difficulty: difficulty}
 }
+
+//
+//func main() {
+//	// Create a new blockchain
+//	blockchain := NewBlockchain(4)
+//
+//	// Add some blocks to the blockchain
+//	blockchain.CreateBlock("Block 1 Data")
+//	blockchain.CreateBlock("Block 2 Data")
+//	blockchain.CreateBlock("Block 3 Data")
+//
+//	fmt.Println(blockchain.Chain[0].Data)
+//	fmt.Println(blockchain.Chain[0].Hash)
+//	fmt.Println(blockchain.Chain[1].Data)
+//	fmt.Println(blockchain.Chain[1].PrevHash)
+//	// Print the blockchain
+//	blockchainJSON, _ := json.MarshalIndent(blockchain, "", "  ")
+//	fmt.Println(string(blockchainJSON))
+//
+//	// Verify the blockchain  TODO: Move to test module
+//	blockchain.Chain[3].Data = "Block 3 Data has been tampered with" // Tamper with the blockchain to test verification
+//	VerifyBlockChain(blockchain)
+//}
 
 /*
 func main() {
