@@ -1,4 +1,4 @@
-package main
+package hashing
 
 import (
 	"crypto/md5"
@@ -6,12 +6,12 @@ import (
 	"crypto/sha256"
 	"crypto/sha512"
 	"encoding/hex"
-	"fmt"
-	"os"
+	//"fmt"
+	//"os"
 	"time"
 )
 
-func calculateMD5(input string) (string, time.Duration) {
+func CalculateMD5(input string) (string, time.Duration) {
 	// Record the start time
 	startTime := time.Now()
 
@@ -36,7 +36,7 @@ func calculateMD5(input string) (string, time.Duration) {
 	return hashString, duration
 }
 
-func calculateSHA1(input string) (string, time.Duration) {
+func CalculateSHA1(input string) (string, time.Duration) {
 	// Record the start time
 	startTime := time.Now()
 
@@ -61,7 +61,7 @@ func calculateSHA1(input string) (string, time.Duration) {
 	return hashString, duration
 }
 
-func calculateSHA256(input string) (string, time.Duration) {
+func CalculateSHA256(input string) (string, time.Duration) {
 	// Record the start time
 	startTime := time.Now()
 
@@ -86,7 +86,7 @@ func calculateSHA256(input string) (string, time.Duration) {
 	return hashString, duration
 }
 
-func calculateSHA512(input string) (string, time.Duration) {
+func CalculateSHA512(input string) (string, time.Duration) {
 	// Record the start time
 	startTime := time.Now()
 
@@ -111,6 +111,7 @@ func calculateSHA512(input string) (string, time.Duration) {
 	return hashString, duration
 }
 
+/*
 func main() {
 
 	fmt.Printf("\n ----------------------------------------")
@@ -177,3 +178,4 @@ func main() {
 	fmt.Printf("Hashing took %s\n", dur3)
 
 }
+*/

@@ -1,4 +1,4 @@
-package main
+package hashing
 
 import (
 	"crypto/sha256"
@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func main() {
+func TestSHA256Duration() string {
 	input := "Hello, World!" // The string you want to hash
 
 	// Record the start time
@@ -31,7 +31,9 @@ func main() {
 	// Calculate the duration
 	duration := endTime.Sub(startTime)
 
-	fmt.Printf("Input: %s\n", input)
-	fmt.Printf("SHA-256 Hash: %s\n", hashString)
-	fmt.Printf("Hashing took %s\n", duration)
+	return fmt.Sprintf("Input: %s\nSHA-1 Hash: %s\nHashing took %s\n", input, hashString, duration)
+	/*
+		fmt.Printf("SHA-256 Hash: %s\n", hashString)
+		fmt.Printf("Hashing took %s\n", duration)
+	*/
 }
