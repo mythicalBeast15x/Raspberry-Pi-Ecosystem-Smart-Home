@@ -1,4 +1,4 @@
-<h1 align="center"> Weekly Report 1/29/2024 </h1>
+<h1 align="center"> Weekly Report 02/05/2024 </h1>
 
 ## ❖ Team Report
 
@@ -11,8 +11,7 @@
 
 
 ### Next Week Goals
-- Get the zigbee connected with other zigbees.
-- 
+- Get the Zigbee connected with other Zigbees.
 
 ## ❖ Individual Report
 
@@ -34,21 +33,21 @@
 
 #### Previous Individual Goals/Objectives
 - Begin the setup process for the HCI (Human-Computer Interaction) part and outline the codebase structure.
-- Collaborate with other members of the Zigbee group focusing on Xgbee communication with Raspberry Pi units to comprehend the integration for creating an overarching system.
-- Dedicate time to learning and experimenting with Xgbee devices, aiming to gain insight into their functionalities.
+- Collaborate with other members of the Zigbee group focusing on Xbee communication with Raspberry Pi units to comprehend the integration for creating an overarching system.
+- Dedicate time to learning and experimenting with Xbee devices, aiming to gain insight into their functionalities.
 - Work towards generating code for testing on the Raspberry Pi within the context of the HCI.
 
 #### Key Points
 - Advanced efforts in setting up Zigbee connectivity, focusing on establishing connections and creating a mesh network. 
 - Utilized Go lang libraries for Zigbee network setup, actively working towards successful device connection. 
 - Integrated HCI demo code into the project, showcasing initial functionalities and interactions. 
-- Collaborated with frontend team to incorporate HCI features into the user interface, ensuring seamless integration and user experience.
+- Collaborated with the frontend team to incorporate HCI features into the user interface, ensuring seamless integration and user experience.
 
 #### Next Week Goals
 - Finalize HCI setup; ensure comprehensive coverage.
-- Continue collaboration with Zigbee team on integration.
+- Continue collaboration with the Zigbee team on integration.
 - Deepen understanding of Zigbee devices.
-- Get Zigbees connected with each other to create a mesh network.
+- Get Zigbees connected to create a mesh network.
 - Advance code development for Raspberry Pi testing.
 
 ### ❖ Timothy Enders
@@ -58,10 +57,14 @@
 - Explore the fundamentals of connecting with Zigbee devices and writing code, collaborating with fellow team members.
 
 #### Key Points
-
+- Assisted in establishing a communication link between two Xbee devices using the Digi Xbee Python library.
+- Enhanced the initial Go code for the lighting system to incorporate potential extra features.
 
 #### Next Week Goals
-
+- Investigate alternative Go libraries for establishing communication between Xbee devices, as Python is not preferred over Go.
+- Gain further understanding of connecting Zigbee devices in a network.
+- Employ communication channels to facilitate communication between Zigbee devices.
+- Enhance the Go code for the advanced lighting system to integrate testing capabilities.
 
 ### ❖ Joshua Murillo
 
