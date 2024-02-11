@@ -10,26 +10,34 @@
 
 
 ### Key Points
-- The team collectively worked with Zigbee network group on setting up Raspberry Pi environments and configuring SSH.
+
 - Prioritized the code and development for Raspberry Pi
-- Brainstormed testing of code ideas and spoke about test cases with some already made (attached in teams).
-- Tested and researched some encryption and hashing techniques
+- Tested hashing techniques.
+- Researched some encryption and hashing techniques
 
 ### Next Week Goals
-- Prioritize the development and testing of code for Raspberry Pi again.
+- Prioritize the development and testing of code in Raspberry Pi once they are setup.
 - Establish communication pathways for Zigbee devices to interact with Raspberry Pi.
-- Getting along with the Network group and see the progress
+- Cross communicate with other teams to know requirements and see the progress
 
 ## Individual Report
 
-### Darsh (Will complete and add his portion) 
+### Darsh
 
 #### Previous Team Goals
+- Research various hashing and encryption techniques
+- Find ways to have zigbees talk to each other
+- Start testing code.
 
 #### Key Points
+- Researched and tested hashing algorithms
+- Did some analysis on the MD5, SHA1, SHA2(256 & 512)
+- Tested AES for encryption so that secure data is transmitted between devices
 
 #### Next Week Goals
-
+- Testing on the physical devices if pi's communicate.
+- Have the zigbees communicate with each other.
+- Enhance the give AES encryption and decryption implementation.
 
 ### Karen
 
@@ -46,5 +54,5 @@
 #### Next Week Goals
 - Encryption
 - Testing
-- Pushing coded 
+- Pushing code
 - Getting along with the Network group and see the progress so we are able to collab 
