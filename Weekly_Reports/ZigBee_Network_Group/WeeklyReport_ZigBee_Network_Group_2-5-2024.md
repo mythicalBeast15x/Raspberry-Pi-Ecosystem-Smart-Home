@@ -8,10 +8,15 @@
 - Manage the operation of tangible devices from each unit.
 
 ### Key Points
-
+- Our team was able to communicate more effectively with each other to establish a more consistent communication structure.
+- Managed to establish initial connections between device nodes using the Digi Xbee Python library over a Wifi connection.
+- Discussed possible data structures to hold communication data to be sent between device nodes.
 
 ### Next Week Goals
-- Get the Zigbee connected with other Zigbees.
+- Get the Zigbees connected with other Zigbees.
+- Connect and manipulate appliances to a Raspberry device node locally/remotely.
+- Finalize the design and implementation of a JSON communication data structure.
+- Continue looking into and succeed in configuring a Zigbee Coordinator for improved communication between Zigbee devices without relying on Wifi.
 
 ## ❖ Individual Report
 
