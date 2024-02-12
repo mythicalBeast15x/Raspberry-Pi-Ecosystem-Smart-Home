@@ -84,6 +84,7 @@ func TestVerifyBlockChain(t *testing.T) {
 
 }
 
+// testing the VerifyBlockChainWhole functions
 func TestVerifyBlockChainWhole(t *testing.T) {
 	// Create a new blockchain
 	mainBlockchain := blockchain.NewBlockchain(4)
@@ -113,4 +114,31 @@ func TestVerifyBlockChainWhole(t *testing.T) {
 		t.Errorf("Expected: %t, Got: %t", false, blockchainValidity)
 	}
 
+}
+
+// testing the SerializeBlock and DeserializeBlock functions
+func TestBlockSerializationDeserialization(t *testing.T) {
+	// Create a new blockchain
+	sampleBlockchain := blockchain.NewBlockchain(4)
+
+	//Create a block
+	sampleBlockchain.CreateBlock("Block 1 Data")
+	block := sampleBlockchain.Chain[1] // Getting the block that's created
+
+	// Serialize the block
+	serializedBlock, err := blockchain.SerializeBlock(block)
+	if err != nil {
+		t.Error("Error:", err)
+	}
+
+	// Deserialize the block
+	deserializedBlock, err := blockchain.DeserializeBlock(serializedBlock)
+	if err != nil {
+		t.Error("Error:", err)
+	}
+
+	// Check if deserialized block matches the original block
+	if block != deserializedBlock {
+		t.Error("Block does not match when deserialized")
+	}
 }
