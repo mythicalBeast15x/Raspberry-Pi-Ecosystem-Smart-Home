@@ -74,9 +74,19 @@
 - Implement Blockchain logging into each step of the appliance creation and modification process.
 
 #### Key Points
-
+- Was able to communicate with several Zigbee group members to progress our assigned tasks.
+- Worked with Zigbee group members to establish a communication link between two Xbee devices with the Digi Xbee Python library.
+- Discussed and documented a proposal for a common data structure for our entire Thursday group to use for user and system-level communication.
+- Worked on foundational Python and Go scripts for implementing the proposed data structure into JSON objects.
+- Worked on finding Golang solutions to communicating between Zigbee devices but ran into issues with functions from go-zigbee repositories not functioning with feedback stating that the *Address* function was not a valid command. The Repo tested was the following: https://github.com/ebusto/xbee
+- I was not able to work with Blockchain logging yet as I am still working on the implementation of the request communication structure.
 
 #### Next Week Goals
+- Discuss with the Thursday team about the request data structure proposal and incorporate any relevant suggestions into a final version of the structure.
+- Fully implement the agreed-upon structure into our code base so that anyone can call a function to create a request object and send it out to other connected devices.
+- See how a physical appliance could be connected to a device node and get a connected appliance to turn on locally. After this, if the request data structure implementation progresses further, then manipulating the appliance via a request from a remote device node would be the next logical step if I have enough time to get my previous goals done.
+- Currently, the working Python solution for our communication system works specifically with Xbee devices. More work is needed to configure a Zigbee Coordinator to allow a Zigbee device to initiate a Zigbee network system for other devices to link up to without relying on Wifi. Since removing the need for Wifi is a big part of our minimum viable product, this is one of the more important goals to work on implementing as soon as possible.
+- Continue looking for Go-based solutions to Zigbee communications.
 
 
 ### ❖ Jahidul Robin
