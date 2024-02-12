@@ -177,6 +177,15 @@ func NewBlockchain(difficulty int) *Blockchain {
 	return &Blockchain{Chain: []Block{genesisBlock}, Difficulty: difficulty}
 }
 
+// DecryptData decrypts the data in a block.
+//TODO: Implement function
+/*
+Purpose: To Decrypt Data for Block Processing
+	data: string - data to be decrypted
+	returns: string
+*/
+func DecryptData(data string) string { return data }
+
 //
 //func main() {
 //	// Create a new blockchain
