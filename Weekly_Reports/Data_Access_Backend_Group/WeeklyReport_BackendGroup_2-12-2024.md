@@ -1,12 +1,6 @@
 # Weekly Report 1/29/2024
-Follow this template exactly for every report including the name of the document. Use this to help delegate tasks to each member. Everytime has one weekly report. There should be 1 team section and multiple individual sections for each person.
-Format this well, just copy and paste this all and remove all the boiler plate stuff. Make it look professional and nice. This is seperate from the documentation you may be keeping in the Microsoft Teams. Although, you can talk about that in this. These are due every Monday unless stated otherwise. They will be placed within your team's respective folder.
 
 ## Team Report
-This is the entire team and what you have worked on. Make these all bullet points.
-
-## Team Report
-This is the entire team and what you have worked on. Make these all bullet points.
 
 ### Previous Team Goals
 - Setting up blockchain Framework
@@ -36,7 +30,7 @@ This is for each person and what you have focused on. Make these all bullet poin
 - Anything important.
 
 ### Next Week Goals
-- Next week goals thaty you plan to focus on or learn about. These are 2 week sprints, so keep that in mind.
+- Next week goals that you plan to focus on or learn about. These are 2 week sprints, so keep that in mind.
 
 ## Individual Report - Catherine Monteith
 ### Previous Goals
@@ -56,3 +50,18 @@ This is for each person and what you have focused on. Make these all bullet poin
 - Discuss with other groups to ensure blockchain framework is correctly anticipating their needs. 
 - Review JSON implementation 
 - Look into HMAC to understand how this can help prevent tampered blocks & figure out how and where blockchain framework might need to support this.  
+
+## Individual Report - Xingyu Jiang
+### Previous Goals
+- Get a prototype of the consensus algorithm.
+### Key Points
+- More research on consensus algorithm is done.
+- Wasn't able to get a prototype for consensus algorithm.
+  - We Still need to figure our how to validate actions each device is going to perform.
+  - We Still need to figure our how devices should be communicating.
+
+### Next Week's Goals
+- Discuss with other groups making sure everyone is on the same page.
+- Research on HMAC.
+- Come to an agreement on the consensus algorithm that is going to be implemented.
+- Implement the P2P aspect of blockchain.
