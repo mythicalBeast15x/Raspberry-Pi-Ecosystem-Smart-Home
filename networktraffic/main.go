@@ -110,3 +110,27 @@ log.Fatalf("Decryption failed: %v", err)
 }
 fmt.Printf("Decrypted: %s\n", decrypted)
 */
+
+/*
+AES Test case:
+package main
+import (
+"testing"
+)
+func TestEncryptDecrypt(t *testing.T) {
+key := "thisisasecretkey1234567890" // 32 bytes for AES-256
+originalText := "Hello, World!"
+encryptedText, err := Encrypt(originalText, key)
+if err != nil {
+t.Errorf("Failed to encrypt: %v", err)
+}
+decryptedText, err := Decrypt(encryptedText, key)
+if err != nil {
+t.Errorf("Failed to decrypt: %v", err)
+}
+if decryptedText != originalText {
+t.Errorf("Decrypted text does not match original. Got %s, want %s", decryptedText, 
+originalText)
+}
+}
+*/
