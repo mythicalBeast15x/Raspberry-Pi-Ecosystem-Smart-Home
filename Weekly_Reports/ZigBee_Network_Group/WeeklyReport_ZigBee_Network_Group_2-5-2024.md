@@ -29,9 +29,16 @@
 - Try to have some code to test on the Raspberry for the Appliances system.
 
 #### Key Points
+- Started the codebase for appliances along with adding functionality. Tested code out to recognize the behavior of how the structure of the entire appliances system works. 
+- Dedicated time to go through Zigbee documentation along with watching breakdown videos of how the devices work in order to get an understanding of how the devices can be configured in order to get communication working.
+- Working on pushing test code to try on Raspberry Pi.
 
-
-#### Next 2 Weeks Goals
+#### Next Week Goals
+- Finalize Appliances along with most of the functionality for Appliance usage.
+- Work with energy system in order to figure out energy optimization along with priority.
+- Configure Zigbee devices and get them to communicate with each other.
+- Get Zigbees connected to create a mesh network.
+- Advance code development for Raspberry Pi testing.
 
 
 ### ❖ Deep Patel
