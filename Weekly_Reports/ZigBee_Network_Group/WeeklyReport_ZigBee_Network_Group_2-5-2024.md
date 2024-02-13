@@ -104,11 +104,15 @@
 ### ❖ Jahidul Robin
 
 #### Previous Individual Goals/Objectives
-- Collaborate more closely with the Network Traffic Analysis System group to develop a monitoring system that alerts us to any unusual activity within the network, enhancing our security measures.
-- Start implementing the blockchain logging mechanism for the security system to ensure that the history of security-related events is immutable and securely logged. This will involve understanding SHA256 encryption and how it can be applied to our use case.
-- Plan for a small-scale test of the security system integration with the overall mesh.
-
+-  Collaborate more closely with the Network Traffic Analysis System group to develop a monitoring system that alerts us to any unusual activity within the network, enhancing our security measures.
+-  Start implementing the blockchain logging mechanism for the security system to ensure that the history of security-related events is immutable and securely logged. This will involve understanding SHA256 encryption and how it can be applied to our use case.
+Plan for a small-scale test of the security system integration with the overall mesh.
 #### Key Points
-
-
+- Encountered significant challenges that prevented the achievement of the set objectives for the week. Despite the initial planning and efforts to kickstart the collaboration with the Network Traffic Analysis System group, unforeseen circumstances and technical hurdles delayed the development of the monitoring system.
+- The implementation of the blockchain logging mechanism was also put on hold.
+- The planned small-scale test of the security system within the mesh network did not proceed as the foundational components required for this integration were not ready for testing.
 #### Next Week Goals
+- Address the challenges that hindered progress last week, starting with a thorough review of the technical and collaborative obstacles encountered. This will involve seeking additional resources and possibly redefining the approach to collaboration with the Network Traffic Analysis System group.
+- Reassess the blockchain logging mechanism's implementation plan. This may include simplifying the initial model to make the development process more manageable and ensure timely completion. Focus will be on understanding and applying SHA256 encryption in a more streamlined manner.
+- Prioritize tasks more effectively to ensure that foundational elements of the security system are developed and ready for integration testing. This might involve setting more focused, short-term goals to achieve incremental progress.
+- Establish a more realistic timeline for the completion of the security monitoring system and the blockchain logging mechanism, taking into account the lessons learned from the setbacks encountered.
