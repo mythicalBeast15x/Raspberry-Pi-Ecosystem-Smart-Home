@@ -3,6 +3,7 @@ package blockchain
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -55,7 +56,7 @@ func CalculateHash(block Block, nonce int) string {
 	return result
 }
 
-// Proof of Work Algorithm Base
+// ProofOfWork Proof of Work Algorithm Base
 /*
 Purpose: Helper function//consensus and validation algorithm to ensure a valid hash is generated.
 	block : Block - input block
@@ -99,6 +100,33 @@ func (bc *Blockchain) VerifyBlock(block Block, difficulty int) bool {
 	result := ProofOfWork(block, difficulty)
 	previousHash := bc.Chain[len(bc.Chain)-1].Hash
 	return result == block.Hash && previousHash == block.PrevHash
+}
+
+// VerifyBlockChain verifies an entire chain using VerifyBlock
+/*
+Purpose: Uses VerifyBlock (see above) and Cycles through every block on the blockchain. This function
+is a prototype for verifying an entire blockchain. This could be run at certain intervals to verify
+the integrity and continuity of an entire chain.
+***
+	--NOTE: This is a Prototype for functionality that might be needed to verify a chain
+that already exists--
+***
+	returns: bool
+*/
+// verifies the entire chain
+func (bc *Blockchain) VerifyBlockChain() bool {
+
+	badBlocks := 0
+	for i := 1; i < len(bc.Chain); i++ {
+		if !bc.VerifyBlock(bc.Chain[i], bc.Difficulty) {
+			badBlocks += 1
+		}
+	}
+	if badBlocks > 0 {
+		return true
+	} else {
+		return false
+	}
 }
 
 // CreateBlock creates a new block in the blockchain.
@@ -150,33 +178,31 @@ func NewBlockchain(difficulty int) *Blockchain {
 	return &Blockchain{Chain: []Block{genesisBlock}, Difficulty: difficulty}
 }
 
+// DecryptData decrypts the data in a block.
+//TODO: Implement function
 /*
-func main() {
-	// Create a new blockchain
-	blockchain := NewBlockchain(4)
-
-	// Add some blocks to the blockchain
-	blockchain.CreateBlock("Block 1 Data")
-	blockchain.CreateBlock("Block 2 Data")
-	blockchain.CreateBlock("Block 3 Data")
-
-	fmt.Println(blockchain.Chain[0].Data)
-	fmt.Println(blockchain.Chain[0].Hash)
-	fmt.Println(blockchain.Chain[1].Data)
-	fmt.Println(blockchain.Chain[1].PrevHash)
-	// Print the blockchain
-	blockchainJSON, _ := json.MarshalIndent(blockchain, "", "  ")
-	fmt.Println(string(blockchainJSON))
-
-	// Verify the blockchain  TODO: Move to test module
-	blockchain.Chain[3].Data = "Block 3 Data has been tampered with" // Tamper with the blockchain to test verification
-	fmt.Println("\nVerifying blockchain...")
-	for i := 1; i < len(blockchain.Chain); i++ {
-		if !blockchain.VerifyBlock(blockchain.Chain[i], blockchain.Difficulty) {
-			fmt.Println("Block", i, "is invalid")
-		} else {
-			fmt.Println("Block", i, "is valid")
-		}
-	}
-}
+Purpose: To Decrypt Data for Block Processing
+	data: string - data to be decrypted
+	returns: string
 */
+func DecryptData(data string) string { return data }
+
+// SerializeBlock Converting the block struct to JSON
+/*
+Purpose: Serialize blocks that are created.
+	returns: JSON file of the block
+*/
+func SerializeBlock(block Block) ([]byte, error) {
+	return json.Marshal(block)
+}
+
+// DeserializeBlock Converting the JSON string back to a block struct.
+/*
+Purpose: Deserialize blocks from a JSON file.
+	returns: Block and Error value
+*/
+func DeserializeBlock(data []byte) (Block, error) {
+	var block Block
+	err := json.Unmarshal(data, &block)
+	return block, err
+}
