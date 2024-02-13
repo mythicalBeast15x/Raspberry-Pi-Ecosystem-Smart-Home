@@ -44,12 +44,13 @@
 #### Previous Team Goals
 - Researched about the tasks given in our class meeting / created a doc for our team to have some ideas to begin with for the research
 - Began creating test cases (also attached in teams for our team to collaborate and share comments on)
-- Will attempt to push code but may just comment it out until our tuesday meeting so we can discuss a bit more 
+- Pushed code for AES encryption  
 
 #### Key Points
 - Test and Research Various Encryption and Hashing Techniques
 - Research how Zigbee Devices talk to each other
-- Began coding a bit but would like to dicsuss on monday or tuesday with my team member before anything is pushed 
+- Began coding a bit but would like to dicsuss on monday or tuesday with my team member before anything is pushed
+- Began a code for AES encryption, still may need some some changes.  
 
 #### Next Week Goals
 - Encryption
