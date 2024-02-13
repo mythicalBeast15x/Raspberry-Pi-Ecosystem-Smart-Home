@@ -1,0 +1,28 @@
+/* prototype Styles for the container.. */
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Styles for form groups */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+}
+
+/* Input field styling */
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+}
+
+/* Button styling */
+.button {
+    padding: 10px 15px;
+    cursor: pointer;
+}
