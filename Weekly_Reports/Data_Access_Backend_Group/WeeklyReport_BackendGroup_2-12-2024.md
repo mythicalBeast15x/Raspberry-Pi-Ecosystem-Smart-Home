@@ -1,4 +1,4 @@
-# Weekly Report 1/29/2024
+# Weekly Report 2/12/2024
 
 ## Team Report
 
@@ -10,7 +10,6 @@
 - A basic blockchain framework is set up & has anticipatory functions for encryption and decryption
 - Basic Verification functions & hashing functionality
 - Functions for JSON Serialization and Deserialization
--
 
 ### Next Week Team Goals
 - Discuss with Network Analysis team to either begin implementation or modify existing functions for encryption/decryption to prepare for integration
@@ -65,3 +64,18 @@ This is for each person and what you have focused on. Make these all bullet poin
 - Research on HMAC.
 - Come to an agreement on the consensus algorithm that is going to be implemented.
 - Implement the P2P aspect of blockchain.
+
+## Individual Report - David Weisman
+### Previous Goals
+- Set up better communication as a team
+- Add more testing for the blockchain
+
+### Key Points
+- Created dummy decryption function as placeholder until we get a better understanding of how the networking team plans on implementing that.
+- Created testing folder and procedures on said function with room for expansion when it actually gets implemented.
+- Reviewed verification function.
+
+### Next Week Goals
+- Gain better understanding of the progress of the other groups so we can work better together.
+- Become more familiar with HMAC and how we can utilize this in our blockchain.
+- Get on same page as team with the concensus algorithm.
