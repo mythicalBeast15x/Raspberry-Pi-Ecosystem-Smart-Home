@@ -31,7 +31,7 @@ func TestSHA256Duration() string {
 	// Calculate the duration
 	duration := endTime.Sub(startTime)
 
-	return fmt.Sprintf("Input: %s\nSHA-1 Hash: %s\nHashing took %s\n", input, hashString, duration)
+	return fmt.Sprintf("Input: %s\nSHA-256 Hash: %s\nHashing took %s\n", input, hashString, duration)
 	/*
 		fmt.Printf("SHA-256 Hash: %s\n", hashString)
 		fmt.Printf("Hashing took %s\n", duration)

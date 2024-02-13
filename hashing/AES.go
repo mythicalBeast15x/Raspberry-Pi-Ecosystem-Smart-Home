@@ -1,60 +1,5 @@
 package hashing
 
-/*
-import (
-	"crypto/aes"
-	"crypto/cipher"
-	"crypto/rand"
-	"encoding/base64"
-	"fmt"
-	"io"
-	"log"
-)
-
-//go get github.com/google/gopacket
-//go get github.com/google/gopacket/pcap
-
-
-func main() {
-	networkadapters()
-	// Define the network interface you want to capture packets from
-	device := "\\Device\\NPF_{285EEC32-9286-4AB7-83F9-0C2E8BDE60FC}"
-
-	// Open the network device for packet capture
-	handle, err := pcap.OpenLive(device, 1600, true, pcap.BlockForever)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer handle.Close()
-
-	// Create a packet source to decode packets from the network interface
-	packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
-
-	// Capture packets for a specified duration (e.g., 30 seconds)
-	duration := 30 * time.Second
-	endTime := time.Now().Add(duration)
-
-	fmt.Printf("Capturing network traffic on interface %s for %s...\n", device, duration)
-
-	// Loop to capture and analyze packets
-	for packet := range packetSource.Packets() {
-		// Print basic packet information
-		fmt.Printf("Packet captured at %s\n", packet.Metadata().Timestamp)
-		fmt.Printf("Packet length: %d bytes\n", packet.Metadata().Length)
-		fmt.Printf("Packet data:\n%s\n", packet.Dump())
-
-		// You can perform more advanced analysis on the packet data here
-
-		// Check if the capture duration has elapsed
-		if time.Now().After(endTime) {
-			fmt.Println("Capture duration reached. Exiting...")
-			break
-		}
-	}
-}
-*/
-//AES:
-
 import (
 	"crypto/aes"
 	"crypto/cipher"
@@ -116,28 +61,5 @@ func main() {
 		log.Fatalf("Decryption failed: %v", err)
 	}
 	fmt.Printf("Decrypted: %s\n", decrypted)
-}
-*/
-/*
-AES Test case:
-package main
-import (
-"testing"
-)
-func TestEncryptDecrypt(t *testing.T) {
-key := "thisisasecretkey1234567890" // 32 bytes for AES-256
-originalText := "Hello, World!"
-encryptedText, err := Encrypt(originalText, key)
-if err != nil {
-t.Errorf("Failed to encrypt: %v", err)
-}
-decryptedText, err := Decrypt(encryptedText, key)
-if err != nil {
-t.Errorf("Failed to decrypt: %v", err)
-}
-if decryptedText != originalText {
-t.Errorf("Decrypted text does not match original. Got %s, want %s", decryptedText,
-originalText)
-}
 }
 */
