@@ -105,3 +105,22 @@
 - Collaborate more closely with the Network Traffic Analysis System group to develop a monitoring system that alerts us to any unusual activity within the network, enhancing our security measures.
 - Start implementing the blockchain logging mechanism for the security system to ensure that the history of security-related events is immutable and securely logged. This will involve understanding SHA256 encryption and how it can be applied to our use case.
 - Plan for a small-scale test of the security system integration with the overall mesh.
+
+### ❖ Mitkumar Patel
+
+#### Previous Individual Goals/Objectives
+- Familiarize myself with Golang.
+- Familiarize myself with Zigbee products.
+- Completed group contract and attached my digital signature.
+- Help complete the Discovery and Orientation Module document.
+
+#### Key Points
+- Helped team members setup SSH on Raspberry Pi by connecting to the router
+- Setup the Pi and run configurator. 
+
+#### Next Week Goals
+- Set up a proper meeting time for the team.
+- Get working on the HVAC portion of the project.
+- Learned fundamentals of connecting with Zigbee devices
+- Get the pi to connect with other pi's
+
