@@ -83,3 +83,62 @@ func TestVerifyBlockChain(t *testing.T) {
 	}
 
 }
+
+// testing the VerifyBlockChainWhole functions
+func TestVerifyBlockChainWhole(t *testing.T) {
+	// Create a new blockchain
+	mainBlockchain := blockchain.NewBlockchain(4)
+
+	// Add some blocks to the blockchain
+	mainBlockchain.CreateBlock("Block 1 Data")
+	mainBlockchain.CreateBlock("Block 2 Data")
+	mainBlockchain.CreateBlock("Block 3 Data")
+
+	//test Validity should be true
+	blockchainValidity := mainBlockchain.VerifyBlockChain()
+	if blockchainValidity != true {
+		t.Errorf("Expected: %t, Got: %t", true, blockchainValidity)
+	}
+
+	tamperedBlock := blockchain.Block{1,
+		time.Now().String(),
+		"Block -5 Data", "0000000000000000000",
+		"0000a7e8c316d005ef48354a0f3f9b8b78d52103380840b1219b049873b79f3e",
+	}
+
+	mainBlockchain.AddToBlockchain(tamperedBlock)
+
+	//test Validity should be false
+	blockchainValidity = mainBlockchain.VerifyBlockChain()
+	if blockchainValidity != true {
+		t.Errorf("Expected: %t, Got: %t", false, blockchainValidity)
+	}
+
+}
+
+// testing the SerializeBlock and DeserializeBlock functions
+func TestBlockSerializationDeserialization(t *testing.T) {
+	// Create a new blockchain
+	sampleBlockchain := blockchain.NewBlockchain(4)
+
+	//Create a block
+	sampleBlockchain.CreateBlock("Block 1 Data")
+	block := sampleBlockchain.Chain[1] // Getting the block that's created
+
+	// Serialize the block
+	serializedBlock, err := blockchain.SerializeBlock(block)
+	if err != nil {
+		t.Error("Error:", err)
+	}
+
+	// Deserialize the block
+	deserializedBlock, err := blockchain.DeserializeBlock(serializedBlock)
+	if err != nil {
+		t.Error("Error:", err)
+	}
+
+	// Check if deserialized block matches the original block
+	if block != deserializedBlock {
+		t.Error("Block does not match when deserialized")
+	}
+}

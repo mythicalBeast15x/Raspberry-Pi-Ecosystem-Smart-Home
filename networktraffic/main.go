@@ -1,18 +1,18 @@
 package main
 
+import (
+	"fmt"
+	"github.com/google/gopacket"
+	"github.com/google/gopacket/pcap"
+	"log"
+	"time"
+)
+
 //go get github.com/google/gopacket
 //go get github.com/google/gopacket/pcap
 
-import (
-	"fmt"
-	"log"
-	"time"
-
-	"github.com/google/gopacket"
-	"github.com/google/gopacket/pcap"
-)
-
 func main() {
+	networkadapters()
 	// Define the network interface you want to capture packets from
 	device := "\\Device\\NPF_{285EEC32-9286-4AB7-83F9-0C2E8BDE60FC}"
 
