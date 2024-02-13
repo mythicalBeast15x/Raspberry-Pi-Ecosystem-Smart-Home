@@ -116,3 +116,23 @@ Plan for a small-scale test of the security system integration with the overall 
 - Reassess the blockchain logging mechanism's implementation plan. This may include simplifying the initial model to make the development process more manageable and ensure timely completion. Focus will be on understanding and applying SHA256 encryption in a more streamlined manner.
 - Prioritize tasks more effectively to ensure that foundational elements of the security system are developed and ready for integration testing. This might involve setting more focused, short-term goals to achieve incremental progress.
 - Establish a more realistic timeline for the completion of the security monitoring system and the blockchain logging mechanism, taking into account the lessons learned from the setbacks encountered.
+
+
+### ❖ Mitkumar Patel
+
+#### Previous Individual Goals/Objectives
+- Set up a proper meeting time for the team.
+- Get working on the HVAC portion of the project.
+- Learned fundamentals of connecting with Zigbee devices
+- Get the pi to connect with other pi's
+
+#### Key Points
+- Started to set up Zigbee connectivity, focusing on advancing and learning more settings regarding the ZigBee module.
+- Encountered challenges in configuring the Zigbee network for optimal performance and reliability but made significant progress in troubleshooting and enhancing connectivity.
+
+#### Next Week Goals
+- Begin advancing the HVAC code by implementing more sophisticated control algorithms and features, such as temperature scheduling, energy-saving modes, and responsive adjustments based on real-time sensor data.
+- Continue improving Zigbee network stability and reliability, focusing on optimizing signal strength and interference mitigation.
+- Enhance the HVAC system's user interface for better usability and accessibility, incorporating feedback from initial testing.
+- Collaborate with other team members to ensure seamless integration between the HVAC system and other components of the smart home project.
+- Advance raspberry pi config and connect with mesh network.
