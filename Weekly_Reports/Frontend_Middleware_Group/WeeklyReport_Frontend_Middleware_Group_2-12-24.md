@@ -1,4 +1,4 @@
-# Weekly Report 1/29/2024
+# Weekly Report 2/12/2024
 ## Team Report
 - Completed the web design prtotype
 - Started coding the website
@@ -34,13 +34,14 @@
 - Talked to my teammate and did some research on home security and possibilities of making a webpage.
 - Talked to Joshua regarding the features we can add to our website to make it more user friendly. 
 
-### Previous Team Goals
-- Do some research on frontend user interfaces we can use in home security systems
+### Previous week Goals
+- Finialize which language we have to use for the webpage and start coding
+-Do more reasearch on home security system webpages
 
  ### Key Points
   - Start implementing our ideas into code.
   - Still trying to figure out which language is the best
 ### Next Week Goals
-- Finialize which language we have to use for the webpage and start coding
-- Do more reasearch on home security system webpages
+- Start coding homepage
+- Do more reasearch on home security system webpages to make it more user friendly 
   
