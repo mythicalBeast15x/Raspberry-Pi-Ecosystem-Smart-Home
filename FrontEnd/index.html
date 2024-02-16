@@ -1,32 +1,527 @@
-<!-- Prototype.. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Light Connections</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to the CSS file -->
-</head>
-<body>
-<div class="container">
-    <h2>Add Light Connection</h2>
-    <!-- Input form for light connection details -->
-    <div class="form-group">
-        <label for="lightName">Light Name:</label>
-        <input type="text" id="lightName">
-    </div>
-    <div class="form-group">
-        <label for="location">Location:</label>
-        <input type="text" id="location">
-    </div>
-    <!-- Button to add a new light connection -->
-    <button class="button" onclick="addLightConnection()">Add Connection</button>
+    <!-- Theme Made By www.w3schools.com -->
+    <title>Bootstrap Theme Company Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            font: 400 15px Lato, sans-serif;
+            line-height: 1.8;
+            color: #818181;
+        }
+        h2 {
+            font-size: 24px;
+            text-transform: uppercase;
+            color: #303030;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        h4 {
+            font-size: 19px;
+            line-height: 1.375em;
+            color: #303030;
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+        .jumbotron {
+            background-color: #58B0A6;
+            color: #fff;
+            padding: 100px 25px;
+            font-family: Montserrat, sans-serif;
+        }
+        .container-fluid {
+            padding: 60px 50px;
+        }
+        .bg-grey {
+            background-color: #f6f6f6;
+        }
+        .logo-small {
+            color: #f4511e;
+            font-size: 50px;
+        }
+        .logo {
+            color: #f4511e;
+            font-size: 200px;
+        }
+        .thumbnail {
+            padding: 0 0 15px 0;
+            border: none;
+            border-radius: 0;
+        }
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            margin-bottom: 10px;
+        }
+        .carousel-control.right, .carousel-control.left {
+            background-image: none;
+            color: #f4511e;
+        }
+        .carousel-indicators li {
+            border-color: #f4511e;
+        }
+        .carousel-indicators li.active {
+            background-color: #f4511e;
+        }
+        .item h4 {
+            font-size: 19px;
+            line-height: 1.375em;
+            font-weight: 400;
+            font-style: italic;
+            margin: 70px 0;
+        }
+        .item span {
+            font-style: normal;
+        }
+        .panel {
+            border: 1px solid #f4511e;
+            border-radius:0 !important;
+            transition: box-shadow 0.5s;
+        }
+        .panel:hover {
+            box-shadow: 5px 0px 40px rgba(0,0,0, .2);
+        }
+        .panel-footer .btn:hover {
+            border: 1px solid #f4511e;
+            background-color: #fff !important;
+            color: #f4511e;
+        }
+        .panel-heading {
+            color: #fff !important;
+            background-color: #f4511e !important;
+            padding: 25px;
+            border-bottom: 1px solid transparent;
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+        }
+        .panel-footer {
+            background-color: white !important;
+        }
+        .panel-footer h3 {
+            font-size: 32px;
+        }
+        .panel-footer h4 {
+            color: #aaa;
+            font-size: 14px;
+        }
+        .panel-footer .btn {
+            margin: 15px 0;
+            background-color: #f4511e;
+            color: #fff;
+        }
+        .navbar {
+            margin-bottom: 0;
+            background-color: #58B0A6;
+            z-index: 9999;
+            border: 0;
+            font-size: 12px !important;
+            line-height: 1.42857143 !important;
+            letter-spacing: 4px;
+            border-radius: 0;
+            font-family: Montserrat, sans-serif;
+        }
+        .navbar li a, .navbar .navbar-brand {
+            color: #fff !important;
+        }
+        .navbar-nav li a:hover, .navbar-nav li.active a {
+            color: #f4511e !important;
+            background-color: #fff !important;
+        }
+        .navbar-default .navbar-toggle {
+            border-color: transparent;
+            color: #fff !important;
+        }
+        footer .glyphicon {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #f4511e;
+        }
+        .slideanim {visibility:hidden;}
+        .slide {
+            animation-name: slide;
+            -webkit-animation-name: slide;
+            animation-duration: 1s;
+            -webkit-animation-duration: 1s;
+            visibility: visible;
+        }
+        @keyframes slide {
+            0% {
+                opacity: 0;
+                transform: translateY(70%);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0%);
+            }
+        }
+        @-webkit-keyframes slide {
+            0% {
+                opacity: 0;
+                -webkit-transform: translateY(70%);
+            }
+            100% {
+                opacity: 1;
+                -webkit-transform: translateY(0%);
+            }
+        }
+        @media screen and (max-width: 768px) {
+            .col-sm-4 {
+                text-align: center;
+                margin: 25px 0;
+            }
+            .btn-lg {
+                width: 100%;
+                margin-bottom: 35px;
+            }
+        }
+        @media screen and (max-width: 480px) {
+            .logo {
+                font-size: 150px;
+            }
+        }
+        .carousel-container {
+            margin: 0 auto; /* Center the carousel */
+            max-width: 50%; /* Use full width of the container */
+            padding-top: 20px; /* Space from the top navbar */
+            overflow-y: auto; /* Enable vertical scrolling */
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+            max-height: 80vh; /* Adjust based on your preference, vh units help it to be responsive */
+        }
+        .carousel-inner img {
+            width: 100%; /* Make images responsive */
+            height: auto; /* Maintain aspect ratio */
+        }
+        .device-group {
+            margin-bottom: 20px; /* Space between groups */
+        }
 
-    <h3>Light Connections</h3>
-    <!-- List where added light connections will be displayed -->
-    <ul id="lightConnectionsList"></ul>
+        .device-card {
+            background-color: #fff; /* Background color for the device cards */
+            border: 1px solid #ddd; /* Border for the cards */
+            border-radius: 4px; /* Rounded corners for the cards */
+            padding: 10px; /* Padding inside the cards */
+            margin-bottom: 10px; /* Space between cards */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Optional: Adds shadow for depth */
+        }
+
+        /* Optional: Adjust the column width for finer control */
+        .col-md-4 {
+            max-width: 33.3333%; /* Default for 3-column layout in Bootstrap */
+        }
+        .navbar-custom {
+            background-color: #004D40; /* Dark greenish color */
+        }
+        .navbar-custom .navbar-brand,
+        .navbar-custom .nav-link {
+            color: #ffffff;
+        }
+        .navbar-custom .nav-link:hover {
+            color: #CDDC39; /* Lime accent */
+        }
+        .jumbotron-custom {
+            background-color: #009688; /* Teal color */
+            color: #ffffff;
+            padding: 2rem 1rem;
+            margin-bottom: 2rem;
+            border-radius: 0.3rem;
+        }
+        .jumbotron-custom h1 {
+            font-size: 3rem;
+        }
+        .jumbotron-custom p {
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+
+<nav class="navbar navbar-expand-lg navbar-custom navbar-fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#myPage">Logo</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="#about">ABOUT</a></li>
+                <li class="nav-item"><a class="nav-link" href="#services">DEVICES</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">CONTACT</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="jumbotron jumbotron-custom text-center">
+    <h1>Home Security System</h1>
+    <p>We specialize in blablabla</p>
 </div>
 
-<script src="script.js"></script> <!-- Link to the JavaScript file -->
+<!-- Container (About Section) -->
+<div id="about" class="container-fluid">
+    <div class="row">
+        <div class="col-sm-8">
+            <h2>About Company Page</h2><br>
+            <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</h4><br>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <br><button class="btn btn-default btn-lg">Get in Touch</button>
+        </div>
+        <div class="col-sm-4">
+            <span class="glyphicon glyphicon-signal logo"></span>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid bg-grey">
+    <div class="row">
+        <div class="col-sm-4">
+            <span class="glyphicon glyphicon-globe logo slideanim"></span>
+        </div>
+        <div class="col-sm-8">
+            <div class="col-md-3 left-sidebar">
+                <div class="text-center mt-3">
+                    <h5>Current Time</h5>
+                    <p id="current-time"></p>
+                </div>
+                <div class="mt-5">
+                    <!-- Other elements can be placed here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Container (Services Section) -->
+<div id="services" class="container-fluid text-center">
+    <div class="container">
+        <button class="btn btn-primary my-3" type="button" data-bs-toggle="modal" data-bs-target="#deviceModal">Add Device</button>
+
+        <div class="card text-center">
+            <div class="card-header">
+                <ul class="nav nav-pills card-header-pills" id="categoryNav">
+                    <!-- Categories will be dynamically added here -->
+                </ul>
+            </div>
+            <div class="card-body" id="cardContent">
+                <!-- Device cards will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Device Modal -->
+    <div class="modal fade" id="deviceModal" tabindex="-1" aria-labelledby="deviceModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deviceModalLabel">Add Device</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="deviceForm">
+                        <div class="mb-3">
+                            <label for="deviceName" class="form-label">Device Name</label>
+                            <input type="text" class="form-control" id="deviceName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newCategory" class="form-label">Category</label>
+                            <input type="text" class="form-control mb-2" id="newCategory" placeholder="Add New or Select Existing">
+                            <select class="form-select" id="existingCategory">
+                                <option value="" selected>Select Existing Category</option>
+                                <!-- Existing categories will be added here dynamically -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="deviceStatus" class="form-label">Status</label>
+                            <select class="form-select" id="deviceStatus" required>
+                                <option value="Online">Online</option>
+                                <option value="Offline">Offline</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="addDevice()">Add Device</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Container (Contact Section) -->
+<div id="contact" class="container-fluid bg-grey">
+    <h2 class="text-center">CONTACT</h2>
+    <div class="row">
+        <div class="col-sm-5">
+            <p>Contact us and we'll get back to you within 24 hours.</p>
+            <p><span class="glyphicon glyphicon-map-marker"></span> Chicago, US</p>
+            <p><span class="glyphicon glyphicon-phone"></span> +00 1515151515</p>
+            <p><span class="glyphicon glyphicon-envelope"></span> myemail@something.com</p>
+        </div>
+        <div class="col-sm-7 slideanim">
+            <div class="row">
+                <div class="col-sm-6 form-group">
+                    <input class="form-control" id="name" name="name" placeholder="Name" type="text" required>
+                </div>
+                <div class="col-sm-6 form-group">
+                    <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
+                </div>
+            </div>
+            <textarea class="form-control" id="comments" name="comments" placeholder="Comment" rows="5"></textarea><br>
+            <div class="row">
+                <div class="col-sm-12 form-group">
+                    <button class="btn btn-default pull-right" type="submit">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Image of location/map -->
+<img src="/w3images/map.jpg" class="w3-image w3-greyscale-min" style="width:100%">
+
+<footer class="container-fluid text-center">
+    <a href="#myPage" title="To Top">
+        <span class="glyphicon glyphicon-chevron-up"></span>
+    </a>
+    <p>Bootstrap Theme Made By <a href="https://www.w3schools.com" title="Visit w3schools">www.w3schools.com</a></p>
+</footer>
+
+<script>
+    // Function to update the current time
+    function updateTime() {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        document.getElementById('current-time').innerText = `${hours}:${minutes}:${seconds}`;
+    }
+
+    // Call updateTime function initially and every second
+    updateTime();
+    setInterval(updateTime, 1000);
+
+    $(document).ready(function(){
+        // Add smooth scrolling to all links in navbar + footer link
+        $(".navbar a, footer a[href='#myPage']").on('click', function(event) {
+            // Make sure this.hash has a value before overriding default behavior
+            if (this.hash !== "") {
+                // Prevent default anchor click behavior
+                event.preventDefault();
+
+                // Store hash
+                var hash = this.hash;
+
+                // Using jQuery's animate() method to add smooth page scroll
+                // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+                $('html, body').animate({
+                    scrollTop: $(hash).offset().top
+                }, 900, function(){
+
+                    // Add hash (#) to URL when done scrolling (default click behavior)
+                    window.location.hash = hash;
+                });
+            } // End if
+        });
+
+        $(window).scroll(function() {
+            $(".slideanim").each(function(){
+                var pos = $(this).offset().top;
+
+                var winTop = $(window).scrollTop();
+                if (pos < winTop + 600) {
+                    $(this).addClass("slide");
+                }
+            });
+        });
+    })
+
+
+    let categories = {}; // Object to store categories and their content
+
+    function addCategory(categoryName) {
+        if (categoryName && !categories.hasOwnProperty(categoryName)) {
+            categories[categoryName] = []; // Initialize an empty array for the category
+
+            // Add category tab
+            const nav = document.getElementById('categoryNav');
+            const navItem = document.createElement('li');
+            navItem.className = 'nav-item';
+            navItem.innerHTML = `<a class="nav-link" href="#" onclick="switchCategory('${categoryName}')">${categoryName}</a>`;
+            nav.appendChild(navItem);
+
+            // Add category option to the existing categories dropdown
+            const categorySelect = document.getElementById('existingCategory');
+            const option = new Option(categoryName, categoryName);
+            categorySelect.add(option);
+        }
+    }
+
+    function switchCategory(categoryName) {
+        document.querySelectorAll('#categoryNav .nav-link').forEach(link => {
+            link.classList.remove('active');
+            if (link.textContent === categoryName) {
+                link.classList.add('active');
+            }
+        });
+
+        const content = document.getElementById('cardContent');
+        content.innerHTML = '';
+        categories[categoryName].forEach((device, index) => {
+            const cardPlaceholder = document.createElement('div');
+            cardPlaceholder.className = 'card mb-3';
+            cardPlaceholder.innerHTML = `
+            <div class="card-body">
+                <h5 class="card-title">${device.name}</h5>
+                <p class="card-text">Status: ${device.status}</p>
+                <button class="btn btn-secondary" onclick="toggleDeviceStatus('${categoryName}', ${index})">${device.status === 'Online' ? 'Turn Off' : 'Turn On'}</button>
+                <button class="btn btn-danger" onclick="deleteDevice('${categoryName}', ${index})">Delete</button>
+            </div>`;
+            content.appendChild(cardPlaceholder);
+        });
+    }
+
+    function addDevice() {
+        const name = document.getElementById('deviceName').value.trim();
+        const newCategoryName = document.getElementById('newCategory').value.trim();
+        const existingCategoryName = document.getElementById('existingCategory').value;
+        const status = document.getElementById('deviceStatus').value;
+        let categoryName = existingCategoryName || newCategoryName;
+
+        if (name && status && categoryName) {
+            if (!categories.hasOwnProperty(categoryName)) {
+                addCategory(categoryName); // Add new category if it doesn't exist
+            }
+
+            const device = { name, status };
+            categories[categoryName].push(device);
+            switchCategory(categoryName); // Refresh the display
+
+            document.getElementById('deviceForm').reset(); // Reset form
+            bootstrap.Modal.getInstance(document.getElementById('deviceModal')).hide(); // Hide modal
+        }
+    }
+
+    function toggleDeviceStatus(categoryName, deviceIndex) {
+        const device = categories[categoryName][deviceIndex];
+        device.status = device.status === 'Online' ? 'Offline' : 'Online';
+        switchCategory(categoryName); // Refresh the display to reflect the status change
+    }
+
+    function deleteDevice(categoryName, deviceIndex) {
+        categories[categoryName].splice(deviceIndex, 1); // Remove the device from the category
+        switchCategory(categoryName); // Refresh the display to reflect the deletion
+    }
+</script>
+
 </body>
 </html>
