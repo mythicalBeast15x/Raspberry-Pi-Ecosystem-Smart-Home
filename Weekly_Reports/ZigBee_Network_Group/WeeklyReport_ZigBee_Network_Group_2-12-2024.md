@@ -1,0 +1,105 @@
+<h1 align="center"> Weekly Report 02/12/2024 </h1>
+
+## ❖ Team Report
+
+### Previous Team Goals
+- Get the ZigBees connected with other ZigBees.
+- Connect and manipulate appliances to a Raspberry device node locally/remotely.
+- Finalize the design and implementation of a JSON communication data structure.
+- Continue looking into and succeed in configuring a ZigBee Coordinator for improved communication between ZigBee devices without relying on Wi-Fi.
+
+### Key Points
+-
+
+### Next Week Goals
+-
+
+## ❖ Individual Report
+
+### ❖ Love Patel
+
+#### Previous Individual Goals/Objectives
+- Finalize Appliances along with most of the functionality for Appliance usage.
+- Work with the energy system in order to figure out energy optimization along with priority.
+- Configure ZigBee devices and get them to communicate with each other.
+- Get ZigBee connected to create a mesh network.
+- Advance code development for Raspberry Pi testing.
+
+#### Key Points
+-
+
+#### Next Week Goals
+-
+
+### ❖ Deep Patel
+
+#### Previous Individual Goals/Objectives
+- Finalize HCI setup; ensure comprehensive coverage.
+- Continue collaboration with the ZigBee team on integration.
+- Deepen understanding of ZigBee devices.
+- Get ZigBee connected to create a mesh network.
+- Advance code development for Raspberry Pi testing.
+
+#### Key Points
+- 
+
+#### Next Week Goals
+-
+
+### ❖ Timothy Enders
+
+#### Previous Individual Goals/Objectives
+- Investigate alternative Go libraries for establishing communication between XBee devices, as Python is not preferred over Go.
+- Gain further understanding of connecting ZigBee devices in a network.
+- Employ communication channels to facilitate communication between ZigBee devices.
+- Enhance the Go code for the advanced lighting system to integrate testing capabilities.
+
+#### Key Points
+- 
+
+#### Next Week Goals
+-
+
+### ❖ Joshua Murillo
+
+#### Previous Individual Goals/Objectives
+- Discuss with the Thursday team about the request data structure proposal and incorporate any relevant suggestions into a final version of the structure.
+- Fully implement the agreed-upon structure into our code base so that anyone can call a function to create a request object and send it out to other connected devices.
+- See how a physical appliance could be connected to a device node and get a connected appliance to turn on locally. After this, if the request data structure implementation progresses further, then manipulating the appliance via a request from a remote device node would be the next logical step if I have enough time to get my previous goals done.
+- Currently, the working Python solution for our communication system works specifically with XBee devices. More work is needed to configure a ZigBee Coordinator to allow a ZigBee device to initiate a ZigBee network system for other devices to link up to without relying on Wi-Fi. Since removing the need for Wi-Fi is a big part of our minimum viable product, this is one of the more important goals to work on implementing as soon as possible.
+- Continue looking for Go-based solutions to ZigBee communications.
+
+#### Key Points
+- 
+
+#### Next Week Goals
+-
+
+### ❖ Jahidul Robin
+
+#### Previous Individual Goals/Objectives
+- Address the challenges that hindered progress last week, starting with a thorough review of the technical and collaborative obstacles encountered. This will involve seeking additional resources and possibly redefining the approach to collaboration with the Network Traffic Analysis System group.
+- Reassess the blockchain logging mechanism's implementation plan. This may include simplifying the initial model to make the development process more manageable and ensure timely completion. The focus will be on understanding and applying SHA256 encryption in a more streamlined manner.
+- Prioritize tasks more effectively to ensure that foundational elements of the security system are developed and ready for integration testing. This might involve setting more focused, short-term goals to achieve incremental progress.
+- Establish a more realistic timeline for the completion of the security monitoring system and the blockchain logging mechanism, taking into account the lessons learned from the setbacks encountered.
+
+#### Key Points
+-
+
+#### Next Week Goals
+-
+
+### ❖ Mitkumar Patel
+
+#### Previous Individual Goals/Objectives
+- Begin advancing the HVAC code by implementing more sophisticated control algorithms and features, such as temperature scheduling, energy-saving modes, and responsive adjustments based on real-time sensor data.
+- Continue improving ZigBee network stability and reliability, focusing on optimizing signal strength and interference mitigation.
+- Enhance the HVAC system's user interface for better usability and accessibility, incorporating feedback from initial testing.
+- Collaborate with other team members to ensure seamless integration between the HVAC system and other components of the smart home project.
+- Advance Raspberry Pi config and connect with the mesh network.
+
+#### Key Points
+-
+
+#### Next Week Goals
+-
