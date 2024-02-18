@@ -27,7 +27,7 @@ func ConfigureController() {
 	// Wrap the port in a bufio.Reader
 	reader := bufio.NewReader(port)
 
-	fmt.Println("Waiting for incoming messages...")
+	fmt.Println("Waiting for incoming messaging...")
 	for {
 		// Use ReadBytes or ReadString to dynamically handle incoming data
 		// For example, reading until a newline character (adjust as needed)

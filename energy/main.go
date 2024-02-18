@@ -268,5 +268,4 @@ func main() {
 	// Requesting to turn off light - currently on
 	zigRequest6 := ZigbeeRequest{ApplianceName: "Light", RequestedState: false}
 	controller.HandelZigbeeRequest(zigRequest6)
-
 }

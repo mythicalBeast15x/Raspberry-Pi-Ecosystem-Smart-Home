@@ -1,7 +1,7 @@
-package main
+package messaging
 
 /*
-This sample code contains the foundation of a potential data structure for creating requests to be sent out to
+This sample code contains the foundation of a data structure for creating requests to be sent out to
 relevant device nodes.
 
 Further discussion with team members is required before advancing this script with further functionalities.
@@ -9,7 +9,6 @@ Future functionalities include:
 - Implementing a priority queue to hold outgoing requests.
 */
 import (
-	"encoding/json"
 	"fmt"
 )
 
@@ -51,7 +50,6 @@ Purpose: Creates a new request object.
 Data:
 - source: The source of the request (e.g., user or system).
 - domain: The domain of the request (e.g., lighting, HVAC, security).
-- Target: Which Raspberry PI is the request specifically for.
 - subject: The specific device or appliance related to the request.
 - state: The state of the device or system (e.g., on, off).
 Returns: Request: The newly created Request object.
@@ -117,6 +115,7 @@ func DisplayRequest(req Request) {
 	}
 }
 
+/*
 func main() {
 	// Create an initial request with no command arguments.
 	req := NewRequest("admin", "lighting", "bathroom", "on")
@@ -136,9 +135,11 @@ func main() {
 	fmt.Println()
 	fmt.Println(string(jsonData))
 
+
 	//	At this point, the data can be added to a priority queue to
 	//	where it can then be encrypted, run through an HMAC process
 	//	and sent out to be broadcast to other Zigbee devices.
+
 
 	// deserialize the JSON data into a Go Request Object.
 	var loadedReq Request
@@ -152,3 +153,4 @@ func main() {
 	fmt.Println()
 	DisplayRequest(loadedReq)
 }
+*/
