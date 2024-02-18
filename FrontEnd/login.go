@@ -3,36 +3,34 @@ package main
 import (
     "html/template"
     "net/http"
-    "fmt"
 )
 
 func main() {
-    http.HandleFunc("/", homeHandler)
-    http.HandleFunc("/login", loginHandler)
-    fmt.Println("Server starting on port :8080...")
-    if err := http.ListenAndServe(":8080", nil); err != nil {
-        fmt.Printf("Failed to start server: %v\n", err)
-    }
-}
+    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        t, _ := template.ParseFiles("login.html")
+        t.Execute(w, nil)
+    })
 
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-    t, _ := template.ParseFiles("templates/login.html")
-    t.Execute(w, nil)
+    http.HandleFunc("/login", loginHandler)
+    http.HandleFunc("/forgot-password", forgotPasswordHandler)
+    http.HandleFunc("/forgot-username", forgotUsernameHandler)
+    http.HandleFunc("/signup", signupHandler)
+
+    http.ListenAndServe(":8080", nil)
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
-    if r.Method == "POST" {
-        r.ParseForm()
-        username := r.FormValue("username")
-        password := r.FormValue("password")
-     
-        fmt.Printf("Login attempt with Username: %s Password: %s\n", username, password)
-
-  
-        http.Redirect(w, r, "/", http.StatusSeeOther)
-    } else {
-       
-        http.Redirect(w, r, "/", http.StatusSeeOther)
-    }
 }
 
+func forgotPasswordHandler(w http.ResponseWriter, r *http.Request) {
+    w.Write([]byte("Forgot Password?"))
+}
+
+func forgotUsernameHandler(w http.ResponseWriter, r *http.Request) {
+   
+    w.Write([]byte("Forgot Username?"))
+}
+
+func signupHandler(w http.ResponseWriter, r *http.Request) {
+    w.Write([]byte("Sign Up"))
+}
