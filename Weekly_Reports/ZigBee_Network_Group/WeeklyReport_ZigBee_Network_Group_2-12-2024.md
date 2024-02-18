@@ -41,10 +41,17 @@
 - Advance code development for Raspberry Pi testing.
 
 #### Key Points
-- 
+- Enhanced collaboration with the ZigBee team, progressing integration efforts. 
+- Expanded knowledge and proficiency with ZigBee devices. 
+- Successfully established ZigBee connection to initiate a mesh network. 
+- Continued advancement in Raspberry Pi testing code development.
 
 #### Next Week Goals
--
+- Setup constant connection between ZigBees so they can send and receive constantly.
+- Conduct thorough testing of the ZigBee mesh network for stability and efficiency. 
+- Implement any necessary optimizations or adjustments based on testing results. 
+- Begin documentation process for the HCI setup and ZigBee integration procedures. 
+- Explore additional functionalities or features to enhance the Raspberry Pi testing environment.
 
 ### ❖ Timothy Enders
 
