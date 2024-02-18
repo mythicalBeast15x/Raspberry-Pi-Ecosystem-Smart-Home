@@ -4,10 +4,7 @@ relevant device nodes.
 
 Further discussion with team members is required before advancing this script with further functionalities.
 Future functionalities include:
-- A function to write requests into a text file with a known common name: outgoingRequest.txt
-- A function for checking a text file with a known name to see if it is populated with a request: incomingRequest.txt
-- Implementing a way to manage multiple outgoing/incoming requests being called simultaneously.
-- Add a function to invoke the python file to send a message from Golang: "python xbeeSend.py"
+- Implementing a priority queue to hold outgoing requests.
 */
 package main
 
@@ -15,6 +12,16 @@ import (
 	"encoding/json"
 	"fmt"
 )
+
+// deviceIDs holds the Zigbee device 64-bit IDs for targeting requests
+var deviceIDs = map[string]string{
+	"lighting": "0013A200419117FF",
+	"PI2":      "0013A20041911BAB",
+	"PI3":      "PLACEHOLDER",
+	"PI4":      "PLACEHOLDER",
+	"PI5":      "PLACEHOLDER",
+	"PI6":      "PLACEHOLDER",
+}
 
 // CommandParameter represents a parameter for a command.
 type CommandParameter struct {
@@ -32,6 +39,7 @@ type Command struct {
 type Request struct {
 	Source   string    `json:"source"`
 	Domain   string    `json:"domain"`
+	Target   string    `json:"target"`
 	Subject  string    `json:"subject"`
 	State    string    `json:"state"`
 	Commands []Command `json:"commands,omitempty"`
@@ -48,9 +56,16 @@ Data:
 Returns: Request: The newly created Request object.
 */
 func NewRequest(source, domain, subject, state string) Request {
+	// Check if the domain matches a key in the deviceIDs map
+	deviceID, ok := deviceIDs[domain]
+	if !ok {
+		// If the domain is not found in the map, set the Target to an empty string
+		deviceID = ""
+	}
 	return Request{
 		Source:  source,
 		Domain:  domain,
+		Target:  deviceID, // Set the Target field based on the domain
 		Subject: subject,
 		State:   state,
 	}
@@ -88,6 +103,7 @@ Returns: None
 func DisplayRequest(req Request) {
 	fmt.Println("Source:", req.Source)
 	fmt.Println("Domain:", req.Domain)
+	fmt.Println("Target:", req.Target)
 	fmt.Println("Subject:", req.Subject)
 	fmt.Println("State:", req.State)
 	fmt.Println("Commands:")
@@ -120,7 +136,9 @@ func main() {
 	fmt.Println(string(jsonData))
 
 	/*
-		At this point, the data can be encrypted and saved to a text file.
+		At this point, the data can be added to a priority queue to
+		where it can then be encrypted, run through an HMAC process
+		and sent out to be broadcast to other Zigbee devices.
 	*/
 
 	// deserialize the JSON data into a Go Request Object.
