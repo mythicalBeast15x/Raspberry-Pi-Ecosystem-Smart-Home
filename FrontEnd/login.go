@@ -25,14 +25,13 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
         r.ParseForm()
         username := r.FormValue("username")
         password := r.FormValue("password")
-        // Here, add your authentication logic. For now, we just print.
+     
         fmt.Printf("Login attempt with Username: %s Password: %s\n", username, password)
 
-        // After authentication, redirect or show a message
-        // For simplicity, we're just redirecting back to the login for now.
+  
         http.Redirect(w, r, "/", http.StatusSeeOther)
     } else {
-        // If not POST, redirect to home
+       
         http.Redirect(w, r, "/", http.StatusSeeOther)
     }
 }
