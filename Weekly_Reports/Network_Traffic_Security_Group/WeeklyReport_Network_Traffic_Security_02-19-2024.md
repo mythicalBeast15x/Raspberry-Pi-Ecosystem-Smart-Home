@@ -22,12 +22,19 @@
 ### Darsh
 
 #### Previous Team Goals
-
+- Researched and tested hashing algorithms
+- Did some analysis on the MD5, SHA1, SHA2(256 & 512)
+- Test AES for encryption so that secure data is transmitted between devices
 
 #### Key Points
+- Worked with the Zigbee team to figure if the Zigbees are communicating.
+- Tested the files (client and controller) for sending and receiving signals between the Zigbees.
+- Implemented AES encryption for data encryption between the IOT devices.
 
 #### Next Week Goals
-
+- Begin trying to encrypt messages that are sent using the ZigBee devices.
+- Test for any flaws throughout the network.
+- Create a Structure to hold ZigBee Device Information.
 
 ### Karen
 
