@@ -71,13 +71,13 @@ Params:
 */
 func (l *Lighting) SetTimer(seconds int) {
 	if l.State == true {
-		fmt.Printf("%s will turn on in %d seconds\n", l.Name, seconds)
-		time.Sleep(time.Duration(seconds) * time.Second)
-		l.TurnOn()
-	} else {
 		fmt.Printf("%s will turn off in %d seconds\n", l.Name, seconds)
 		time.Sleep(time.Duration(seconds) * time.Second)
 		l.TurnOff()
+	} else {
+		fmt.Printf("%s will turn on in %d seconds\n", l.Name, seconds)
+		time.Sleep(time.Duration(seconds) * time.Second)
+		l.TurnOn()
 	}
 }
 
