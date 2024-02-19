@@ -128,7 +128,12 @@
 - Advance Raspberry Pi config and connect with the mesh network.
 
 #### Key Points
--
+- HVAC Code Development: Made progress in developing advanced control features for the HVAC system. Implemented algorithms for temperature scheduling and attempted energy-saving modes setup as well, enhancing the system's efficiency and user control.
+- Zigbee Network Optimization: Achieved improvements in the Zigbee network's stability and reliability. Conducted extensive testing to identify and reduce interference, resulting in stronger signal strength across the network.
+- Collaboration and Integration: Worked closely with other team members to ensure that the Zigbee team work is moving with the flow.
+- Raspberry Pi: Provided Love the Raspberry Pi to have him work on networking them together. 
 
 #### Next Week Goals
--
+- Refine HVAC Control Algorithms: Continue refining the HVAC system's control algorithms to ensure optimal performance and user satisfaction.
+- Integration Testing: Start to conduct integration testing with the entire smart home system to identify and resolve issues.
+- Documentation and Reporting: Begin compiling documentation on the HVAC system's development process and outcomes, preparing for project reporting.
