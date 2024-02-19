@@ -9,10 +9,12 @@
 - Continue looking into and succeed in configuring a ZigBee Coordinator for improved communication between ZigBee devices without relying on Wi-Fi.
 
 ### Key Points
--
+- Explored Go-based solutions to communicating between Zigbee devices without Wifi.
 
 ### Next Week Goals
--
+- Explore ways to get our Raspberry PIs to manipulate physical appliances.
+- Agree on a method of continuous listening of incoming messages by every Zigbee device on the network.
+- Test for bugs in our Zigbee Network setup.
 
 ## ❖ Individual Report
 
@@ -77,10 +79,22 @@
 - Continue looking for Go-based solutions to ZigBee communications.
 
 #### Key Points
-- 
+- Worked with Tim to test our Zigbee devices using the XCTU software. We managed to work out some targeted communication between our devices using the XCTU Digi software.
+- Tested out Go packages and repositories in an effort to replace the Python-based systems we currently have in place.
+- Was unable to successfully identify the Zigbee 16-bit local address necessary to connect the other devices to the Zigbee network.
+- Had issues with the current Zigbee configuration not providing the PAN ID, leading to me and other members handing our Zigbee devices to Deep and Love in order for them to homogenize our team's Zigbee devices to the same configuration.
+- Discussed the current state of the messaging structure with other group members and updated the structure accordingly both in its documentation and code.
+- Documented the messaging structure in our February assignment into a Data Structure Diagram (DSD) with relevant context.
+- Began working on documenting the workflow of our messaging system into a Workflow Diagram for our February assignment.
+- Reviewed the circuit diagrams created by Love Divine in preparation for manipulating physical appliances with our Raspberry PIs.
 
 #### Next Week Goals
--
+- Implement a priority queue to hold excess outgoing requests into the messaging package.
+- Further, discuss the broadcasting structure of our Zigbee communication system to effectively target specific devices while sending out messages to all devices simultaneously.
+- Further, discuss the overall Zigbee communication structure with the rest of the Zigbee team and with members of other teams to fully cement the communications system of our project's minimum viable product.
+- Further, discuss the continuous listening of incoming requests by every Zigbee device with the rest of the team.
+- Work with and implement code to manipulate physical devices with our Raspberry PIs.
+- Make more contributions to the February assignment.
 
 ### ❖ Jahidul Robin
 
