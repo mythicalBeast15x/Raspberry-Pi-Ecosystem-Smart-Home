@@ -9,12 +9,12 @@
 - Continue looking into and succeed in configuring a ZigBee Coordinator for improved communication between ZigBee devices without relying on Wi-Fi.
 
 ### Key Points
-- Explored Go-based solutions to communicating between Zigbee devices without Wifi.
+- Explored Go-based solutions for communicating between ZigBee devices without Wi-Fi.
 
 ### Next Week Goals
-- Explore ways to get our Raspberry PIs to manipulate physical appliances.
-- Agree on a method of continuous listening of incoming messages by every Zigbee device on the network.
-- Test for bugs in our Zigbee Network setup.
+- Explore ways to get our Raspberry Pis to manipulate physical appliances.
+- Agree on a method of continuous listening of incoming messages by every ZigBee device on the network.
+- Test for bugs in our ZigBee Network setup.
 
 ## ❖ Individual Report
 
@@ -49,10 +49,10 @@
 - Continued advancement in Raspberry Pi testing code development.
 
 #### Next Week Goals
-- Setup constant connection between ZigBees so they can send and receive constantly.
+- Set up a constant connection between ZigBees so they can send and receive constantly.
 - Conduct thorough testing of the ZigBee mesh network for stability and efficiency. 
 - Implement any necessary optimizations or adjustments based on testing results. 
-- Begin documentation process for the HCI setup and ZigBee integration procedures. 
+- Begin the documentation process for the HCI setup and ZigBee integration procedures. 
 - Explore additional functionalities or features to enhance the Raspberry Pi testing environment.
 
 ### ❖ Timothy Enders
@@ -64,10 +64,18 @@
 - Enhance the Go code for the advanced lighting system to integrate testing capabilities.
 
 #### Key Points
-- 
+- Integrated a draft color cycle function into the lighting system and created a test initiation file.
+- Developed a draft Entity-Relationship Diagram (ERD) for the ZigBee mesh network as part of phase 2 documentation.
+- Experimented with Pauleyj's gobee library on a Raspberry Pi, facing challenges in establishing communication with the serial port.
+- Collaborated with Josh in configuring XBee devices using the go-serial library and XCTU program, successfully transmitting packets via XCTU but encountering difficulties with Raspberry Pi. Devices were handed over to team members Love and Deep for model and firmware configuration.
 
 #### Next Week Goals
--
+- Enable constant communication among ZigBee devices within the network.
+- Modify and update the lighting system to accommodate specific ZigBee devices.
+- Continue refining the phase 2 documentation.
+- Enhance collaboration across teams to address communication aspects and functional interactions.
+- Initiate physical testing of ZigBee devices both locally and remotely.
+- Document and capture visual interactions of ZigBee devices.
 
 ### ❖ Joshua Murillo
 
@@ -79,21 +87,21 @@
 - Continue looking for Go-based solutions to ZigBee communications.
 
 #### Key Points
-- Worked with Tim to test our Zigbee devices using the XCTU software. We managed to work out some targeted communication between our devices using the XCTU Digi software.
+- Worked with Tim to test our ZigBee devices using the XCTU software. We managed to work out some targeted communication between our devices using the XCTU Digi software.
 - Tested out Go packages and repositories in an effort to replace the Python-based systems we currently have in place.
-- Was unable to successfully identify the Zigbee 16-bit local address necessary to connect the other devices to the Zigbee network.
-- Had issues with the current Zigbee configuration not providing the PAN ID, leading to me and other members handing our Zigbee devices to Deep and Love in order for them to homogenize our team's Zigbee devices to the same configuration.
+- Was unable to successfully identify the ZigBee 16-bit local address necessary to connect the other devices to the ZigBee network.
+- Had issues with the current ZigBee configuration not providing the PAN ID, leading to me and other members handing our ZigBee devices to Deep and Love in order for them to homogenize our team's ZigBee devices to the same configuration.
 - Discussed the current state of the messaging structure with other group members and updated the structure accordingly both in its documentation and code.
 - Documented the messaging structure in our February assignment into a Data Structure Diagram (DSD) with relevant context.
 - Began working on documenting the workflow of our messaging system into a Workflow Diagram for our February assignment.
-- Reviewed the circuit diagrams created by Love Divine in preparation for manipulating physical appliances with our Raspberry PIs.
+- Reviewed the circuit diagrams created by Love Divine in preparation for manipulating physical appliances with our Raspberry Pis.
 
 #### Next Week Goals
 - Implement a priority queue to hold excess outgoing requests into the messaging package.
-- Further, discuss the broadcasting structure of our Zigbee communication system to effectively target specific devices while sending out messages to all devices simultaneously.
-- Further, discuss the overall Zigbee communication structure with the rest of the Zigbee team and with members of other teams to fully cement the communications system of our project's minimum viable product.
-- Further, discuss the continuous listening of incoming requests by every Zigbee device with the rest of the team.
-- Work with and implement code to manipulate physical devices with our Raspberry PIs.
+- Further, discuss the broadcasting structure of our ZigBee communication system to effectively target specific devices while sending out messages to all devices simultaneously.
+- Further, discuss the overall ZigBee communication structure with the rest of the ZigBee team and with members of other teams to fully cement the communications system of our project's minimum viable product.
+- Further, discuss the continuous listening of incoming requests by every ZigBee device with the rest of the team.
+- Work with and implement code to manipulate physical devices with our Raspberry Pis.
 - Make more contributions to the February assignment.
 
 ### ❖ Jahidul Robin
