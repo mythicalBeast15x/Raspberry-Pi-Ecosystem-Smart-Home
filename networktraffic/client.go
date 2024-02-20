@@ -32,6 +32,13 @@ func SendMessagesToServer() {
 	}
 }
 
+// sendMessage sends a message to all Zigbee Devices
+/* This function will be the default way of sending messages
+ */
+func sendMessage() {
+
+}
+
 func main() {
 	SendMessagesToServer()
 }
