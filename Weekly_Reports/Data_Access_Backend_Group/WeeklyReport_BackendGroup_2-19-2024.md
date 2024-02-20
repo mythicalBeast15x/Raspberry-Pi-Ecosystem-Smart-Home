@@ -71,3 +71,18 @@ This is for each person and what you have focused on. Make these all bullet poin
 - Meet with Front End team to better shape DAL to fit their needs and figure out how to communicate to some of 
 the existing functions 
 - Touch Base again with Zigbee to see if I can gain anymore insight
+
+## Individual Report - David Weisman
+### Previous Goals 
+- Gain better understanding of the progress of the other groups, so we can work better together.
+- Become more familiar with HMAC and how we can utilize this in our blockchain.
+- Get on the same page as a team with the consensus algorithm.
+
+### Key Points
+- Met with Front End to get better understanding of their needs
+- Worked on team deliverable document
+- Researched into other applications of user login token systems
+
+### Next Week's Goals 
+- Continue collaboration with frontend as they add more functionalities
+- Work on things more often as opposed to doing all the work on one day
