@@ -1,7 +1,7 @@
 package main
 
 //go get go.mongodb.org/mongo-driver/mongo
-
+//files to be imported: Appliances, lights, HVAC
 import (
 	"context"
 	"fmt"
@@ -49,6 +49,52 @@ func createUser(client *mongo.Client, user User) error {
 	_, err := collection.InsertOne(context.Background(), user)
 	return err
 }
+
+////Lights communicates with Zigbee Devices & Adjusts device status
+///* Purpose: Receive a request from the front-end,
+//	Send that request to relevant Zigbee Device &
+//	Return that Status to the Front End
+//RequestedStatus: Takes String for Requested Status of Lights: ex: On/Off
+//Returns Bool (True if request is successful, False if not)
+//(could be broken into two functions)
+//
+//
+//*/
+//func Lights(RequestedStatus string) bool {
+//	//if RequestedStatus = on
+//	//if (Lighting->main.go->Turn On()) -> (if returns true)
+//	//return response to front end ->encourage message
+//	//if Requested Status = off
+//	//if (Lighting -> main.go-> Turn Off()) -> if returns true
+//	//return response to front end
+//	//else
+//	//false error handling
+//
+//	return false
+//}
+//
+////setTemp communicates with Zigbee Devices to adjust HVAC temp
+///* Purpose: Receive a request from the front-end,
+//	Send that request to relevant Zigbee Device &
+//	Return that Status to the Front End
+//Temperature: Takes integer, front end should be able to limit range, but if not an error will return
+//Returns T/F depending on response
+//*/
+//func setTemp(Temperature int) bool {
+//	//if Temperature in range
+//	//if ( HVAC -> set temp () ) -> if response success
+//	//return to front
+//	//else
+//	return false
+//
+//}
+////Should there be a list here?
+//func checkApplianceStatus(appliancetocheck string) bool {
+//	//if appliance in (appliance listings)
+//		// if Appliance -> checkStatus() -> response(true)
+//			//return to front end appliance status
+//	// else -> return response to front end
+//}
 
 func main() {
 	// Connect to MongoDB

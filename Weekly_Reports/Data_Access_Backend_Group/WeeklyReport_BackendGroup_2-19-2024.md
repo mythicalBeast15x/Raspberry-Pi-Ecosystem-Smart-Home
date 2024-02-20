@@ -11,12 +11,9 @@ This is the entire team and what you have worked on. Make these all bullet point
 - Discuss with the Zigbee group to ensure we are anticipating their needs in the current setup
 
 ### Key Points
-- *What was the major thing you all worked on?*
-- *What did work?*
-- *What did not work if there were any?*
-- *Anything important from a team perspective.*
 - Code review and bug testing
 - Research on user login token
+- Mapping out DAL and trying to determine the actual needs of other groups 
   
 ### Next Week's Goals
 - Schedule a meeting with the Network Analysis team.
@@ -54,3 +51,23 @@ This is for each person and what you have focused on. Make these all bullet poin
 ### Next Week's Goals
 - Meeting with the Network Analysis team and the Zigbee team.
 - Start build user login token system
+
+## Individual Report - Cat Monteith 
+### Previous Goals 
+- Discuss with other groups 
+- Review JSON 
+- Study HMAC
+
+### Key Points
+- Shifted Gears in order to better fit the needs of our current sprint.
+- Discussed with member of Zigbee team to assess current Zigbee process and potentially anticipated needs
+  will need to group properly, but I've been studying the existing functions and have a better idea about how DAL should be 
+- Drafted some BRIEF Pseudocode for the purpose of visually showing other groups our current line of thinking
+- Main Difficulty: ascertaining what code is appropriate based on existing systems
+- Failed to meet with Front End team
+
+### Next Week's Goals 
+- Refine & Properly create base model of DAL (beyond Pseudo)
+- Meet with Front End team to better shape DAL to fit their needs and figure out how to communicate to some of 
+the existing functions 
+- Touch Base again with Zigbee to see if I can gain anymore insight
