@@ -316,42 +316,46 @@
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Device Modal -->
-    <div class="modal fade" id="deviceModal" tabindex="-1" aria-labelledby="deviceModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deviceModalLabel">Add Device</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="deviceForm">
-                        <div class="mb-3">
-                            <label for="deviceName" class="form-label">Device Name</label>
-                            <input type="text" class="form-control" id="deviceName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="newCategory" class="form-label">Category</label>
-                            <input type="text" class="form-control mb-2" id="newCategory" placeholder="Add New or Select Existing">
-                            <select class="form-select" id="existingCategory">
-                                <option value="" selected>Select Existing Category</option>
-                                <!-- Existing categories will be added here dynamically -->
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="deviceStatus" class="form-label">Status</label>
-                            <select class="form-select" id="deviceStatus" required>
-                                <option value="Online">Online</option>
-                                <option value="Offline">Offline</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="addDevice()">Add Device</button>
-                </div>
+<!-- Device Modal -->
+<div class="modal fade" id="deviceModal" tabindex="-1" aria-labelledby="deviceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deviceModalLabel">Add Device</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="deviceForm">
+                    <div class="mb-3">
+                        <label for="deviceId" class="form-label">Device ID</label>
+                        <input type="text" class="form-control" id="deviceId" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deviceName" class="form-label">Device Name</label>
+                        <input type="text" class="form-control" id="deviceName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="newCategory" class="form-label">Category</label>
+                        <input type="text" class="form-control mb-2" id="newCategory" placeholder="Add New or Select Existing">
+                        <select class="form-select" id="existingCategory">
+                            <option value="" selected>Select Existing Category</option>
+                            <!-- Existing categories will be added here dynamically -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deviceStatus" class="form-label">Status</label>
+                        <select class="form-select" id="deviceStatus" required>
+                            <option value="Online">Online</option>
+                            <option value="Offline">Offline</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="addDevice()">Add Device</button>
             </div>
         </div>
     </div>
@@ -475,34 +479,45 @@
         });
 
         const content = document.getElementById('cardContent');
-        content.innerHTML = '';
+        content.innerHTML = ''; // Clear previous content
+
+        const row = document.createElement('div');
+        row.className = 'row';
+        content.appendChild(row); // Append a new row to the content
+
         categories[categoryName].forEach((device, index) => {
-            const cardPlaceholder = document.createElement('div');
-            cardPlaceholder.className = 'card mb-3';
-            cardPlaceholder.innerHTML = `
-            <div class="card-body">
-                <h5 class="card-title">${device.name}</h5>
-                <p class="card-text">Status: ${device.status}</p>
-                <button class="btn btn-secondary" onclick="toggleDeviceStatus('${categoryName}', ${index})">${device.status === 'Online' ? 'Turn Off' : 'Turn On'}</button>
-                <button class="btn btn-danger" onclick="deleteDevice('${categoryName}', ${index})">Delete</button>
-            </div>`;
-            content.appendChild(cardPlaceholder);
+            const col = document.createElement('div');
+            col.className = 'col-lg-3 col-md-4 col-sm-6'; // Adjusts to fit 4 in a row on large screens, and scales down for smaller screens
+
+            const card = document.createElement('div');
+            card.className = 'card mb-3';
+            card.innerHTML = `
+        <div class="card-body">
+            <h5 class="card-title">${device.name}</h5>
+            <p class="card-text">Status: ${device.status}</p>
+            <button class="btn btn-secondary" onclick="toggleDeviceStatus('${categoryName}', ${index})">${device.status === 'Online' ? 'Turn Off' : 'Turn On'}</button>
+            <button class="btn btn-danger" onclick="deleteDevice('${categoryName}', ${index})">Delete</button>
+        </div>`;
+
+            col.appendChild(card);
+            row.appendChild(col); // Append the card to the current row
         });
     }
 
     function addDevice() {
+        const id = document.getElementById('deviceId').value.trim();
         const name = document.getElementById('deviceName').value.trim();
         const newCategoryName = document.getElementById('newCategory').value.trim();
         const existingCategoryName = document.getElementById('existingCategory').value;
         const status = document.getElementById('deviceStatus').value;
         let categoryName = existingCategoryName || newCategoryName;
 
-        if (name && status && categoryName) {
+        if (id && name && status && categoryName) {
             if (!categories.hasOwnProperty(categoryName)) {
                 addCategory(categoryName); // Add new category if it doesn't exist
             }
 
-            const device = { name, status };
+            const device = { id, name, status };
             categories[categoryName].push(device);
             switchCategory(categoryName); // Refresh the display
 
