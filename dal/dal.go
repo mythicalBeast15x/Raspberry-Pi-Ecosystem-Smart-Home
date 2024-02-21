@@ -1,4 +1,4 @@
-package main
+package dal
 
 //go get go.mongodb.org/mongo-driver/mongo
 //files to be imported: Appliances, lights, HVAC
@@ -62,10 +62,10 @@ func createUser(client *mongo.Client, user User) error {
 //*/
 //func Lights(RequestedStatus string) bool {
 //	//if RequestedStatus = on
-//	//if (Lighting->main.go->Turn On()) -> (if returns true)
+//	//if (Lighting->networkAdapter.go->Turn On()) -> (if returns true)
 //	//return response to front end ->encourage message
 //	//if Requested Status = off
-//	//if (Lighting -> main.go-> Turn Off()) -> if returns true
+//	//if (Lighting -> networkAdapter.go-> Turn Off()) -> if returns true
 //	//return response to front end
 //	//else
 //	//false error handling

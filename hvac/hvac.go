@@ -1,4 +1,4 @@
-package main
+package hvac
 
 import (
 	"fmt"
@@ -45,6 +45,7 @@ func (h *HVAC) SetMode(mode string) {
 	fmt.Printf("%s mode is set to %s\n", h.Name, h.Mode)
 }
 
+/*
 func main() {
 	// Create a new HVAC system
 	livingRoomHVAC := NewHVAC("Living Room HVAC")
@@ -58,3 +59,4 @@ func main() {
 	fmt.Printf("Current %s settings: Mode: %s, Temperature: %d°C, Fan Speed: %d%%\n",
 		livingRoomHVAC.Name, livingRoomHVAC.Mode, livingRoomHVAC.Temperature, livingRoomHVAC.FanSpeed)
 }
+*/

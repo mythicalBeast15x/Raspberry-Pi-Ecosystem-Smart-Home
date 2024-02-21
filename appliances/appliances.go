@@ -1,4 +1,4 @@
-package main
+package appliances
 
 import (
 	"fmt"
@@ -49,6 +49,7 @@ func (a *Appliance) CheckState() string {
 	return "OFF"
 }
 
+/*
 func main() {
 	// Create a new light switch appliance
 	lightSwitch := NewAppliance("Light Switch", false)
@@ -80,3 +81,4 @@ func main() {
 		appliance.CheckState()
 	}
 }
+*/
