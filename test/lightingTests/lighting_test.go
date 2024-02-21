@@ -1,12 +1,13 @@
-package main
+package lightingTests
 
 import (
+	"CMPSC488SP24SecThursday/lighting"
 	"testing"
 	"time"
 )
 
 func TestLighting(t *testing.T) {
-	light := NewLighting("TestLight", false)
+	light := lighting.NewLighting("TestLight", false)
 
 	// Test TurnOn and TurnOff methods
 	light.TurnOn()
