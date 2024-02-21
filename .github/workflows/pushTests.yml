@@ -1,4 +1,4 @@
-name: Push Tests
+name: Go Test
 
 on:
   push:
@@ -13,10 +13,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Read Go version from go.mod
+      run: |
+        export GO_VERSION=$(grep -E '^go [0-9]+\.[0-9]+' go.mod | awk '{print $2}')
+        echo "Go version in go.mod: $GO_VERSION"
+        echo "##[set-output name=GO_VERSION;]$GO_VERSION"
+      id: go_version
+
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.17
+        go-version: ${{ steps.go_version.outputs.GO_VERSION }}
 
     - name: Run tests
       run: |
