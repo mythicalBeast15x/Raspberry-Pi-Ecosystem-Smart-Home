@@ -1,4 +1,4 @@
-package main
+package crypto
 
 import (
 	"crypto/aes"
@@ -8,7 +8,7 @@ import (
 	"io"
 )
 
-func encrypt(plaintext []byte, key []byte) ([]byte, error) {
+func Encrypt(plaintext []byte, key []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return nil, err
@@ -25,7 +25,7 @@ func encrypt(plaintext []byte, key []byte) ([]byte, error) {
 	return ciphertext, nil
 }
 
-func decrypt(ciphertext []byte, key []byte) ([]byte, error) {
+func Decrypt(ciphertext []byte, key []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return nil, err
@@ -43,21 +43,21 @@ func decrypt(ciphertext []byte, key []byte) ([]byte, error) {
 	return ciphertext, nil
 }
 
-func main() {
-	key := []byte("1234567890123456") // Replace with your key
-	plaintext := []byte("Hello, Golang Encryption!")
-
-	ciphertext, err := encrypt(plaintext, key)
-	if err != nil {
-		fmt.Println("Encryption error:", err)
-		return
-	}
-	fmt.Printf("Encrypted: %x\n", ciphertext)
-
-	decrypted, err := decrypt(ciphertext, key)
-	if err != nil {
-		fmt.Println("Decryption error:", err)
-		return
-	}
-	fmt.Println("Decrypted:", string(decrypted))
-}
+//func main() {
+//	key := []byte("1234567890123456") // Replace with your key
+//	plaintext := []byte("Hello, Golang Encryption!")
+//
+//	ciphertext, err := encrypt(plaintext, key)
+//	if err != nil {
+//		fmt.Println("Encryption error:", err)
+//		return
+//	}
+//	fmt.Printf("Encrypted: %x\n", ciphertext)
+//
+//	decrypted, err := decrypt(ciphertext, key)
+//	if err != nil {
+//		fmt.Println("Decryption error:", err)
+//		return
+//	}
+//	fmt.Println("Decrypted:", string(decrypted))
+//}

@@ -1,4 +1,4 @@
-package main
+package lighting
 
 import (
 	"fmt"
@@ -121,6 +121,7 @@ func (l *Lighting) RecallScene(name string) {
 	fmt.Printf("Recalling scene '%s' for %s\n", name, l.Name)
 }
 
+/*
 func main() {
 	light := NewLighting("Light", false)
 	light.TurnOn()
@@ -133,3 +134,4 @@ func main() {
 	light.RecallScene("Evening")
 	light.TurnOff()
 }
+*/

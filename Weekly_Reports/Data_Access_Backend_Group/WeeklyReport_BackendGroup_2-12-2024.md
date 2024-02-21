@@ -12,24 +12,13 @@
 - Functions for JSON Serialization and Deserialization
 
 ### Next Week Team Goals
-- Discuss with Network Analysis team to either begin implementation or modify existing functions for encryption/decryption to prepare for integration
+- Discuss with the Network Analysis team to either begin implementation or modify existing functions for encryption/decryption to prepare for integration
 - Discuss and review JSON
-- Discuss with Zigbee group to ensure we are anticipating their needs in current setup
+- Discuss with the Zigbee group to ensure we are anticipating their needs in the current setup
 
-## Individual Report
-This is for each person and what you have focused on. Make these all bullet points.
 
-### Previous Team Goals
-- Include things like what you worked on last week.
-
-### Key Points
-- What you worked on this week.
-- What did work.
-- What did not work if there were any.
-- Anything important.
-
-### Next Week Goals
-- Next week goals that you plan to focus on or learn about. These are 2 week sprints, so keep that in mind.
+### Next Week's Goals
+- Next week goals that you plan to focus on or learn about. These are 2-week sprints, so keep that in mind.
 
 ## Individual Report - Catherine Monteith
 ### Previous Goals
@@ -40,15 +29,15 @@ This is for each person and what you have focused on. Make these all bullet poin
 ### Key Points
 - Currently Proof of Work Consensus Algorithm has a basic implementation, but this algorithm might need adjustment
 - Added function & Tests to check that every block on a chain is verified. 
-  - From my research I have found that some systems do this and check at certain intervals to see if an entire blockchain is valid. 
+  - From my research, I have found that some systems do this and check at certain intervals to see if an entire blockchain is valid. 
   - If the Consensus algorithm used is Proof of Work, nodes will often agree upon the longest valid chain 
   - This function is essentially a basis for the above in anticipation of such an issue but might need to be modified 
   as the project moves forward.
 
-### Next Week Goals
-- Discuss with other groups to ensure blockchain framework is correctly anticipating their needs. 
+### Next Week's Goals
+- Discuss with other groups to ensure the blockchain framework is correctly anticipating their needs. 
 - Review JSON implementation 
-- Look into HMAC to understand how this can help prevent tampered blocks & figure out how and where blockchain framework might need to support this.  
+- Look into HMAC to understand how this can help prevent tampered blocks & figure out how and where the blockchain framework might need to support this.  
 
 ## Individual Report - Xingyu Jiang
 ### Previous Goals
@@ -71,11 +60,11 @@ This is for each person and what you have focused on. Make these all bullet poin
 - Add more testing for the blockchain
 
 ### Key Points
-- Created dummy decryption function as placeholder until we get a better understanding of how the networking team plans on implementing that.
+- Created stub decryption function as placeholder until we get a better understanding of how the networking team plans on implementing that.
 - Created testing folder and procedures on said function with room for expansion when it actually gets implemented.
 - Reviewed verification function.
 
-### Next Week Goals
-- Gain better understanding of the progress of the other groups so we can work better together.
+### Next Week's Goals
+- Gain better understanding of the progress of the other groups, so we can work better together.
 - Become more familiar with HMAC and how we can utilize this in our blockchain.
-- Get on same page as team with the concensus algorithm.
+- Get on the same page as a team with the consensus algorithm.
