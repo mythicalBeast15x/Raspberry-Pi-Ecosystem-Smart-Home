@@ -13,7 +13,13 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-
+      
+    - name: Install libpcap
+      run: |
+        sudo apt-get update
+        sudo apt-get install libpcap-dev
+      if: runner.os == 'Linux'
+      
     - name: Read Go version from go.mod
       run: |
         export GO_VERSION=$(grep -E '^go [0-9]+\.[0-9]+' go.mod | awk '{print $2}')
