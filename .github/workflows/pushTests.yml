@@ -4,7 +4,7 @@ name: Go Test
 on:
   push:
     branches:
-      - '*'
+      - 'Data_Access_Backend_Group'
 
 jobs:
   test:
