@@ -1,7 +1,6 @@
-package main
+package hci
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 	"time"
@@ -23,27 +22,28 @@ type HomeData struct {
 
 var homeData HomeData
 
-func main() {
-	homeData = HomeData{
-		"Connected",
-		"On",
-		"22°C",
-		"Secure",
-		"Low",
-		time.Now().Format(time.Stamp),
-		false, // Default to light mode
-		"On",  // Fan status
-		"Off", // Door Lock status
-		"On",  // Vacuum Robot status
-		"Off", // Music System status
+/*
+	func main() {
+		homeData = HomeData{
+			"Connected",
+			"On",
+			"22°C",
+			"Secure",
+			"Low",
+			time.Now().Format(time.Stamp),
+			false, // Default to light mode
+			"On",  // Fan status
+			"Off", // Door Lock status
+			"On",  // Vacuum Robot status
+			"Off", // Music System status
+		}
+
+		http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+		http.HandleFunc("/", homeHandler)
+
+		fmt.Println(http.ListenAndServe(":8000", nil))
 	}
-
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-	http.HandleFunc("/", homeHandler)
-
-	fmt.Println(http.ListenAndServe(":8000", nil))
-}
-
+*/
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		updateHomeData(r)
