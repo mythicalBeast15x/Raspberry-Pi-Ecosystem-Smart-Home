@@ -1,4 +1,8 @@
+
+package main
+
 package energy
+
 
 import (
 	"fmt"

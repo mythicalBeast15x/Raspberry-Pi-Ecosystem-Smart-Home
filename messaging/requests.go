@@ -1,7 +1,7 @@
-package main
+package messaging
 
 /*
-This sample code contains the foundation of a potential data structure for creating requests to be sent out to
+This sample code contains the foundation of a data structure for creating requests to be sent out to
 relevant device nodes.
 
 Further discussion with team members is required before advancing this script with further functionalities.
@@ -9,7 +9,9 @@ Future functionalities include:
 - Implementing a priority queue to hold outgoing requests.
 */
 import (
-	"encoding/json"
+	"CMPSC488SP24SecThursday/Helper"
+	"crypto/rand"
+	"encoding/hex"
 	"fmt"
 )
 
@@ -21,6 +23,55 @@ var deviceIDs = map[string]string{
 	"PI4":      "PLACEHOLDER",
 	"PI5":      "PLACEHOLDER",
 	"PI6":      "PLACEHOLDER",
+}
+
+// OpenRequests is a list to keep track of all the open requests
+/*If a request is sent, it may receive multiple copies of the response. This struct keeps track of all the requests and can
+send new messages if old ones haven't been responded to. It works in tandem with generateMessageID and resolveRequest
+to keep messageIDs unique as well as ensuring that responses are handled only once*/
+type OpenRequests struct {
+	requests []string
+}
+
+// generateMessageID creates a message ID generates a unique messageID for a message to be sent
+/*This keeps allows the messages sent to be unique and have a signature
+ */
+func (oRequests *OpenRequests) generateMessageID() {
+	code := "NULL"
+	for code == "NULL" {
+		constants := Helper.SetConstants()
+		randomBytes := make([]byte, constants.MESSAGE_ID_LENGTH/2) // Generate random bytes (half the length for hex encoding)
+		_, err := rand.Read(randomBytes)
+		if err != nil {
+			return
+		}
+		x := 0
+		code, _ = hex.EncodeToString(randomBytes), nil
+		for x < len(oRequests.requests) && oRequests.requests[x] != code {
+			x++
+		}
+		if x == len(oRequests.requests) {
+			oRequests.requests = append(oRequests.requests, code)
+		} else {
+			code = "NULL"
+		}
+
+	}
+
+}
+
+// resolveRequest removes a message from the OpenRequests struct
+/* Removes a MessageID from OpenRequests when a response is received
+responseID : string
+*/
+func (oRequests *OpenRequests) resolveRequest(responseID string) {
+	x := 0
+	for x < len(oRequests.requests) && oRequests.requests[x] != responseID {
+		x++
+	}
+	if x < len(oRequests.requests) {
+		oRequests.requests = append(oRequests.requests[:x], oRequests.requests[x+1:]...)
+	}
 }
 
 // CommandParameter represents a parameter for a command.
@@ -51,7 +102,6 @@ Purpose: Creates a new request object.
 Data:
 - source: The source of the request (e.g., user or system).
 - domain: The domain of the request (e.g., lighting, HVAC, security).
-- Target: Which Raspberry PI is the request specifically for.
 - subject: The specific device or appliance related to the request.
 - state: The state of the device or system (e.g., on, off).
 Returns: Request: The newly created Request object.
@@ -117,6 +167,7 @@ func DisplayRequest(req Request) {
 	}
 }
 
+/*
 func main() {
 	// Create an initial request with no command arguments.
 	req := NewRequest("admin", "lighting", "bathroom", "on")
@@ -136,9 +187,11 @@ func main() {
 	fmt.Println()
 	fmt.Println(string(jsonData))
 
+
 	//	At this point, the data can be added to a priority queue to
 	//	where it can then be encrypted, run through an HMAC process
 	//	and sent out to be broadcast to other Zigbee devices.
+
 
 	// deserialize the JSON data into a Go Request Object.
 	var loadedReq Request
@@ -152,3 +205,4 @@ func main() {
 	fmt.Println()
 	DisplayRequest(loadedReq)
 }
+*/
