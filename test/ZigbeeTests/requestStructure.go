@@ -9,7 +9,6 @@ Future functionalities include:
 - Implementing a priority queue to hold outgoing requests.
 */
 import (
-	"encoding/json"
 	"fmt"
 )
 
@@ -117,6 +116,7 @@ func DisplayRequest(req Request) {
 	}
 }
 
+/*
 func main() {
 	// Create an initial request with no command arguments.
 	req := NewRequest("admin", "lighting", "bathroom", "on")
@@ -152,3 +152,4 @@ func main() {
 	fmt.Println()
 	DisplayRequest(loadedReq)
 }
+*/
