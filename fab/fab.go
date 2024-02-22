@@ -1,15 +1,16 @@
-package main
+package fab
 
 import (
 	"html/template"
 	"net/http"
 )
 
-func main() {
-	http.HandleFunc("/", handler)
-	http.ListenAndServe(":8080", nil)
-}
-
+/*
+	func main() {
+		http.HandleFunc("/", handler)
+		http.ListenAndServe(":8080", nil)
+	}
+*/
 func handler(w http.ResponseWriter, r *http.Request) {
 	// Define the data to be passed to the template
 	data := struct {
