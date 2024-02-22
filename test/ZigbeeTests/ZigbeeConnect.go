@@ -47,6 +47,7 @@ func writeToPort(port serial.Port) {
 	}
 }
 
+/*
 func main() {
 	// Get the list of available serial ports
 	ports, err := getPortsList()
@@ -76,3 +77,4 @@ func main() {
 	// Keep the main goroutine alive
 	select {}
 }
+*/

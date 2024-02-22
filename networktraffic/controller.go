@@ -46,6 +46,8 @@ func ConfigureController() {
 	}
 }
 
+/*
 func main() {
 	ConfigureController()
 }
+*/

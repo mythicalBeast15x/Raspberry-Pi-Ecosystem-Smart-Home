@@ -39,6 +39,8 @@ func sendMessage() {
 
 }
 
+/*
 func main() {
 	SendMessagesToServer()
 }
+*/
