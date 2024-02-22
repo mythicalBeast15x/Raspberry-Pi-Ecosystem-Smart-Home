@@ -1,6 +1,8 @@
 package networktraffic
 
+
 /*
+
 import (
 	"fmt"
 	"github.com/google/gopacket"
@@ -49,4 +51,6 @@ func main() {
 		}
 	}
 }
+
+
 */
