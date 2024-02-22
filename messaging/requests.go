@@ -46,7 +46,10 @@ func (oRequests *OpenRequests) generateMessageID() {
 			return
 		}
 		x := 0
-		code, _ = hex.EncodeToString(randomBytes), nil
+		code, err = hex.EncodeToString(randomBytes), nil
+		if err != nil {
+			return
+		}
 		for x < len(oRequests.requests) && oRequests.requests[x] != code {
 			x++
 		}
