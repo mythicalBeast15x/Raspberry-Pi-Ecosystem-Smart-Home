@@ -1,46 +1,37 @@
 package networktraffic
 
 import (
+	"bufio"
 	"fmt"
-	"go.bug.st/serial"
-	"log"
-	"time"
+	"github.com/jacobsa/go-serial/serial"
+	"io"
 )
 
-func SendMessagesToServer() {
-	// Open the XBee module for communication
-	mode := &serial.Mode{
-		BaudRate: 9600,
+func client() {
+	options := serial.OpenOptions{
+		PortName:        "/dev/ttyUSB1",
+		BaudRate:        9600,
+		DataBits:        8,
+		StopBits:        1,
+		MinimumReadSize: 4,
 	}
-	port, err := serial.Open("/dev/ttyUSB0", mode)
+
+	port, err := serial.Open(options)
 	if err != nil {
-		log.Fatal("Error opening XBee module:", err)
+		fmt.Printf("Error opening serial port: %v\n", err)
+		return
 	}
+	defer port.Close()
 
-	//sender := xbee.NewSender(port)
-	// Configure XBee module as a client
-
+	reader := bufio.NewReader(port)
 	for {
-		// Send a message to the server
-		message := "Hello\n" // The controller will search until it finds a /n character in the message string
-		_, err := port.Write([]byte(message))
-		fmt.Printf("Sent \n")
+		message, err := reader.ReadString('\n')
 		if err != nil {
-			log.Println("Error sending message:", err)
+			if err != io.EOF {
+				fmt.Printf("Error reading from serial port: %v\n", err)
+			}
+			continue
 		}
-		time.Sleep(5 * time.Second) // Send message every 5 seconds
+		fmt.Printf("Message received: %s", message)
 	}
 }
-
-// sendMessage sends a message to all Zigbee Devices
-/* This function will be the default way of sending messages
- */
-func sendMessage() {
-
-}
-
-/*
-func main() {
-	SendMessagesToServer()
-}
-*/
