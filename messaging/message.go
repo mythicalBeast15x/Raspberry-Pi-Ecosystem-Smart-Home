@@ -1,7 +1,7 @@
-package zigbeetests
+package messaging
 
 /*
-This sample code contains the foundation of a data structure for creating messages to be sent out to
+This script contains the foundation of a data structure for creating messages to be sent out to
 relevant device nodes.
 */
 
