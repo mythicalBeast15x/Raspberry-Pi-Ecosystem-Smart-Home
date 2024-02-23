@@ -3,13 +3,64 @@ package dal
 //go get go.mongodb.org/mongo-driver/mongo
 //files to be imported: Appliances, lights, HVAC
 import (
+	light "CMPSC488SP24SecThursday/lighting"
 	"context"
 	"fmt"
-	"log"
-
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"log"
 )
+
+//Request Disperser
+/*Purpose: Takes in Request and depending on the domain, calls domain-specific function w/ args from request command block
+ 	r-> request block
+	returns bool from domain-function ex: Lights
+
+*/
+//func RequestDisperser(r request.Request) {
+//	if r.Domain == "Light" {
+//
+//	}
+//	//if r.Domain == "HVAC" {
+//	//	return
+//	//}
+//	//if r.Domain == "Security" {
+//	//	return
+//	//}
+//
+//}
+
+// //Lights communicates with Zigbee Devices & Adjusts device status
+/* Purpose: Receive a request from the front-end,
+ Send that request to relevant Zigbee Device &
+	Return that Status to the Front End
+
+	OID: Operation ID to dictate what occurs
+	l: Existing lighting struct
+	brightness: float32 between 0-100
+	color: color name
+	Returns Bool (True if request is successful, False if not)*/
+
+func Light(OID int, l *light.Lighting, brightness float32, color string) bool {
+	switch OID {
+	case 0:
+		if l.TurnOn() && l.SetBrightness(brightness, true) {
+			return true
+		} else {
+			panic("Lights failed to turn on")
+			return false
+		}
+
+	case 1:
+		if l.TurnOn() && l.SetBrightness(brightness, true) {
+			return true
+		} else {
+			panic("Lights failed to turn on")
+			return false
+		}
+	}
+	return false
+}
 
 // Define a struct to represent your data model
 type User struct {
