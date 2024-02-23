@@ -5,16 +5,16 @@ import (
 	"testing"
 )
 
-func TestEncryptDecrypt(t *testing.T) {
+func TestEncryptDecryptGCM(t *testing.T) {
 	key := "N1PCdw3M2B1TfJhoaY2mL736p2vCUc47" // 32 bytes for AES-256
 	originalText := "Hello, World!"
-	encryptedText, err := hashing.Encrypt(originalText, key)
+	encryptedText, err := hashing.EncryptGCM(originalText, key) // Call EncryptGCM
 	if err != nil {
-		t.Errorf("Failed to encrypt: %v", err)
+		t.Fatalf("Failed to encrypt: %v", err) // Use Fatalf to stop the test if there's an error
 	}
-	decryptedText, err := hashing.Decrypt(encryptedText, key)
+	decryptedText, err := hashing.DecryptGCM(encryptedText, key) // Call DecryptGCM
 	if err != nil {
-		t.Errorf("Failed to decrypt: %v", err)
+		t.Fatalf("Failed to decrypt: %v", err)
 	}
 	if decryptedText != originalText {
 		t.Errorf("Decrypted text does not match original. Got %s, want %s", decryptedText,
