@@ -1,12 +1,8 @@
-
-package main
-
 package energy
-
 
 import (
 	"fmt"
-	"sync" // Sync Package: https://pkg.go.dev/sync
+	"sync"
 )
 
 // SolarPanel represents a solar panel as a power source.
