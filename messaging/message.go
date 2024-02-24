@@ -159,7 +159,7 @@ func DisplayMessage(msg Message) {
 
 // MessageCheckIn checks the IDs of a given message.
 /*
-Purpose: Shows the data in the output window for testing purposes.
+Purpose: Deserializes a JSON message and checks to see if the IDs are valid for the request to be serviced.
 Data :
 - msg: The Message object to be checked.
 - oMessages: A list to keep track of opened messages for the sake if giving the message a unique MessageID.
