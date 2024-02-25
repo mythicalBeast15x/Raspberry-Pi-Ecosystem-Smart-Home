@@ -72,8 +72,20 @@
 - Make more contributions to the February assignment.
 
 #### Key Points
+- Most of the goals/objectives that I originally planned on working on got pushed to the side when I was introduced to a set of new ideas for the messaging structure by Love Divine.
+- Dropped the Idea of a priority queue holding outgoing requests.
+- Discussed the topic of a completely new version of the messaging structure with Love Divine to replace the current setup.
+- Discussed the new messaging structure proposal with the backend team to gain their perspective and incorporate their suggestions.
+- I completely reworked the messaging structure to reflect my discussions with Love and the backend team.
+- Wrote up documentation explaining the structure of the messaging object along with some diagrams showcasing the structure, messaging lifecycle, and the message check-in and servicing stages for the sake of better understanding the structure and its place within our system. Added the new diagrams to the February assignment.
+- Met with Backend team member Catherine over Discord to review the messaging structure and its documentation to make sure that the structure made sense and reflected our previous discussions accurately.
+- The messaging structure is almost complete, some more discussion with the backend, frontend, and Zigbee group members is needed to make the connections needed to take the information of the frontend, form it into a message, and have that message moved by the backend, and finally placed into the appropriate functions from the Zigbee team with data parameters that are agreed upon by the whole group.
 
 #### Next Week Goals
+- Discuss the messaging structure with other groups and use these discussions to completely implement the messaging structure into our system.
+- Retrieve the Zigbee device that was relinquished to other members of the Zigbee team and discuss the status of the Zigbee network with them.
+- Work with and implement code to manipulate physical devices with our Raspberry Pis.
+- Discuss with Love Patel about the relationship between the Appliances and the energy system and reworking the energy file to house functions relevant to energy management.
 
 ### ❖ Jahidul Robin
 
