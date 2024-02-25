@@ -168,28 +168,29 @@ Prints:
 - Case 1: MessageID already exists. This means it is a duplicate message.
 - Case 2: ReceiverID does not match the global Pi ID. This means that the message should be echoed.
 - Case 3: Both previous checks pass and the message can be serviced.
-Returns: None
+Returns: bool
 */
-func MessageCheckIn(serialMsg []byte, oMessages *OpenMessages, qMessages *MessageQueue, globalReceiverID string) {
+func MessageCheckIn(serialMsg []byte, oMessages *OpenMessages, qMessages *MessageQueue, globalReceiverID string) bool {
 	var msg Message
 	msg = deserial(serialMsg)
 	// Check if the messageID already exists in the OpenMessages struct
 	for _, existingMsgID := range oMessages.messages {
 		if existingMsgID == msg.MessageID {
 			fmt.Println("Message ID already exists in OpenMessages struct")
-			return
+			return false
 		}
 	}
 	// Check if the receiverID matches the global Pi ID
 	if msg.ReceiverID != globalReceiverID && msg.ReceiverID != "" {
 		fmt.Println("Receiver ID does not match the global Pi ID")
-		return // call to echo the message out again
+		EchoMessage(msg, qMessages) // call to echo the message out again
+		return false
 	}
 	// If both checks pass, then it can be serviced. Adds the message of type Message to the deserialized message queue.
 	fmt.Println("Message is serviceable!")
 	qMessages.deserialMessages = append(qMessages.deserialMessages, msg)
 	oMessages.messages = append(oMessages.messages, msg.MessageID)
-	return
+	return true
 }
 
 // deserial deserializes the Json data.
@@ -227,6 +228,47 @@ func EchoMessage(msg Message, qMessages *MessageQueue) {
 	qMessages.outgoingMessages = append(qMessages.outgoingMessages, jsonData)
 }
 
+// Dequeue pops the first element from the specified queue from the MessageQueue structure.
+/*
+Purpose: To allow for the next in-line message to be taken from any desired messaging queue and to then save that item
+to a variable for further processing or servicing.
+Data:
+- queueType (string): Specifies the type of queue to dequeue from. Valid values are:
+  - "incoming": Dequeues from the incoming messages queue.
+  - "deserial": Dequeues from the deserialized messages queue.
+  - "outgoing": Dequeues from the outgoing messages queue.
+Returns:
+- interface{}: The dequeued element from the top of the specified queue.
+- error: An error if the specified queue is empty or if an unknown queue type is provided.
+*/
+func (msgQueue *MessageQueue) Dequeue(queueType string) (interface{}, error) {
+	switch queueType {
+	case "incoming":
+		if len(msgQueue.incomingMessages) == 0 {
+			return nil, fmt.Errorf("incoming queue is empty")
+		}
+		msg := msgQueue.incomingMessages[0]
+		msgQueue.incomingMessages = msgQueue.incomingMessages[1:]
+		return msg, nil
+	case "deserial":
+		if len(msgQueue.deserialMessages) == 0 {
+			return nil, fmt.Errorf("deserial queue is empty")
+		}
+		msg := msgQueue.deserialMessages[0]
+		msgQueue.deserialMessages = msgQueue.deserialMessages[1:]
+		return msg, nil
+	case "outgoing":
+		if len(msgQueue.outgoingMessages) == 0 {
+			return nil, fmt.Errorf("outgoing queue is empty")
+		}
+		msg := msgQueue.outgoingMessages[0]
+		msgQueue.outgoingMessages = msgQueue.outgoingMessages[1:]
+		return msg, nil
+	default:
+		return nil, fmt.Errorf("unknown queue type: %s", queueType)
+	}
+}
+
 /*
 func main() {
 	// Initialize message queues
@@ -235,7 +277,7 @@ func main() {
 	qMessages := &MessageQueue{}    // queues for outgoing, incoming, and incoming-serialized-to-be-serviced messages
 
 	// Create and display first message
-	msg := NewMessage("Pi-1", "Pi-2", "Lighting", "2", "lamp-1 70", oOutMessages, qMessages)
+	msg := NewMessage("Pi-1", "Pi-3", "Lighting", "2", "lamp-1 70", oOutMessages, qMessages)
 	fmt.Println("----------------------------------------\nDisplayed Message One:\n ")
 	DisplayMessage(msg)
 
@@ -288,11 +330,26 @@ func main() {
 
 	fmt.Println()
 	fmt.Println("----------------------------------------\nTesting message check-in:\n ")
+
+	// Testing if echo function works correctly
+	fmt.Println("Length of Outgoing Queue before test:", len(qMessages.outgoingMessages))
+	fmt.Println("Removing element from outgoing queue for testing purposes...")
+	// Dequeue from the outgoing messages queue
+	_, err := qMessages.Dequeue("outgoing")
+	if err != nil {
+		fmt.Println("Error dequeuing from outgoing queue:", err)
+	} else {
+		fmt.Println("Dequeued from outgoing queue: Some byte message")
+	}
+	fmt.Println("Length of Outgoing Queue:", len(qMessages.outgoingMessages))
 	// Test message check-in function with first message
 	MessageCheckIn(test, oInMessages, qMessages, globalPiID)
+	// Since the receiverID is not matched, the outgoing queue should have the message added to it.
+	fmt.Println("Length of Outgoing Queue:", len(qMessages.outgoingMessages))
+	fmt.Println("NOTE: Since the ReceiverID did not match, the message was placed into the \noutgoing queue via echo function as seen with the length of the outgoing queue \nbeing upped by one.")
+	fmt.Println()
 
 	// Test message check-in function with second message
-	fmt.Println()
 	MessageCheckIn(test1, oInMessages, qMessages, globalPiID)
 
 	// Test message check-in function with third message
@@ -306,8 +363,8 @@ func main() {
 	// Test message check-in function with forth message: receiver ID should not match
 	fmt.Println()
 	MessageCheckIn(test3, oInMessages, qMessages, globalPiID)
-
 	fmt.Println()
+
 	fmt.Println("----------------------------------------\nDisplay deserialized message queue - Before resolveMessage:\n ")
 	fmt.Println("Deserialized Queue:", qMessages.deserialMessages)
 
@@ -336,5 +393,41 @@ func main() {
 	fmt.Println()
 	fmt.Println("Displayed incoming MessageID list:\n ")
 	fmt.Printf("MessageID list: %s\n", oInMessages)
+
+	fmt.Println()
+	fmt.Println("Display effects of dequeue function on all three types of message queues:\n ")
+	fmt.Println("Length of Deserialized Queue:", len(qMessages.deserialMessages))
+	fmt.Println("Length of Incoming Queue:", len(qMessages.incomingMessages))
+	fmt.Println("Length of Outgoing Queue:", len(qMessages.outgoingMessages))
+	fmt.Println()
+
+	// Dequeue from the deserialized messages queue
+	msgFromDeserial, err := qMessages.Dequeue("deserial")
+	if err != nil {
+		fmt.Println("Error dequeuing from deserial queue:", err)
+	} else {
+		fmt.Println("Dequeued from deserial queue:", msgFromDeserial)
+	}
+
+	// Dequeue from the incoming messages queue
+	_, err = qMessages.Dequeue("incoming")
+	if err != nil {
+		fmt.Println("Error dequeuing from incoming queue:", err)
+	} else {
+		fmt.Println("Dequeued from incoming queue: Some byte message")
+	}
+
+	// Dequeue from the outgoing messages queue
+	_, err = qMessages.Dequeue("outgoing")
+	if err != nil {
+		fmt.Println("Error dequeuing from outgoing queue:", err)
+	} else {
+		fmt.Println("Dequeued from outgoing queue: Some byte message")
+	}
+
+	fmt.Println()
+	fmt.Println("Length of Deserialized Queue:", len(qMessages.deserialMessages))
+	fmt.Println("Length of Incoming Queue:", len(qMessages.incomingMessages))
+	fmt.Println("Length of Outgoing Queue:", len(qMessages.outgoingMessages))
 }
 */
