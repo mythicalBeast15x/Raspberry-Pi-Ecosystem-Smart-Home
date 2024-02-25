@@ -23,13 +23,14 @@ func NewHVAC(name string) *HVAC {
 }
 
 // SetTemperature sets the desired temperature for the HVAC system.
-func (h *HVAC) SetTemperature(temperature int) {
+func (h *HVAC) SetTemperature(temperature int) bool {
 	h.Temperature = temperature
 	fmt.Printf("%s temperature is set to %d°C\n", h.Name, h.Temperature)
+	return true
 }
 
 // SetFanSpeed sets the fan speed for the HVAC system.
-func (h *HVAC) SetFanSpeed(speed int) {
+func (h *HVAC) SetFanSpeed(speed int) bool {
 	if speed < 0 {
 		speed = 0
 	} else if speed > 100 {
@@ -37,12 +38,14 @@ func (h *HVAC) SetFanSpeed(speed int) {
 	}
 	h.FanSpeed = speed
 	fmt.Printf("%s fan speed is set to %d%%\n", h.Name, h.FanSpeed)
+	return true
 }
 
 // SetMode sets the mode (e.g., "Cool", "Heat", "Fan", "Off") for the HVAC system.
-func (h *HVAC) SetMode(mode string) {
+func (h *HVAC) SetMode(mode string) bool {
 	h.Mode = mode
 	fmt.Printf("%s mode is set to %s\n", h.Name, h.Mode)
+	return true
 }
 
 /*

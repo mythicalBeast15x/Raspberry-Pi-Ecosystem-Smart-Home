@@ -3,7 +3,10 @@ package dal
 //go get go.mongodb.org/mongo-driver/mongo
 //files to be imported: Appliances, lights, HVAC
 import (
+	hvac "CMPSC488SP24SecThursday/hvac"
 	light "CMPSC488SP24SecThursday/lighting"
+	security "CMPSC488SP24SecThursday/security"
+
 	"context"
 	"fmt"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -11,11 +14,18 @@ import (
 	"log"
 )
 
+// Key/Value Demo of OIDs
+var myMap = map[string][]int{
+	"Light":          {1, 2, 3, 4},
+	"SecuritySystem": {5, 6, 7},
+	"HVAC ":          {9, 10, 11},
+}
+
 //Request Disperser
 /*Purpose: Takes in Request and depending on the domain, calls domain-specific function w/ args from request command block
  	r-> request block
 	returns bool from domain-function ex: Lights
-
+{Light : {Li1: "Turn On" }}
 */
 //func RequestDisperser(r request.Request) {
 //	if r.Domain == "Light" {
@@ -43,7 +53,7 @@ import (
 
 func Light(OID int, l *light.Lighting, brightness float32, color string) bool {
 	switch OID {
-	case 0:
+	case 0: //turn on lights
 		if l.TurnOn() && l.SetBrightness(brightness, true) {
 			return true
 		} else {
@@ -51,11 +61,83 @@ func Light(OID int, l *light.Lighting, brightness float32, color string) bool {
 			return false
 		}
 
-	case 1:
+	case 1: //turn off lights
+		if l.TurnOff() && l.SetBrightness(brightness, true) {
+			return true
+		} else {
+			panic("Lights failed to turn off")
+			return false
+		}
+	case 2: //set brightness
 		if l.TurnOn() && l.SetBrightness(brightness, true) {
 			return true
 		} else {
 			panic("Lights failed to turn on")
+			return false
+		}
+	case 3: //set color
+		if l.SetColor(color, true) {
+			return true
+		} else {
+			panic("Color not set")
+			return false
+		}
+	case 4: //Adjust Brightness over time
+		if l.SetBrightness(brightness, true) {
+			return true
+		} else {
+			panic("Brightness not set")
+			return false
+		}
+	}
+	return false
+}
+
+func SecuritySystem(OID int, s *security.Alarm) bool {
+	switch OID {
+	case 5: //arm system
+		if s.Arm() {
+			return true
+		} else {
+			panic("System not Armed")
+			return false
+		}
+	case 6: //disarm system
+		if s.Disarm() {
+			return true
+		} else {
+			panic("System unable to be disarmed")
+			return false
+		}
+	case 7: //Trigger Alarm
+		if s.Trigger() {
+			return true
+		} else {
+			panic("Alarm cannot sound")
+			return false
+		}
+	}
+	return false
+}
+func HVAC(OID int, h *hvac.HVAC, temperature int, fanspeed int, mode string) bool {
+	switch OID {
+	case 8: //set temperature
+		if h.SetTemperature(temperature) {
+			return true
+		} else {
+			panic("Temperature failure")
+			return false
+		}
+	case 9: //set fanspeed
+		if h.SetFanSpeed(fanspeed) {
+			return true
+		} else {
+			return false
+		}
+	case 10: //set Mode
+		if h.SetMode(mode) {
+			return true
+		} else {
 			return false
 		}
 	}

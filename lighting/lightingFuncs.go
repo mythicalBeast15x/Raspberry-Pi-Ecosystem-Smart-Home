@@ -57,9 +57,10 @@ func (l *Lighting) TurnOn() bool {
 Purpose: This method changes the state of the lighting instance to "off" and prints a message indicating
 that the lighting is now turned off.
 */
-func (l *Lighting) TurnOff() {
+func (l *Lighting) TurnOff() bool {
 	l.State = false
 	fmt.Printf("%s is now turned OFF\n", l.Name)
+	return true
 }
 
 // SetTimer sets a timer to turn on or off the lighting after a specified duration.
@@ -139,11 +140,12 @@ Params:
     color : string - the color value to set
     print : bool - whether to print a message indicating the color change
 */
-func (l *Lighting) SetColor(color string, print bool) {
+func (l *Lighting) SetColor(color string, print bool) bool {
 	l.Color = color
 	if print {
 		fmt.Printf("%s color is set to %s\n", l.Name, l.Color)
 	}
+	return true
 }
 
 // ColorCycle initiates cycling through colors for a specified duration.

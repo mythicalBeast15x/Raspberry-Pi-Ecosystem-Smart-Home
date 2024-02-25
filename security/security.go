@@ -50,28 +50,32 @@ func NewAlarm(name string) *Alarm {
 }
 
 // Arm sets the alarm to the armed state.
-func (a *Alarm) Arm() {
+func (a *Alarm) Arm() bool {
 	a.Armed = true
 	fmt.Printf("%s is armed and ready.\n", a.Name)
+	return true
 }
 
 // Disarm disarms the alarm.
-func (a *Alarm) Disarm() {
+func (a *Alarm) Disarm() bool {
 	a.Armed = false
 	fmt.Printf("%s is disarmed.\n", a.Name)
+	return true
 }
 
 // Trigger activates the alarm if it's armed.
-func (a *Alarm) Trigger() {
+func (a *Alarm) Trigger() bool {
 	if a.Armed {
 		a.Sounded = true
 		fmt.Printf("%s is triggered! Alarm is sounding.\n", a.Name)
+		return true
 	}
+	return false
 }
 
 // TrustCenter now keeps track of users allowed to join and communicate within the network.
 type TrustCenter struct {
-	// authorizedUsers maps user names to their authorization status.
+	// authorizedUsers maps usernames to their authorization status.
 	authorizedUsers map[string]bool
 }
 
@@ -83,8 +87,9 @@ func NewTrustCenter() *TrustCenter {
 }
 
 // AuthorizeUser marks a user as authorized within the network.
-func (tc *TrustCenter) AuthorizeUser(userName string) {
+func (tc *TrustCenter) AuthorizeUser(userName string) bool {
 	tc.authorizedUsers[userName] = true
+	return true
 }
 
 // IsUserAuthorized checks if a given user is authorized to operate within the network.
