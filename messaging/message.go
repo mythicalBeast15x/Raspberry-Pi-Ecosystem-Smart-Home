@@ -209,6 +209,24 @@ func deserial(serialMsg []byte) Message {
 	return msg
 }
 
+// EchoMessage repeats the message by sending it to the outgoing queue.
+/*
+Purpose: Serializes the message into JSON and adds it to the outgoing message queue.
+Parameters:
+- msg: The message of type Message to be echoed.
+- qMessages: Pointer to the MessageQueue where the outgoing messages are stored.
+*/
+func EchoMessage(msg Message, qMessages *MessageQueue) {
+	// Serialize the message into JSON
+	jsonData, err := json.Marshal(msg)
+	if err != nil {
+		fmt.Println("Error marshalling JSON:", err)
+		return
+	}
+	// Add the serialized message to the outgoing queue
+	qMessages.outgoingMessages = append(qMessages.outgoingMessages, jsonData)
+}
+
 /*
 func main() {
 	// Initialize message queues
