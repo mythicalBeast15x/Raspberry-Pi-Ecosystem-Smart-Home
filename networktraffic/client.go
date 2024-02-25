@@ -9,7 +9,7 @@ import (
 
 func client() {
 	options := serial.OpenOptions{
-		PortName:        "/dev/ttyUSB1",
+		PortName:        "/dev/ttyUSB0",
 		BaudRate:        9600,
 		DataBits:        8,
 		StopBits:        1,
