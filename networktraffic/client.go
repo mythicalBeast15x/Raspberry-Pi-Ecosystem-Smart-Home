@@ -1,4 +1,4 @@
-package networktraffic
+package main
 
 import (
 	"bufio"
@@ -34,4 +34,7 @@ func client() {
 		}
 		fmt.Printf("Message received: %s", message)
 	}
+}
+func main() {
+	client()
 }

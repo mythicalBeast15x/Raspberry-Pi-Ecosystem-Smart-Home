@@ -1,4 +1,4 @@
-package networktraffic
+package main
 
 import (
 	"fmt"
@@ -32,4 +32,8 @@ func controller() {
 		fmt.Printf("Message sent: %s", message)
 		time.Sleep(1 * time.Second) // Send a message every second
 	}
+}
+func main() {
+	controller()
+
 }

@@ -1,5 +1,4 @@
-package networktraffic
-
+package main
 
 /*
 
