@@ -6,7 +6,7 @@ import (
 	hvac "CMPSC488SP24SecThursday/hvac"
 	light "CMPSC488SP24SecThursday/lighting"
 	security "CMPSC488SP24SecThursday/security"
-
+	request "CMPSC488SP24SecThursday/test/ZigbeeTests"
 	"context"
 	"fmt"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -23,22 +23,31 @@ var myMap = map[string][]int{
 
 //Request Disperser
 /*Purpose: Takes in Request and depending on the domain, calls domain-specific function w/ args from request command block
- 	r-> request block
+	r-> request block
 	returns bool from domain-function ex: Lights
 {Light : {Li1: "Turn On" }}
 */
-//func RequestDisperser(r request.Request) {
-//	if r.Domain == "Light" {
-//
-//	}
-//	//if r.Domain == "HVAC" {
-//	//	return
-//	//}
-//	//if r.Domain == "Security" {
-//	//	return
-//	//}
-//
-//}
+func RequestDisperser(r *request.Request) {
+	//take request from INCOMING
+	//Validate Hash
+	//Decrypt and Dehash
+	//serialized message
+	//MessageCheck -> if messageID from OpenMessage return true
+	//get deserialized message from deserializedQueue
+	//if true -->
+	if r.Domain == "Light" {
+
+	}
+	if r.Domain == "HVAC" {
+		return
+	}
+	if r.Domain == "Security" {
+		return
+	}
+	//if false
+	//cannot service request error
+
+}
 
 // //Lights communicates with Zigbee Devices & Adjusts device status
 /* Purpose: Receive a request from the front-end,
