@@ -39,12 +39,12 @@ type OpenMessages struct {
 
 // Message represents the structure of a message object.
 type Message struct {
-	MessageID   string `json:"messageID"`
-	SenderID    string `json:"senderID"`
-	ReceiverID  string `json:"receiverID"`
-	Domain      string `json:"domain"`
-	OperationID string `json:"operationID"`
-	Data        string `json:"Data"`
+	MessageID   string                 `json:"messageID"`
+	SenderID    string                 `json:"senderID"`
+	ReceiverID  string                 `json:"receiverID"`
+	Domain      string                 `json:"domain"`
+	OperationID string                 `json:"operationID"`
+	Data        map[string]interface{} `json:"Data"`
 }
 
 // generateMessageID creates a message ID generates a unique messageID for a message to be sent
@@ -112,7 +112,7 @@ Data:
 - qMessages: A queue to add the serialized message too.
 Returns: Message: The newly created Message object.
 */
-func NewMessage(senderID, receiverID, domain, operationID, data string, oMessages *OpenMessages, qMessages *MessageQueue) Message {
+func NewMessage(senderID, receiverID, domain, operationID string, data map[string]interface{}, oMessages *OpenMessages, qMessages *MessageQueue) Message {
 	messageID := oMessages.generateMessageID()
 	message := Message{
 		MessageID:   messageID,
@@ -154,7 +154,12 @@ func DisplayMessage(msg Message) {
 	fmt.Println("ReceiverID:", msg.ReceiverID)
 	fmt.Println("Domain:", msg.Domain)
 	fmt.Println("OperationID:", msg.OperationID)
-	fmt.Println("Data:", msg.Data)
+	fmt.Println("Data:", msg.Data)     // prints mapped version of data section
+	for key, value := range msg.Data { // prints key value pairs of the data section
+		// 'key' is the key of the current item in the map
+		// 'value' is the value associated with the current key
+		fmt.Printf("Key: %s, Value: %v\n", key, value)
+	}
 }
 
 // MessageCheckIn checks the IDs of a given message.
@@ -277,7 +282,11 @@ func main() {
 	qMessages := &MessageQueue{}    // queues for outgoing, incoming, and incoming-serialized-to-be-serviced messages
 
 	// Create and display first message
-	msg := NewMessage("Pi-1", "Pi-3", "Lighting", "2", "lamp-1 70", oOutMessages, qMessages)
+	data := map[string]interface{}{
+		"ApplianceID": "lamp-1",
+		"Brightness":  70,
+	}
+	msg := NewMessage("Pi-1", "Pi-3", "Lighting", "2", data, oOutMessages, qMessages)
 	fmt.Println("----------------------------------------\nDisplayed Message One:\n ")
 	DisplayMessage(msg)
 
@@ -286,7 +295,10 @@ func main() {
 	fmt.Println()
 
 	// Create and display second message
-	msg2 := NewMessage("Pi-1", "Pi-2", "Lighting", "2", "lamp-1 70", oOutMessages, qMessages)
+	msg2 := NewMessage("Pi-1", "Pi-2", "Lighting", "2", map[string]interface{}{
+		"ApplianceID": "lamp-1",
+		"Brightness":  70,
+	}, oOutMessages, qMessages)
 	fmt.Println("----------------------------------------\nDisplayed Message Two:\n ")
 	DisplayMessage(msg2)
 
@@ -295,7 +307,10 @@ func main() {
 	fmt.Println()
 
 	// Create and display third message
-	msg3 := NewMessage("Pi-1", "", "Lighting", "2", "lamp-1 70", oOutMessages, qMessages)
+	msg3 := NewMessage("Pi-1", "", "Lighting", "2", map[string]interface{}{
+		"ApplianceID": "lamp-1",
+		"Brightness":  70,
+	}, oOutMessages, qMessages)
 	fmt.Println("----------------------------------------\nDisplayed Message Three:\n ")
 	DisplayMessage(msg3)
 
@@ -304,7 +319,10 @@ func main() {
 	fmt.Println()
 
 	// Create and display third message
-	msg4 := NewMessage("Pi-1", "Pi-3", "Lighting", "2", "lamp-1 70", oOutMessages, qMessages)
+	msg4 := NewMessage("Pi-1", "Pi-3", "Lighting", "2", map[string]interface{}{
+		"ApplianceID": "lamp-1",
+		"Brightness":  70,
+	}, oOutMessages, qMessages)
 	fmt.Println("----------------------------------------\nDisplayed Message Four:\n ")
 	DisplayMessage(msg4)
 
