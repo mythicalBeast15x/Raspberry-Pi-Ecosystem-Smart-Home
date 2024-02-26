@@ -28,10 +28,17 @@
 - Advance code development for Raspberry Pi testing.
 
 #### Key Points
--
+- Enhanced collaboration with the ZigBee team, progressing integration efforts. 
+- Expanded knowledge and proficiency with ZigBee devices. 
+- Start coding for the Appliances and work with Network Team and Security to finish AES Encryption.
+- Advance code development for Raspberry Pi testing.
 
 #### Next Week Goals
--
+- Setup and complete Zigbee Communication 
+- Finish Zigbee Device Configuration
+- Conduct thorough testing of the ZigBee mesh network for stability and efficiency. 
+- Begin Documentation for Zigbee Configuration and communication.
+- Continue the code for the Appliances part of the project.
 
 ### ❖ Deep Patel
 

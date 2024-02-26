@@ -19,12 +19,23 @@
 ### ❖ Love Patel
 
 #### Previous Individual Goals/Objectives
+- Setup and complete Zigbee Communication 
+- Finish Zigbee Device Configuration
+- Conduct thorough testing of the ZigBee mesh network for stability and efficiency. 
+- Begin Documentation for Zigbee Configuration and communication.
+- Continue the code for the Appliances part of the project.
 
 #### Key Points
-
+- Communication Testing Done - Setup JSON data communication between Zigbees (part 2)
+- Coninue with Zigbee Network Implementation, JSON data structure for consistent communication.
+- Documented and finished the configuration of the Zigbees completely along with getting them on the same firmware
 
 #### Next Week Goals
-
+- Complete JSON data transfer code.
+- Enhance the encryption of the message communication with the security team
+- Test the communication with multiple pi's
+- Start creating Appliances function and send it over to the Data Layer Team
+- Work with Backend and Data Layer to setup the communication workflow 
 
 ### ❖ Deep Patel
 
