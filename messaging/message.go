@@ -101,6 +101,18 @@ func (oMessages *OpenMessages) resolveMessage(responseID string, qMessages *Mess
 	}
 }
 
+// AddMessageID manually adds a message ID to the OpenMessages struct.
+/*
+Purpose: Manually adds a message ID to the OpenMessages struct for testing purposes.
+Data:
+- messageID (string): The message ID to be added to the OpenMessages struct.
+- oMessages: Pointer to the OpenMessages struct where the message ID will be added.
+Returns: None
+*/
+func (oMessages *OpenMessages) AddMessageID(messageID string) {
+	oMessages.messages = append(oMessages.messages, messageID)
+}
+
 // NewMessage creates a new Message object with the given parameters.
 /*
 Purpose: Creates a new message object, serializes it, and adds it to a queue of outgoing messages
@@ -202,7 +214,7 @@ func MessageCheckIn(serialMsg []byte, oMessages *OpenMessages, qMessages *Messag
 		EchoMessage(msg, qMessages) // call to echo the message out again
 		return false
 	}
-	// If both checks pass, then it can be serviced. Adds the message of type Message to the deserialized message queue.
+	// If MessageID and ReceiverID checks pass, then it can be serviced. Adds the message of type Message to the deserialized message queue.
 	fmt.Println("Message is serviceable!")
 	qMessages.deserialMessages = append(qMessages.deserialMessages, msg)
 	oMessages.messages = append(oMessages.messages, msg.MessageID)
