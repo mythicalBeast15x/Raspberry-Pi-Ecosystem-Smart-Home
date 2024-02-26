@@ -12,7 +12,9 @@
 - Working towards JSON file transfer between ZigBee network.
 
 ### Next Week Goals
-
+- Collaborate with each other and other teams to complete the implementation of the messaging structure.
+- Further test the Zigbee communication network.
+- Look further into manipulating physical devices with our Raspberry Pis.
 
 ## ❖ Individual Report
 
@@ -104,6 +106,7 @@
 - Retrieve the Zigbee device that was relinquished to other members of the Zigbee team and discuss the status of the Zigbee network with them.
 - Work with and implement code to manipulate physical devices with our Raspberry Pis.
 - Discuss with Love Patel about the relationship between the Appliances and the energy system and reworking the energy file to house functions relevant to energy management.
+- Create tests for the various messaging structure functions.
 
 ### ❖ Jahidul Robin
 
