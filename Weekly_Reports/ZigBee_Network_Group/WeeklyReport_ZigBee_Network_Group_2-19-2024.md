@@ -108,16 +108,18 @@
 ### ❖ Jahidul Robin
 
 #### Previous Individual Goals/Objectives
-- Address the challenges that hindered progress last week, starting with a thorough review of the technical and collaborative obstacles encountered. This will involve seeking additional resources and possibly redefining the approach to collaboration with the Network Traffic Analysis System group.
-- Reassess the blockchain logging mechanism's implementation plan. This may include simplifying the initial model to make the development process more manageable and ensure timely completion. The focus will be on understanding and applying SHA256 encryption in a more streamlined manner.
-- Prioritize tasks more effectively to ensure that foundational elements of the security system are developed and ready for integration testing. This might involve setting more focused, short-term goals to achieve incremental progress.
-- Establish a more realistic timeline for the completion of the security monitoring system and the blockchain logging mechanism, taking into account the lessons learned from the setbacks encountered.
+- Work on AES authentication with Network Security group
+- Setup authentication tokens
 
 #### Key Points
--
+- Documented and finished enhancing security for AES authentication.
+- Worked on making psuedo code and documentation for authentication tokens. (Cannot implement until authentication is done by front-end and back-end.)
 
 #### Next Week Goals
--
+- Work with front-end and back-end group to finish setting up authentication and tokens.
+- Work on the encryption of the message communication.
+- Pick up any tasks that needs to be finished.
+- Help any group that needs it.
 
 ### ❖ Mitkumar Patel
 
