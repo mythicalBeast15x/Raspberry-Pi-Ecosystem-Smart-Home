@@ -1,4 +1,4 @@
-package main
+package ZigbeeTests
 
 /*
 This sample code contains the foundation of a potential data structure for creating requests to be sent out to
