@@ -1,4 +1,4 @@
-# Weekly Report 1/29/2024
+# Weekly Report 2/26/2024
 Follow this template exactly for every report including the name of the document. Use this to help delegate tasks to each member. Everytime has one weekly report. There should be 1 team section and multiple individual sections for each person.
 Format this well, just copy and paste this all and remove all the boiler plate stuff. Make it look professional and nice. This is seperate from the documentation you may be keeping in the Microsoft Teams. Although, you can talk about that in this. These are due every Monday unless stated otherwise. They will be placed within your team's respective folder.
 
@@ -14,13 +14,16 @@ This is the entire team and what you have worked on. Make these all bullet point
 - Met with the front end team.
 - Met with the ZigBee team.
 - Had a rough overview on how everything is at the moment.
-- Prototype for user login token system are done. 
+- Prototype for user login token system are done.
+- Progress on DAL
+- Middleware connections to front end (lighting)
 - We Still need to work on a user verification system
 - We still need to build the database for verified user profile. 
   
 ### Next Week's Goals
 - Database for verified user profile. 
 - User login system.
+- Begin helping other teams (if needed)
 
 ## Individual Report
 This is for each person and what you have focused on. Make these all bullet points.
@@ -58,4 +61,21 @@ This is for each person and what you have focused on. Make these all bullet poin
 - Start working on database building. 
 - Set up data serialization and deserialization process for data transmission between HTML webpages and the back end system. 
 - Set up server like structure for process user login information and verification of the said information.
-- Ensure data integrity during data transformation with HMAC. 
+- Ensure data integrity during data transformation with HMAC.
+
+## Individual Report - David Weisman
+### Previous Goals
+- Continue collaboration with frontend as they add more functionalities
+- Gain better understanding of FE needs
+- Work on things more often as opposed to doing all the work on one day
+
+### Key Points
+- Met and worked with the front end (caught up with Zigbee and Networking as well)
+- Worked the middleware connection, specifically for lighting
+- Added to team deliverable
+- Much better understanding of the project (each team and their roles and how it connects)
+
+### Next Week's Goals
+- User log in database set up
+- Begin shifting to help other groups (Possibly?)
+  
