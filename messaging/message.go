@@ -13,8 +13,11 @@ import (
 	"fmt"
 )
 
-// globalPiID temp variable simulates the ID of the Pi device to show a case of the receiverID matching the global Pi ID.
-var globalPiID = "Pi-2"
+// globalPiID temp variable simulates the ID representing a message intended for all devices.
+var globalPiID = "all"
+
+// localPiID temp variable simulates the ID of the Pi device to show a case of the receiverID matching the global Pi ID.
+var localPiID = "Pi-2"
 
 // MessageQueue is a list of messages for managing incoming, outgoing, and deserialized versions of our system's messages.
 /*
@@ -171,11 +174,12 @@ Data :
 - qMessages: A queue to add the serialized message too.
 Prints:
 - Case 1: MessageID already exists. This means it is a duplicate message.
-- Case 2: ReceiverID does not match the global Pi ID. This means that the message should be echoed.
-- Case 3: Both previous checks pass and the message can be serviced.
+- Case 2: ReceiverID matches the Global Pi ID meaning that the message is meant for all devices and should be serviced and echoed.
+- Case 3: ReceiverID does not match the global Pi ID. This means that the message should be echoed.
+- Case 4: Both previous checks pass and the message can be serviced.
 Returns: bool
 */
-func MessageCheckIn(serialMsg []byte, oMessages *OpenMessages, qMessages *MessageQueue, globalReceiverID string) bool {
+func MessageCheckIn(serialMsg []byte, oMessages *OpenMessages, qMessages *MessageQueue) bool {
 	var msg Message
 	msg = deserial(serialMsg)
 	// Check if the messageID already exists in the OpenMessages struct
@@ -185,9 +189,16 @@ func MessageCheckIn(serialMsg []byte, oMessages *OpenMessages, qMessages *Messag
 			return false
 		}
 	}
+	if msg.ReceiverID == globalPiID {
+		fmt.Println("Global ID matched! Message is meant for all devices")
+		qMessages.deserialMessages = append(qMessages.deserialMessages, msg)
+		oMessages.messages = append(oMessages.messages, msg.MessageID)
+		EchoMessage(msg, qMessages) // call to echo the message out again
+		return true
+	}
 	// Check if the receiverID matches the global Pi ID
-	if msg.ReceiverID != globalReceiverID && msg.ReceiverID != "" {
-		fmt.Println("Receiver ID does not match the global Pi ID")
+	if msg.ReceiverID != localPiID {
+		fmt.Println("Receiver ID does not match the local Pi ID")
 		EchoMessage(msg, qMessages) // call to echo the message out again
 		return false
 	}
@@ -287,7 +298,7 @@ func main() {
 		"Brightness":  70,
 	}
 	msg := NewMessage("Pi-1", "Pi-3", "Lighting", "2", data, oOutMessages, qMessages)
-	fmt.Println("----------------------------------------\nDisplayed Message One:\n ")
+	fmt.Println("------------------------------------------------------------------------------------------------------------------------\nDisplayed Message One:\n ")
 	DisplayMessage(msg)
 
 	// Display message ID list
@@ -299,7 +310,7 @@ func main() {
 		"ApplianceID": "lamp-1",
 		"Brightness":  70,
 	}, oOutMessages, qMessages)
-	fmt.Println("----------------------------------------\nDisplayed Message Two:\n ")
+	fmt.Println("------------------------------------------------------------------------------------------------------------------------\nDisplayed Message Two:\n ")
 	DisplayMessage(msg2)
 
 	// Display message ID list
@@ -307,11 +318,11 @@ func main() {
 	fmt.Println()
 
 	// Create and display third message
-	msg3 := NewMessage("Pi-1", "", "Lighting", "2", map[string]interface{}{
-		"ApplianceID": "lamp-1",
-		"Brightness":  70,
+	msg3 := NewMessage("Pi-1", "all", "HVAC", "2", map[string]interface{}{
+		"ApplianceID": "fan-1",
+		"speed":       100,
 	}, oOutMessages, qMessages)
-	fmt.Println("----------------------------------------\nDisplayed Message Three:\n ")
+	fmt.Println("------------------------------------------------------------------------------------------------------------------------\nDisplayed Message Three:\n ")
 	DisplayMessage(msg3)
 
 	// Display message ID list
@@ -323,7 +334,7 @@ func main() {
 		"ApplianceID": "lamp-1",
 		"Brightness":  70,
 	}, oOutMessages, qMessages)
-	fmt.Println("----------------------------------------\nDisplayed Message Four:\n ")
+	fmt.Println("------------------------------------------------------------------------------------------------------------------------\nDisplayed Message Four:\n ")
 	DisplayMessage(msg4)
 
 	// Display message ID list
@@ -331,7 +342,7 @@ func main() {
 	fmt.Println()
 
 	// Display the first element of the outgoing messages queue
-	fmt.Println("----------------------------------------\nDisplayed Outgoing queue:\n ")
+	fmt.Println("------------------------------------------------------------------------------------------------------------------------\nDisplayed Outgoing queue:\n ")
 	fmt.Printf("First in line in queue: %s\n", qMessages.outgoingMessages[0])
 	fmt.Printf("Second in line in queue: %s\n", qMessages.outgoingMessages[1])
 	fmt.Printf("Third in line in queue: %s\n", qMessages.outgoingMessages[2])
@@ -347,7 +358,7 @@ func main() {
 	qMessages.incomingMessages = append(qMessages.incomingMessages, test1)
 
 	fmt.Println()
-	fmt.Println("----------------------------------------\nTesting message check-in:\n ")
+	fmt.Println("------------------------------------------------------------------------------------------------------------------------\nTesting message check-in:\n ")
 
 	// Testing if echo function works correctly
 	fmt.Println("Length of Outgoing Queue before test:", len(qMessages.outgoingMessages))
@@ -361,34 +372,38 @@ func main() {
 	}
 	fmt.Println("Length of Outgoing Queue:", len(qMessages.outgoingMessages))
 	// Test message check-in function with first message
-	MessageCheckIn(test, oInMessages, qMessages, globalPiID)
+	MessageCheckIn(test, oInMessages, qMessages)
 	// Since the receiverID is not matched, the outgoing queue should have the message added to it.
 	fmt.Println("Length of Outgoing Queue:", len(qMessages.outgoingMessages))
 	fmt.Println("NOTE: Since the ReceiverID did not match, the message was placed into the \noutgoing queue via echo function as seen with the length of the outgoing queue \nbeing upped by one.")
 	fmt.Println()
 
 	// Test message check-in function with second message
-	MessageCheckIn(test1, oInMessages, qMessages, globalPiID)
+	MessageCheckIn(test1, oInMessages, qMessages)
+	fmt.Println("OutgoingMessages queue size should be the same. Actual size:", len(qMessages.outgoingMessages))
 
 	// Test message check-in function with third message
 	fmt.Println()
-	MessageCheckIn(test2, oInMessages, qMessages, globalPiID)
+	MessageCheckIn(test2, oInMessages, qMessages)
+	fmt.Println("OutgoingMessages queue size should be incremented. Reason: Echo - Actual size:", len(qMessages.outgoingMessages))
 
 	// Test message check-in function with third message again: should already exist
 	fmt.Println()
-	MessageCheckIn(test2, oInMessages, qMessages, globalPiID)
+	MessageCheckIn(test2, oInMessages, qMessages)
+	fmt.Println("OutgoingMessages queue size should be the same. Actual size:", len(qMessages.outgoingMessages))
 
 	// Test message check-in function with forth message: receiver ID should not match
 	fmt.Println()
-	MessageCheckIn(test3, oInMessages, qMessages, globalPiID)
+	MessageCheckIn(test3, oInMessages, qMessages)
+	fmt.Println("OutgoingMessages queue size should be incremented. Reason: Echo - Actual size:", len(qMessages.outgoingMessages))
 	fmt.Println()
 
-	fmt.Println("----------------------------------------\nDisplay deserialized message queue - Before resolveMessage:\n ")
+	fmt.Println("------------------------------------------------------------------------------------------------------------------------\nDisplay deserialized message queue - Before resolveMessage:\n ")
 	fmt.Println("Deserialized Queue:", qMessages.deserialMessages)
 
 	// Display message ID list
 	fmt.Println()
-	fmt.Println("Displayed incoming MessageID list   Before resolveMessage:\n ")
+	fmt.Println("Displayed incoming MessageID list - Before resolveMessage:\n ")
 	fmt.Printf("MessageID list: %s\n", oInMessages)
 
 	// Remove serviced message from queue
