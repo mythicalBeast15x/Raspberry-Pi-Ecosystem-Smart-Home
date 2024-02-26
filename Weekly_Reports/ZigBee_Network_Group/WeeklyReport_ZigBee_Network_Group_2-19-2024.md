@@ -8,8 +8,8 @@
 - Test for bugs in our ZigBee Network setup.
 
 ### Key Points
-- Update go versions on all raspberry pi due to conflict with serial package.
-- Working towards json file transfer between zigbee network.
+- Update go versions on all Raspberry Pi due to conflict with the serial package.
+- Working towards JSON file transfer between ZigBee network.
 
 ### Next Week Goals
 
@@ -27,7 +27,7 @@
 
 #### Key Points
 - Communication Testing Done - Setup JSON data communication between Zigbees (part 2)
-- Coninue with Zigbee Network Implementation, JSON data structure for consistent communication.
+- Continue with Zigbee Network Implementation, JSON data structure for consistent communication.
 - Documented and finished the configuration of the Zigbees completely along with getting them on the same firmware
 
 #### Next Week Goals
@@ -69,8 +69,15 @@
 - Document and capture visual interactions of ZigBee devices.
 
 #### Key Points
+- Collaborated with the team to implement an echo function within Josh's messaging structure. This will be handled in the Data Access Layer.
+- Introduced a TLS web certificate and associated keys, facilitating the transition from HTTP to HTTPS for enhanced security. It's very important to note that the web certificate will require trust from users. This should be further looked at.
+- Initiated the documentation process detailing the integration and installation procedures of the TLS web certificate, ensuring comprehensive understanding and reference for other project members.
 
 #### Next Week Goals
+- Have discussions with the frontend/security members to review the implementation of the TLS web certificate and advance it.
+- Assist in finalizing the communication structure of the ZigBee network.
+- Initiate physical testing of ZigBee devices, along with documenting and capturing visual interactions of the ZigBee devices.
+- Collaborate with other teams to define lighting functions for different areas.
 
 ### ❖ Joshua Murillo
 
