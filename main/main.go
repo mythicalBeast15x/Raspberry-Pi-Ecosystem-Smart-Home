@@ -12,5 +12,5 @@ func main() {
 	//-------------------------------------
 	//listen for messages
 
-	Test()
+	startUp()
 }
