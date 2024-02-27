@@ -27,13 +27,19 @@
 ### Darsh
 
 #### Previous Team Goals
-
+- Worked with the Zigbee team to figure out if the Zigbees are communicating.
+- Tested the files (client and controller) for sending and receiving signals between the Zigbees.
+- Implemented AES encryption for data encryption between the IOT devices.
 
 #### Key Points
-
+- Setup basic HMAC functions.
+- Made some changes to the AES encryption by adding generatekey() function.
+- Understanding how AES and HMAC work together when sending and receiving the messages.
 
 #### Next Week Goals
-
+- Have the serialized JSON data to encrypt.
+- Use the encrypted ciphertext to generate HMAC.
+- After HMAC verifies the hash it will decrypt the data into raw JSON format.
 
 
 
