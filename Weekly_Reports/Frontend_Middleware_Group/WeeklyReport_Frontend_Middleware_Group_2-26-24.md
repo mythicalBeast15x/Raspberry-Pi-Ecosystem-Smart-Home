@@ -42,11 +42,11 @@
 - Talked to Joshua regarding the features we can add to our website to make it more user friendly. 
 
 ### Previous week Goals
-- Made a login page using Golang and HTML
+- Made a login and registration page using HTML/CSS
 - Did more reasearch on home security system webpages to make it more user friendly 
 
  ### Key Points
   - Start implementing our ideas into code.
   - Still trying to figure out which language is the best
 ### Next Week Goals
-- Start coding registration page
+- Collab with backend team to discuss more on the webpage. 
