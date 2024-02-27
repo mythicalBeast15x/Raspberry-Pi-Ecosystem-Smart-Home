@@ -78,4 +78,29 @@ This is for each person and what you have focused on. Make these all bullet poin
 ### Next Week's Goals
 - User log in database set up
 - Begin shifting to help other groups (Possibly?)
+
+## Individual Report - Catherine Monteith
+### Previous Goals
+- Refine & Properly create base model of DAL (beyond Pseudo)
+- Meet with Front End team to better shape DAL to fit their needs and figure out how to communicate to some of
+  the existing functions
+- Touch Base again with Zigbee to see if I can gain anymore insight
   
+
+### Key Points
+- DAL is structurally approved
+  - Major Issues: 
+    - OperationIDs - These are currently in a dictionary-like structure 
+  and unfortunately have not yet been modified to not be 0-11,
+    - Aspects of sending and receiving
+      - Currently each core DAL function takes in a STRUCTURE and MODIFIES the ATTRIBUTES within it. We need to solidify How this structure is sent (ex: light struct) 
+      - Pseudo//comments exist for the rough functionality of how DAL will take in messages, but, again, given the above there is currently a missing argument) 
+    - Front-End team will need a way to access OIDs in order to work with the DAL
+  - Discussed these points pretty heavily with Josh, I need more collaboration and group understanding to properly cater! 
+  - Worked with Front-end to solidify existing structures and go over developer tools. 
+
+### Next weeks goals: 
+- SOLIDIFY DAL, work closer with Zigbee team so that better communication can happen with front-end. 
+- Solidify aspects of communication 
+- solidify plans for data storage and retrieval so that front-end will be able to dynamically load when they are ready to. 
+
