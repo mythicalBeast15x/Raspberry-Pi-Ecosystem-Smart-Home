@@ -16,6 +16,8 @@ type Config struct {
 	AESKey     string                // the AES key for the network  TODO: Implement properly
 	Blockchain blockchain.Blockchain // the blockchain for the device
 	Devices    []string              // the devices on the network  TODO: Implement properly
+	// TODO: hash key
+	// TODO: HMAC key
 }
 
 // startUp function runs on Pi start up
@@ -25,7 +27,13 @@ func startUp() {
 	parseConfigJSON("main/startup.json", &config)
 	fmt.Println(config) // DEBUG
 
-	// confirm secret key
+	// TODO: Account for first Pi on the network
+	// 	- generate AES and HMAC key
+	// 	- confirm secret key
+	// 	- mongoDB
+	// 		- blockchain?
+	// 		- user IDs?
+
 	confirmKey(config.SecretKey)
 
 	// retrieve info form another device on the network
@@ -61,10 +69,14 @@ func parseConfigJSON(filepath string, config *Config) {
 }
 
 // confirmKey confirms the device's secret key with the other devices on the network
-func confirmKey(secretKey string) {} // TODO: Implement this function
+func confirmKey(secretKey string) {
+	// confirm device ID is unique
+} // TODO: Implement this function
 
 // retrieveInfo retrieves the device's information from another device on the network
 func retrieveInfo(config *Config) {
+	// TODO: Stop other Pis from validating once one begins
+
 	// TODO: Retrieve AES key from another device on the network
 	config.AESKey = "Placeholder AES Key" // Placeholder AES key
 
@@ -74,6 +86,10 @@ func retrieveInfo(config *Config) {
 
 	// TODO: Retrieve device list from another device on the network
 	config.Devices = []string{"Placeholder Device 1", "Placeholder Device 2"} // Placeholder device list
+
+	// TODO: Retrieve hash key
+
+	// TODO: Retrieve HMAC key
 }
 
 // announceStartup announces the device's startup to the other devices on the network
