@@ -69,7 +69,8 @@ func retrieveInfo(config *Config) {
 	config.AESKey = "Placeholder AES Key" // Placeholder AES key
 
 	// TODO: Retrieve blockchain from another device on the network
-	config.Blockchain = blockchain.Blockchain{} // Placeholder blockchain
+	localBlockchain := blockchain.NewBlockchain(4) // Placeholder blockchain
+	config.Blockchain = *localBlockchain           // Placeholder blockchain
 
 	// TODO: Retrieve device list from another device on the network
 	config.Devices = []string{"Placeholder Device 1", "Placeholder Device 2"} // Placeholder device list
