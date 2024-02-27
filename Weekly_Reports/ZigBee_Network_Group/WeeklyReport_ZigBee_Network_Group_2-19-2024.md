@@ -132,5 +132,11 @@
 - Documentation and Reporting: Begin compiling documentation on the HVAC system's development process and outcomes, preparing for project reporting.
 
 #### Key Points
+- Worked on the deliverable file for documentation and submission. 
+- Added a sensor detection code that will need to get refined once the sensors arrive.
+- Did research on the temperature sensor and worked on a code ideas on the implementation for it.
 
 #### Next Week Goals
+- Hopefully we have the motion sensors so i am able to setup a presence detection temperature setting feature.
+- Advance the scheduling feature of the HVAC system to ensure the use has detailed options to set the schedule.
+- Assist with the frontend of the UI
