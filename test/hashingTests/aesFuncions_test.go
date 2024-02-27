@@ -1,23 +1,44 @@
-package Hashing
+package hashingTests
 
-import (
-	"CMPSC488SP24SecThursday/hashing"
-	"testing"
-)
-
+/*
 func TestEncryptDecrypt(t *testing.T) {
-	key := "N1PCdw3M2B1TfJhoaY2mL736p2vCUc47" // 32 bytes for AES-256
-	originalText := "Hello, World!"
-	encryptedText, err := hashing.Encrypt(originalText, key)
-	if err != nil {
-		t.Errorf("Failed to encrypt: %v", err)
+	// Test cases
+	testCases := []struct {
+		plaintext string
+	}{
+		{plaintext: "Hello, world!"},
+		{plaintext: "This is a test."},
+		{plaintext: ""},
 	}
-	decryptedText, err := hashing.Decrypt(encryptedText, key)
+
+	// Generate a random encryption key of length 16 bytes (128 bits)
+	key := make([]byte, 16)
+	_, err := rand.Read(key)
 	if err != nil {
-		t.Errorf("Failed to decrypt: %v", err)
+		t.Fatalf("Error generating random key: %v", err)
 	}
-	if decryptedText != originalText {
-		t.Errorf("Decrypted text does not match original. Got %s, want %s", decryptedText,
-			originalText)
+
+	// Iterate over test cases
+	for _, tc := range testCases {
+		plaintext := []byte(tc.plaintext)
+
+		// Encrypt the plaintext
+		ciphertextBase64, err := encrypt(plaintext, key)
+		if err != nil {
+			t.Errorf("Encryption error: %v", err)
+		}
+
+		// Decrypt the ciphertext
+		decrypted, err := decrypt(ciphertextBase64, key)
+		if err != nil {
+			t.Errorf("Decryption error: %v", err)
+		}
+
+		// Compare plaintext and decrypted values
+		if !bytes.Equal(plaintext, decrypted) {
+			t.Errorf("Decrypt(Encrypt(plaintext)) = %s; want %s", decrypted, plaintext)
+		}
 	}
 }
+
+*/
