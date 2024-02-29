@@ -10,7 +10,6 @@ import (
 // Message struct represents the JSON message format
 type Message struct {
 	Content string `json:"content"`
-	// You can add more fields as needed
 }
 
 func controller() {

@@ -8,6 +8,11 @@ import (
 	"io"
 )
 
+// Response struct represents the JSON response format from controller
+type Response struct {
+	Content string `json:"content"`
+}
+
 func client() {
 	options := serial.OpenOptions{
 		PortName:        "/dev/ttyUSB0",
@@ -35,15 +40,15 @@ func client() {
 			continue
 		}
 
-		// Unmarshal JSON data into message struct
-		var message Message
-		err = json.Unmarshal(jsonData, &message)
+		// Unmarshal JSON data into response struct
+		var response Response
+		err = json.Unmarshal(jsonData, &response)
 		if err != nil {
 			fmt.Printf("Error unmarshalling JSON: %v\n", err)
 			continue
 		}
 
-		fmt.Printf("Message received: %s\n", message.Content)
+		fmt.Printf("Message received: %s\n", response.Content)
 	}
 }
 
