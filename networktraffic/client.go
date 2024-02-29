@@ -1,7 +1,8 @@
-package networktrafffic
+package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"github.com/jacobsa/go-serial/serial"
 	"io"
@@ -25,13 +26,27 @@ func client() {
 
 	reader := bufio.NewReader(port)
 	for {
-		message, err := reader.ReadString('\n')
+		// Read JSON data from the serial port
+		jsonData, err := reader.ReadBytes('\n')
 		if err != nil {
 			if err != io.EOF {
 				fmt.Printf("Error reading from serial port: %v\n", err)
 			}
 			continue
 		}
-		fmt.Printf("Message received: %s", message)
+
+		// Unmarshal JSON data into message struct
+		var message Message
+		err = json.Unmarshal(jsonData, &message)
+		if err != nil {
+			fmt.Printf("Error unmarshalling JSON: %v\n", err)
+			continue
+		}
+
+		fmt.Printf("Message received: %s\n", message.Content)
 	}
+}
+
+func main() {
+	client()
 }

@@ -1,4 +1,4 @@
-package networktrafffic
+package main
 
 import (
 	"fmt"
