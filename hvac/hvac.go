@@ -11,7 +11,7 @@ type HVAC struct {
 	Temperature int    // Desired temperature in Fahrenheit
 	FanSpeed    int    // Fan speed (0-100%)
 	Mode        string // HVAC mode (e.g., "Cool", "Heat", "Fan", "Off")
-}s
+}
 
 // NewHVAC creates a new HVAC instance with the given name and initial settings.
 func NewHVAC(name string) *HVAC {
