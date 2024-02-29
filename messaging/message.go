@@ -7,6 +7,7 @@ relevant device nodes.
 
 import (
 	"CMPSC488SP24SecThursday/Helper"
+	"CMPSC488SP24SecThursday/hashing"
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
@@ -297,6 +298,94 @@ func (msgQueue *MessageQueue) Dequeue(queueType string) (interface{}, error) {
 	}
 }
 
+// EncryptHashAndSend dequeues a message from the outgoing queue and encrypts it.
+/*
+Purpose: To dequeue a serialized message from the outgoing queue, encrypt it, generate a hash for it, combine those
+two pieces of data into one object, and call the Zigbee sender function to send out the processed message out to the
+Zigbee network.
+Data:
+- qMessages: Pointer to the MessageQueue where the outgoing messages are stored.
+- key: The AES encryption key of type []byte
+Returns:
+- error: An error if the specified queue is empty.
+*/
+func EncryptHashAndSend(qMessages *MessageQueue, key []byte) error {
+	// Dequeue a message from the outgoing queue
+	deqMsg, err := qMessages.Dequeue("outgoing")
+	if err != nil {
+		fmt.Println("Error dequeuing from outgoing queue:", err)
+		return err
+	}
+	fmt.Println("Dequeued from outgoing queue: Some byte message")
+	// Convert the dequeued message to []byte
+	jsonData, ok := deqMsg.([]byte)
+	if !ok {
+		fmt.Println("Expected dequeued message to be of type []byte")
+		return err
+	}
+	// Encrypt the JSON data
+	encrypt, err := hashing.EncryptGCM(string(jsonData), string(key))
+	if err != nil {
+		fmt.Println("Error encrypting JSON:", err)
+		return err
+	}
+	fmt.Println("Encrypted message:", encrypt)
+
+	// Generate the HMAC hash and append it to the encrypted data:
+	// TODO - Add HMAC function to generate a hash that will be attached to the encrypted message.
+
+	//encryptPlusHash := encrypt + hash
+
+	// CALL ZIGBEE SENDER FUNCTION WITH ENCRYPTED DATA
+	fmt.Println("Sending out message to Zigbee network...")
+	// Convert encrypted data to type []byte for transmission
+	//encryptedByte := []byte(encryptPlusHash) // TODO - Uncomment when real Zigbee sender function is available
+	//Zigbee.Send(encryptedByte) // TODO - Replace with name of real Zigbee sender function
+	fmt.Println("Message sent!")
+	return err
+}
+
+// ValidateAndDecrypt dequeues a message from the incoming queue, validates it and decrypts it.
+/*
+Purpose: To dequeue an encrypted message from the incoming queue, regenerate a hash for it, validate the new hash
+against the accompanying hash, decrypt it, and send the decrypted data to the message check in function.
+Data:
+- oMessages: A list to keep track of opened messages for the sake if giving the message a unique MessageID.
+- qMessages: Pointer to the MessageQueue where the incoming messages are stored.
+- key: The AES encryption key of type []byte
+Returns:
+- error: An error if the specified queue is empty.
+*/
+func ValidateAndDecrypt(oMessages *OpenMessages, qMessages *MessageQueue, key []byte) error {
+	// Dequeue a message from the outgoing queue
+	deqMsg, err := qMessages.Dequeue("incoming")
+	if err != nil {
+		fmt.Println("Error dequeuing from incoming queue:", err)
+		return err
+	}
+	fmt.Println("Dequeued from incoming queue: Some byte message")
+	encryptedPlusHash := deqMsg.([]byte)
+
+	// Split the encrypted message from the hash and validate the HMAC hash to see if the message was tampered with:
+	// TODO - Add HMAC function to compare the new generated has to the hash that was attached to the message.
+
+	// encrypted := encryptedPlusHash - Hash
+
+	// Decrypt the JSON data
+	decrypt, err := hashing.DecryptGCM(string(encryptedPlusHash), string(key)) // TODO replace with encrypted after HMAC is implemented.
+	if err != nil {
+		fmt.Print("Error decrypting JSON:", err)
+		return err
+	}
+	// Use the encrypted message as needed
+	fmt.Println("Decrypted message:", decrypt)
+
+	// Add decrypted data to message check in function
+	decryptedByte := []byte(decrypt)
+	MessageCheckIn(decryptedByte, oMessages, qMessages)
+	return err
+}
+
 /*
 func main() {
 	// Initialize message queues
@@ -314,7 +403,7 @@ func main() {
 	DisplayMessage(msg)
 
 	// Display message ID list
-	fmt.Printf("\nOutgoing MessageID list: %s\n", oOutMessages)
+	fmt.Printf("\nOutgoing MessageID list: %s", oOutMessages)
 	fmt.Println()
 
 	// Create and display second message
@@ -326,7 +415,7 @@ func main() {
 	DisplayMessage(msg2)
 
 	// Display message ID list
-	fmt.Printf("\nOutgoing MessageID list: %s\n", oOutMessages)
+	fmt.Printf("\nOutgoing MessageID list: %s", oOutMessages)
 	fmt.Println()
 
 	// Create and display third message
@@ -338,7 +427,7 @@ func main() {
 	DisplayMessage(msg3)
 
 	// Display message ID list
-	fmt.Printf("\nOutgoing MessageID list: %s\n", oOutMessages)
+	fmt.Printf("\nOutgoing MessageID list: %s", oOutMessages)
 	fmt.Println()
 
 	// Create and display third message
@@ -350,14 +439,14 @@ func main() {
 	DisplayMessage(msg4)
 
 	// Display message ID list
-	fmt.Printf("\nOutgoing MessageID list: %s\n", oOutMessages)
+	fmt.Printf("\nOutgoing MessageID list: %s", oOutMessages)
 	fmt.Println()
 
 	// Display the first element of the outgoing messages queue
 	fmt.Println("------------------------------------------------------------------------------------------------------------------------\nDisplayed Outgoing queue:\n ")
-	fmt.Printf("First in line in queue: %s\n", qMessages.outgoingMessages[0])
-	fmt.Printf("Second in line in queue: %s\n", qMessages.outgoingMessages[1])
-	fmt.Printf("Third in line in queue: %s\n", qMessages.outgoingMessages[2])
+	fmt.Printf("First in line in queue: %s", qMessages.outgoingMessages[0])
+	fmt.Printf("Second in line in queue: %s", qMessages.outgoingMessages[1])
+	fmt.Printf("Third in line in queue: %s", qMessages.outgoingMessages[2])
 
 	// Setting each message in the message list to a variable
 	test := qMessages.outgoingMessages[0]
@@ -474,5 +563,48 @@ func main() {
 	fmt.Println("Length of Deserialized Queue:", len(qMessages.deserialMessages))
 	fmt.Println("Length of Incoming Queue:", len(qMessages.incomingMessages))
 	fmt.Println("Length of Outgoing Queue:", len(qMessages.outgoingMessages))
+
+	fmt.Print("\n\nTesting Encryption and decryption of serialized data:\n")
+	messageID := oOutMessages.generateMessageID()
+	msgtest := Message{
+		MessageID:   messageID,
+		SenderID:    "Pi-1",
+		ReceiverID:  "Pi-2",
+		Domain:      "lighting",
+		OperationID: "2",
+		Data:        data,
+	}
+
+	jsonData, err := json.Marshal(msgtest)
+	if err != nil {
+		fmt.Println("Error marshalling JSON:", err)
+		return
+	}
+
+	key := []byte("1234567890123456")
+
+	encrypt, err := hashing.EncryptGCM(string(jsonData), string(key))
+	if err != nil {
+		fmt.Println("Error encrypting JSON:", err)
+		return
+	}
+	fmt.Println()
+
+	fmt.Print("\nBefore encrypted DATA TEST:\n", string(jsonData))
+	fmt.Println()
+	fmt.Print("\nAfter encrypted DATA TEST:\n", string(encrypt))
+	fmt.Println()
+	fmt.Print("\nConvert encrypted to []byte:\n", []byte(encrypt))
+
+	decrypt, err := hashing.DecryptGCM(encrypt, string(key))
+	if err != nil {
+		fmt.Print("Error decrypting JSON:", err)
+		return
+	}
+	fmt.Println()
+	fmt.Print("\nAfter decrypted DATA TEST:\n", string(decrypt))
+	fmt.Println("\n ")
+	idecrypt := []byte(decrypt)
+	MessageCheckIn(idecrypt, oInMessages, qMessages)
 }
 */
