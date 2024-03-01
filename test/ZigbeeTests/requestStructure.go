@@ -3,6 +3,7 @@ package zigbeetests
 /*
 import (
 	"CMPSC488SP24SecThursday/messaging"
+	"fmt"
 )
 
 func main() {
@@ -32,11 +33,14 @@ func main() {
 	key := []byte("1234567890123456") // TODO - replace with generated AES key
 
 	// Takes message from outgoing queue and sends out message to Zigbee function
-	err := messaging.EncryptHashAndSend(qMessages, key)
+	incomingMsg, err := messaging.EncryptAndHash(qMessages, key)
 	if err != nil {
 		return
 	}
+	fmt.Println("Message to be sent (String):\n ", incomingMsg)
 
+	qMessages.IncomingMessages = append(qMessages.IncomingMessages, incomingMsg)
+	fmt.Print("\n")
 	// Takes message from incoming queue and runs MessageCheckIn function
 	err = messaging.ValidateAndDecrypt(oInMessages, qMessages, key)
 	if err != nil {

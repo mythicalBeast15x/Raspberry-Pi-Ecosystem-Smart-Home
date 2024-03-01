@@ -20,6 +20,12 @@ var globalPiID = "all"
 // localPiID temp variable simulates the ID of the Pi device to show a case of the receiverID matching the global Pi ID.
 var localPiID = "Pi-2"
 
+// EncryptedMessage struct to hold data
+type EncryptedMessage struct {
+	EncryptedData string `json:"encryptedData"`
+	Hash          string `json:"hash"`
+}
+
 // MessageQueue is a list of messages for managing incoming, outgoing, and deserialized versions of our system's messages.
 /*
 outgoing messages are in the form of the serialized JSON structure of type []byte.
@@ -28,9 +34,9 @@ deserial messages are for the deserialized versions of the data of type Message 
 being serviced.
 */
 type MessageQueue struct {
-	incomingMessages [][]byte  // Queue for incoming encrypted messages as strings along with their hash.
-	deserialMessages []Message // Queue for post-processed messages that are waiting to be checked-in before servicing.
-	outgoingMessages [][]byte  // Queue for outgoing messages
+	IncomingMessages []string  // Queue for incoming encrypted messages as strings along with their hash.
+	DeserialMessages []Message // Queue for post-processed messages that are waiting to be checked-in before servicing.
+	OutgoingMessages [][]byte  // Queue for outgoing messages
 }
 
 // OpenMessages is a list to keep track of all the open messages
@@ -93,10 +99,10 @@ func (oMessages *OpenMessages) resolveMessage(responseID string, qMessages *Mess
 	if x < len(oMessages.messages) {
 		oMessages.messages = append(oMessages.messages[:x], oMessages.messages[x+1:]...)
 	}
-	// Remove the message from the deserialMessages queue
-	for i, msg := range qMessages.deserialMessages {
+	// Remove the message from the DeserialMessages queue
+	for i, msg := range qMessages.DeserialMessages {
 		if msg.MessageID == responseID {
-			qMessages.deserialMessages = append(qMessages.deserialMessages[:i], qMessages.deserialMessages[i+1:]...)
+			qMessages.DeserialMessages = append(qMessages.DeserialMessages[:i], qMessages.DeserialMessages[i+1:]...)
 			break
 		}
 	}
@@ -145,7 +151,7 @@ func NewMessage(senderID, receiverID, domain, operationID string, data map[strin
 		return message
 	}
 	// Add serialized outgoing message to the outgoing queue
-	qMessages.outgoingMessages = append(qMessages.outgoingMessages, jsonData)
+	qMessages.OutgoingMessages = append(qMessages.OutgoingMessages, jsonData)
 	// Returns the un-serialized version of the data.
 	return message
 }
@@ -204,7 +210,7 @@ func MessageCheckIn(serialMsg []byte, oMessages *OpenMessages, qMessages *Messag
 	}
 	if msg.ReceiverID == globalPiID {
 		fmt.Println("Global ID matched! Message is meant for all devices")
-		qMessages.deserialMessages = append(qMessages.deserialMessages, msg)
+		qMessages.DeserialMessages = append(qMessages.DeserialMessages, msg)
 		oMessages.messages = append(oMessages.messages, msg.MessageID)
 		EchoMessage(msg, qMessages) // call to echo the message out again
 		return true
@@ -217,7 +223,7 @@ func MessageCheckIn(serialMsg []byte, oMessages *OpenMessages, qMessages *Messag
 	}
 	// If MessageID and ReceiverID checks pass, then it can be serviced. Adds the message of type Message to the deserialized message queue.
 	fmt.Println("Message is serviceable!")
-	qMessages.deserialMessages = append(qMessages.deserialMessages, msg)
+	qMessages.DeserialMessages = append(qMessages.DeserialMessages, msg)
 	oMessages.messages = append(oMessages.messages, msg.MessageID)
 	return true
 }
@@ -254,7 +260,7 @@ func EchoMessage(msg Message, qMessages *MessageQueue) {
 		return
 	}
 	// Add the serialized message to the outgoing queue
-	qMessages.outgoingMessages = append(qMessages.outgoingMessages, jsonData)
+	qMessages.OutgoingMessages = append(qMessages.OutgoingMessages, jsonData)
 }
 
 // Dequeue pops the first element from the specified queue from the MessageQueue structure.
@@ -273,32 +279,32 @@ Returns:
 func (msgQueue *MessageQueue) Dequeue(queueType string) (interface{}, error) {
 	switch queueType {
 	case "incoming":
-		if len(msgQueue.incomingMessages) == 0 {
+		if len(msgQueue.IncomingMessages) == 0 {
 			return nil, fmt.Errorf("incoming queue is empty")
 		}
-		msg := msgQueue.incomingMessages[0]
-		msgQueue.incomingMessages = msgQueue.incomingMessages[1:]
+		msg := msgQueue.IncomingMessages[0]
+		msgQueue.IncomingMessages = msgQueue.IncomingMessages[1:]
 		return msg, nil
 	case "deserial":
-		if len(msgQueue.deserialMessages) == 0 {
+		if len(msgQueue.DeserialMessages) == 0 {
 			return nil, fmt.Errorf("deserial queue is empty")
 		}
-		msg := msgQueue.deserialMessages[0]
-		msgQueue.deserialMessages = msgQueue.deserialMessages[1:]
+		msg := msgQueue.DeserialMessages[0]
+		msgQueue.DeserialMessages = msgQueue.DeserialMessages[1:]
 		return msg, nil
 	case "outgoing":
-		if len(msgQueue.outgoingMessages) == 0 {
+		if len(msgQueue.OutgoingMessages) == 0 {
 			return nil, fmt.Errorf("outgoing queue is empty")
 		}
-		msg := msgQueue.outgoingMessages[0]
-		msgQueue.outgoingMessages = msgQueue.outgoingMessages[1:]
+		msg := msgQueue.OutgoingMessages[0]
+		msgQueue.OutgoingMessages = msgQueue.OutgoingMessages[1:]
 		return msg, nil
 	default:
 		return nil, fmt.Errorf("unknown queue type: %s", queueType)
 	}
 }
 
-// EncryptHashAndSend dequeues a message from the outgoing queue and encrypts it.
+// EncryptAndHash dequeues a message from the outgoing queue and encrypts it.
 /*
 Purpose: To dequeue a serialized message from the outgoing queue, encrypt it, generate a hash for it, combine those
 two pieces of data into one object, and call the Zigbee sender function to send out the processed message out to the
@@ -307,42 +313,48 @@ Data:
 - qMessages: Pointer to the MessageQueue where the outgoing messages are stored.
 - key: The AES encryption key of type []byte
 Returns:
+- A JSON string to be sent out over the Zigbee network.
 - error: An error if the specified queue is empty.
 */
-func EncryptHashAndSend(qMessages *MessageQueue, key []byte) error {
+func EncryptAndHash(qMessages *MessageQueue, key []byte) (string, error) {
 	// Dequeue a message from the outgoing queue
 	deqMsg, err := qMessages.Dequeue("outgoing")
 	if err != nil {
 		fmt.Println("Error dequeuing from outgoing queue:", err)
-		return err
+		return "", nil
 	}
 	fmt.Println("Dequeued from outgoing queue: Some byte message")
 	// Convert the dequeued message to []byte
 	jsonData, ok := deqMsg.([]byte)
 	if !ok {
 		fmt.Println("Expected dequeued message to be of type []byte")
-		return err
+		return "", nil
 	}
 	// Encrypt the JSON data
 	encrypt, err := hashing.EncryptGCM(string(jsonData), string(key))
 	if err != nil {
 		fmt.Println("Error encrypting JSON:", err)
-		return err
+		return "", nil
 	}
 	fmt.Println("Encrypted message:", encrypt)
 
 	// Generate the HMAC hash and append it to the encrypted data:
-	// TODO - Add HMAC function to generate a hash that will be attached to the encrypted message.
+	hash, time := hashing.CalculateSHA256(encrypt)
+	fmt.Println("Time taken: ", time)
 
-	//encryptPlusHash := encrypt + hash
+	// Create the EncryptedMessage struct
+	encryptedMsg := EncryptedMessage{
+		EncryptedData: encrypt,
+		Hash:          hash,
+	}
 
-	// CALL ZIGBEE SENDER FUNCTION WITH ENCRYPTED DATA
-	fmt.Println("Sending out message to Zigbee network...")
-	// Convert encrypted data to type []byte for transmission
-	//encryptedByte := []byte(encryptPlusHash) // TODO - Uncomment when real Zigbee sender function is available
-	//Zigbee.Send(encryptedByte) // TODO - Replace with name of real Zigbee sender function
-	fmt.Println("Message sent!")
-	return err
+	// Marshal the EncryptedMessage struct into JSON
+	encryptPlusHash, err := json.Marshal(encryptedMsg)
+	if err != nil {
+		return "", fmt.Errorf("error marshalling encrypted message to JSON: %v", err)
+	}
+
+	return string(encryptPlusHash), err
 }
 
 // ValidateAndDecrypt dequeues a message from the incoming queue, validates it and decrypts it.
@@ -357,33 +369,46 @@ Returns:
 - error: An error if the specified queue is empty.
 */
 func ValidateAndDecrypt(oMessages *OpenMessages, qMessages *MessageQueue, key []byte) error {
-	// Dequeue a message from the outgoing queue
+	// Dequeue a JSON string message from the incoming queue
 	deqMsg, err := qMessages.Dequeue("incoming")
 	if err != nil {
 		fmt.Println("Error dequeuing from incoming queue:", err)
 		return err
 	}
-	fmt.Println("Dequeued from incoming queue: Some byte message")
-	encryptedPlusHash := deqMsg.([]byte)
+	fmt.Println("Dequeued from incoming queue: Some string message")
+
+	// Convert the dequeued message to string
+	jsonStr, ok := deqMsg.(string)
+	if !ok {
+		return fmt.Errorf("expected dequeued message to be of type string")
+	}
+
+	// Unmarshal the JSON string into EncryptedMessage struct
+	var encryptedPlusHash EncryptedMessage
+	err = json.Unmarshal([]byte(jsonStr), &encryptedPlusHash)
+	if err != nil {
+		return fmt.Errorf("error unmarshalling JSON message: %v", err)
+	}
 
 	// Split the encrypted message from the hash and validate the HMAC hash to see if the message was tampered with:
-	// TODO - Add HMAC function to compare the new generated has to the hash that was attached to the message.
+	hash, time := hashing.CalculateSHA256(encryptedPlusHash.EncryptedData)
+	fmt.Println("Time taken: ", time)
+	if hash == encryptedPlusHash.Hash { // if the generated hash matches the appended hash:
+		// Decrypt the JSON data
+		decrypt, err := hashing.DecryptGCM(encryptedPlusHash.EncryptedData, string(key))
+		if err != nil {
+			fmt.Print("Error decrypting JSON:", err)
+			return err
+		}
+		// Use the encrypted message as needed
+		fmt.Println("Decrypted message:", decrypt)
 
-	// encrypted := encryptedPlusHash - Hash
-
-	// Decrypt the JSON data
-	decrypt, err := hashing.DecryptGCM(string(encryptedPlusHash), string(key)) // TODO replace with encrypted after HMAC is implemented.
-	if err != nil {
-		fmt.Print("Error decrypting JSON:", err)
+		// Add decrypted data to message check in function
+		decryptedByte := []byte(decrypt)
+		MessageCheckIn(decryptedByte, oMessages, qMessages)
 		return err
 	}
-	// Use the encrypted message as needed
-	fmt.Println("Decrypted message:", decrypt)
-
-	// Add decrypted data to message check in function
-	decryptedByte := []byte(decrypt)
-	MessageCheckIn(decryptedByte, oMessages, qMessages)
-	return err
+	return nil
 }
 
 /*
@@ -444,25 +469,25 @@ func main() {
 
 	// Display the first element of the outgoing messages queue
 	fmt.Println("------------------------------------------------------------------------------------------------------------------------\nDisplayed Outgoing queue:\n ")
-	fmt.Printf("First in line in queue: %s", qMessages.outgoingMessages[0])
-	fmt.Printf("Second in line in queue: %s", qMessages.outgoingMessages[1])
-	fmt.Printf("Third in line in queue: %s", qMessages.outgoingMessages[2])
+	fmt.Printf("First in line in queue: %s", qMessages.OutgoingMessages[0])
+	fmt.Printf("Second in line in queue: %s", qMessages.OutgoingMessages[1])
+	fmt.Printf("Third in line in queue: %s", qMessages.OutgoingMessages[2])
 
 	// Setting each message in the message list to a variable
-	test := qMessages.outgoingMessages[0]
-	test1 := qMessages.outgoingMessages[1]
-	test2 := qMessages.outgoingMessages[2]
-	test3 := qMessages.outgoingMessages[3]
+	test := qMessages.OutgoingMessages[0]
+	test1 := qMessages.OutgoingMessages[1]
+	test2 := qMessages.OutgoingMessages[2]
+	test3 := qMessages.OutgoingMessages[3]
 
 	// Adding a couple of the outgoing messages to the incoming message queue for demo purposes
-	qMessages.incomingMessages = append(qMessages.incomingMessages, test)
-	qMessages.incomingMessages = append(qMessages.incomingMessages, test1)
+	qMessages.IncomingMessages = append(qMessages.IncomingMessages, test)
+	qMessages.IncomingMessages = append(qMessages.IncomingMessages, test1)
 
 	fmt.Println()
 	fmt.Println("------------------------------------------------------------------------------------------------------------------------\nTesting message check-in:\n ")
 
 	// Testing if echo function works correctly
-	fmt.Println("Length of Outgoing Queue before test:", len(qMessages.outgoingMessages))
+	fmt.Println("Length of Outgoing Queue before test:", len(qMessages.OutgoingMessages))
 	fmt.Println("Removing element from outgoing queue for testing purposes...")
 	// Dequeue from the outgoing messages queue
 	_, err := qMessages.Dequeue("outgoing")
@@ -471,36 +496,36 @@ func main() {
 	} else {
 		fmt.Println("Dequeued from outgoing queue: Some byte message")
 	}
-	fmt.Println("Length of Outgoing Queue:", len(qMessages.outgoingMessages))
+	fmt.Println("Length of Outgoing Queue:", len(qMessages.OutgoingMessages))
 	// Test message check-in function with first message
 	MessageCheckIn(test, oInMessages, qMessages)
 	// Since the receiverID is not matched, the outgoing queue should have the message added to it.
-	fmt.Println("Length of Outgoing Queue:", len(qMessages.outgoingMessages))
+	fmt.Println("Length of Outgoing Queue:", len(qMessages.OutgoingMessages))
 	fmt.Println("NOTE: Since the ReceiverID did not match, the message was placed into the \noutgoing queue via echo function as seen with the length of the outgoing queue \nbeing upped by one.")
 	fmt.Println()
 
 	// Test message check-in function with second message
 	MessageCheckIn(test1, oInMessages, qMessages)
-	fmt.Println("OutgoingMessages queue size should be the same. Actual size:", len(qMessages.outgoingMessages))
+	fmt.Println("OutgoingMessages queue size should be the same. Actual size:", len(qMessages.OutgoingMessages))
 
 	// Test message check-in function with third message
 	fmt.Println()
 	MessageCheckIn(test2, oInMessages, qMessages)
-	fmt.Println("OutgoingMessages queue size should be incremented. Reason: Echo - Actual size:", len(qMessages.outgoingMessages))
+	fmt.Println("OutgoingMessages queue size should be incremented. Reason: Echo - Actual size:", len(qMessages.OutgoingMessages))
 
 	// Test message check-in function with third message again: should already exist
 	fmt.Println()
 	MessageCheckIn(test2, oInMessages, qMessages)
-	fmt.Println("OutgoingMessages queue size should be the same. Actual size:", len(qMessages.outgoingMessages))
+	fmt.Println("OutgoingMessages queue size should be the same. Actual size:", len(qMessages.OutgoingMessages))
 
 	// Test message check-in function with forth message: receiver ID should not match
 	fmt.Println()
 	MessageCheckIn(test3, oInMessages, qMessages)
-	fmt.Println("OutgoingMessages queue size should be incremented. Reason: Echo - Actual size:", len(qMessages.outgoingMessages))
+	fmt.Println("OutgoingMessages queue size should be incremented. Reason: Echo - Actual size:", len(qMessages.OutgoingMessages))
 	fmt.Println()
 
 	fmt.Println("------------------------------------------------------------------------------------------------------------------------\nDisplay deserialized message queue - Before resolveMessage:\n ")
-	fmt.Println("Deserialized Queue:", qMessages.deserialMessages)
+	fmt.Println("Deserialized Queue:", qMessages.DeserialMessages)
 
 	// Display message ID list
 	fmt.Println()
@@ -521,7 +546,7 @@ func main() {
 	oInMessages.resolveMessage(responseID2, qMessages)
 	fmt.Println()
 	fmt.Println("Display deserialized message queue - After resolveMessage:\n ")
-	fmt.Println("Deserialized Queue:", qMessages.deserialMessages)
+	fmt.Println("Deserialized Queue:", qMessages.DeserialMessages)
 
 	// Display message ID list
 	fmt.Println()
@@ -530,9 +555,9 @@ func main() {
 
 	fmt.Println()
 	fmt.Println("Display effects of dequeue function on all three types of message queues:\n ")
-	fmt.Println("Length of Deserialized Queue:", len(qMessages.deserialMessages))
-	fmt.Println("Length of Incoming Queue:", len(qMessages.incomingMessages))
-	fmt.Println("Length of Outgoing Queue:", len(qMessages.outgoingMessages))
+	fmt.Println("Length of Deserialized Queue:", len(qMessages.DeserialMessages))
+	fmt.Println("Length of Incoming Queue:", len(qMessages.IncomingMessages))
+	fmt.Println("Length of Outgoing Queue:", len(qMessages.OutgoingMessages))
 	fmt.Println()
 
 	// Dequeue from the deserialized messages queue
@@ -560,9 +585,9 @@ func main() {
 	}
 
 	fmt.Println()
-	fmt.Println("Length of Deserialized Queue:", len(qMessages.deserialMessages))
-	fmt.Println("Length of Incoming Queue:", len(qMessages.incomingMessages))
-	fmt.Println("Length of Outgoing Queue:", len(qMessages.outgoingMessages))
+	fmt.Println("Length of Deserialized Queue:", len(qMessages.DeserialMessages))
+	fmt.Println("Length of Incoming Queue:", len(qMessages.IncomingMessages))
+	fmt.Println("Length of Outgoing Queue:", len(qMessages.OutgoingMessages))
 
 	fmt.Print("\n\nTesting Encryption and decryption of serialized data:\n")
 	messageID := oOutMessages.generateMessageID()
