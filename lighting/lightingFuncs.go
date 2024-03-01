@@ -230,5 +230,4 @@ func main() {
 	time.Sleep(2 * time.Second)
 	light.SetTimer(5)
 }
-
 */

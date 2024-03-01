@@ -5,12 +5,8 @@ go 1.21.3
 require (
 	github.com/golang-jwt/jwt/v5 v5.2.0
 	github.com/google/gopacket v1.1.19
-
 	github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4
 	github.com/joho/godotenv v1.5.1
-	go.bug.st/serial v1.6.1
-	go.mongodb.org/mongo-driver v1.13.1
-
 	go.bug.st/serial v1.6.2
 	go.mongodb.org/mongo-driver v1.14.0
 

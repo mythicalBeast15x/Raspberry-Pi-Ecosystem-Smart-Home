@@ -28,12 +28,6 @@ func (m *MotionSensor) DetectMotion() {
 	}
 }
 
-// Callback function that could be used to trigger an alarm when motion is detected.
-func alarmTriggerCallback(sensorName string) {
-	fmt.Printf("Alarm triggered by %s.\n", sensorName)
-	// going to call the alarm's Trigger method here
-}
-
 // Alarm represents a simple alarm component.
 type Alarm struct {
 	Name    string

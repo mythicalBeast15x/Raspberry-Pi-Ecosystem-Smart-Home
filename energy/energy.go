@@ -193,7 +193,17 @@ func (ac *ApplianceController) HandelZigbeeRequest(request ZigbeeRequest) {
 	fmt.Printf("Appliance '%s' not found\n", request.ApplianceName)
 }
 
+/*
 func main() {
+	oOutMessages := &messaging.OpenMessages{}
+	qMessages := &messaging.MessageQueue{} // queues for outgoing, incoming, and incoming-serialized-to-be-serviced messages
+
+	// Create and display first message
+	msg := messaging.NewMessage("Pi-1", "Pi-2", "Lighting", "2", "lamp-1 70", oOutMessages, qMessages)
+	fmt.Println("----------------------------------------\nDisplayed Message One:\n ")
+	messaging.DisplayMessage(msg)
+
+	fmt.Println()
 	// Create a solar panel, battery, and appliances
 	solarPanel := NewSolarPanel("Solar Panel", 500)         // 500 watts of power output
 	houseBattery := NewBattery("House Battery", 2000)       // 2000 watt-hours capacity
@@ -218,20 +228,6 @@ func main() {
 
 	// Check battery charge level
 	fmt.Printf("House Battery Charge Level: %d Wh\n", houseBattery.Charge)
-
-	/*********************************************************************************
-		Beginning of a demonstration of the added request handling functions:
-
-		The program creates a new instance of the ApplianceController. It then creates
-		and adds both a light and fan appliances. Both begin in the off state.
-
-		Three test cases are then showcased:
-		- Appliance initially off and asked to turn on.
-		- Appliance already turned on and asked to be turned on.
-		- An unregistered appliance asked to be turned on.
-
-		NOTE: Further additions to accommodate the power consumption of each appliance will be added.
-	*********************************************************************************/
 
 	fmt.Printf("\nDemo Start:\n")
 	// New ApplianceController.
@@ -270,3 +266,4 @@ func main() {
 	controller.HandelZigbeeRequest(zigRequest6)
 
 }
+*/
