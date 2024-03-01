@@ -1,4 +1,4 @@
-package main
+package networktraffic
 
 import (
 	"encoding/json"
@@ -53,6 +53,9 @@ func controller() {
 	}
 }
 
+/*
 func main() {
 	controller()
 }
+
+*/

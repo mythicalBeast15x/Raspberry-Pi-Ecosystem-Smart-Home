@@ -1,4 +1,4 @@
-package main
+package networktraffic
 
 import (
 	"bufio"
@@ -52,6 +52,9 @@ func client() {
 	}
 }
 
+/*
 func main() {
 	client()
 }
+
+*/
