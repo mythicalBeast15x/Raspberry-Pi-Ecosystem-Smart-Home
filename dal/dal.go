@@ -6,7 +6,7 @@ import (
 	hvac "CMPSC488SP24SecThursday/hvac"
 	light "CMPSC488SP24SecThursday/lighting"
 	security "CMPSC488SP24SecThursday/security"
-	request "CMPSC488SP24SecThursday/test/ZigbeeTests"
+	"CMPSC488SP24SecThursday/test/ZigbeeTests"
 	"context"
 	"fmt"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -27,7 +27,7 @@ var myMap = map[string][]int{
 	returns bool from domain-function ex: Lights
 {Light : {Li1: "Turn On" }}
 */
-func RequestDisperser(r *request.Request) {
+func RequestDisperser(r ZigbeeTests.Request) {
 	//take request from INCOMING
 	//Validate Hash
 	//Decrypt and Dehash
@@ -244,7 +244,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer client.Disconnect(context.Background())
+	defer func(client *mongo.Client, ctx context.Context) {
+		err := client.Disconnect(ctx)
+		if err != nil {
+
+		}
+	}(client, context.Background())
 
 	// Example: Creating a new user
 	newUser := User{
