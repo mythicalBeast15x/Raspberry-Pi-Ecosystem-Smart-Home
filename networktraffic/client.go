@@ -1,46 +1,60 @@
 package networktraffic
 
 import (
+	"bufio"
+	"encoding/json"
 	"fmt"
-	"go.bug.st/serial"
-	"log"
-	"time"
+	"github.com/jacobsa/go-serial/serial"
+	"io"
 )
 
-func SendMessagesToServer() {
-	// Open the XBee module for communication
-	mode := &serial.Mode{
-		BaudRate: 9600,
-	}
-	port, err := serial.Open("/dev/ttyUSB0", mode)
-	if err != nil {
-		log.Fatal("Error opening XBee module:", err)
-	}
-
-	//sender := xbee.NewSender(port)
-	// Configure XBee module as a client
-
-	for {
-		// Send a message to the server
-		message := "Hello\n" // The controller will search until it finds a /n character in the message string
-		_, err := port.Write([]byte(message))
-		fmt.Printf("Sent \n")
-		if err != nil {
-			log.Println("Error sending message:", err)
-		}
-		time.Sleep(5 * time.Second) // Send message every 5 seconds
-	}
+// Response struct represents the JSON response format from controller
+type Response struct {
+	Content string `json:"content"`
 }
 
-// sendMessage sends a message to all Zigbee Devices
-/* This function will be the default way of sending messages
- */
-func sendMessage() {
+func client() {
+	options := serial.OpenOptions{
+		PortName:        "/dev/ttyUSB0",
+		BaudRate:        9600,
+		DataBits:        8,
+		StopBits:        1,
+		MinimumReadSize: 4,
+	}
 
+	port, err := serial.Open(options)
+	if err != nil {
+		fmt.Printf("Error opening serial port: %v\n", err)
+		return
+	}
+	defer port.Close()
+
+	reader := bufio.NewReader(port)
+	for {
+		// Read JSON data from the serial port
+		jsonData, err := reader.ReadBytes('\n')
+		if err != nil {
+			if err != io.EOF {
+				fmt.Printf("Error reading from serial port: %v\n", err)
+			}
+			continue
+		}
+
+		// Unmarshal JSON data into response struct
+		var response Response
+		err = json.Unmarshal(jsonData, &response)
+		if err != nil {
+			fmt.Printf("Error unmarshalling JSON: %v\n", err)
+			continue
+		}
+
+		fmt.Printf("Message received: %s\n", response.Content)
+	}
 }
 
 /*
 func main() {
-	SendMessagesToServer()
+	client()
 }
+
 */

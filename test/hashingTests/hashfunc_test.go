@@ -1,4 +1,4 @@
-package Hashing
+package hashingTests
 
 import (
 	"CMPSC488SP24SecThursday/hashing"

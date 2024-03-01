@@ -1,6 +1,5 @@
 package networktraffic
 
-
 /*
 
 import (
