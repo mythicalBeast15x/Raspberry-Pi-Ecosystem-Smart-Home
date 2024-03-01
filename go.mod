@@ -4,6 +4,7 @@ go 1.21.3
 
 require (
 	github.com/google/gopacket v1.1.19
+	github.com/gorilla/mux v1.8.1
 	go.bug.st/serial v1.6.1
 	go.mongodb.org/mongo-driver v1.13.1
 )

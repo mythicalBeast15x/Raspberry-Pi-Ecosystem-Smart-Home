@@ -1,5 +1,7 @@
 package main
 
+/*
+
 import (
 	"CMPSC488SP24SecThursday/lighting"
 	"encoding/json"
@@ -7,7 +9,7 @@ import (
 	"log"
 	"net/http"
 	//Commenting out until branches get merged because JWT is only in BE/DB Branch
-	//"CMPSC488SP24SecThursday/JWT"
+	"CMPSC488SP24SecThursday/JWT"
 )
 
 // Represents a user for testing purposes
@@ -27,7 +29,7 @@ type LightControlRequest struct {
 	Action  string `json:"action"`   // Action to perform: "on" or "off"
 	Token   string `json:"token"`    // JWT token for authentication
 }
-
+*/
 // LightControlHandler handles requests to control the lighting.
 /*
 Purpose: This function processes incoming HTTP POST requests to control lighting devices. It decodes the request body
@@ -38,6 +40,7 @@ Params:
     w http.ResponseWriter - The response writer to send responses to the client.
     r *http.Request - The request object containing all the details of the HTTP request made by the client.
 */
+/*
 func LightControlHandler(w http.ResponseWriter, r *http.Request) {
 	var req LightControlRequest
 	err := json.NewDecoder(r.Body).Decode(&req)
@@ -110,3 +113,4 @@ func main() {
 		log.Fatal("ListenAndServeTLS: ", err)
 	}
 }
+*/
