@@ -79,8 +79,8 @@ the existing functions
 - Get on the same page as a team with the consensus algorithm.
 
 ### Key Points
-- Met with Front End to get better understanding of their needs
-- Worked on team deliverable document
+- Met with the Front End to get better understanding of their needs
+- Worked on a team deliverable document
 - Researched into other applications of user login token systems
 
 ### Next Week's Goals 

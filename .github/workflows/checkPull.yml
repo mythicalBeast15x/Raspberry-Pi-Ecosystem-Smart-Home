@@ -1,0 +1,36 @@
+name: Enforce Pull Request for Large Changes
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  enforce-pull-request:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Get number of lines changed
+        id: lines-changed
+        run: |
+          lines_changed=$(curl -s "https://api.github.com/repos/${{ github.repository }}/compare/${{ github.event.before }}...${{ github.sha }}" | jq '.files[] | .changes' | awk '{ total += $1 } END { print total }')
+          echo "Lines changed: $lines_changed"
+          echo "::set-output name=lines_changed::$lines_changed"
+
+      - name: Check if pull request is needed
+        id: check-pr-needed
+        run: |
+          lines_changed=${{ steps.lines-changed.outputs.lines_changed }}
+          threshold=30  # Set to 30 but can be changed if needed.
+          if [ -n "$lines_changed" ] && [ "$lines_changed" -gt "$threshold" ]; then
+            echo "::error::Changes exceed 30 lines. Please create a pull request for large changes."
+            exit 1  # Exit with non-zero code to indicate failure
+          fi
+
+      - name: Merge pull request if approved
+        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+        run: |
+          echo "::success::Pull request approved and merged. Changes can be pushed directly now."

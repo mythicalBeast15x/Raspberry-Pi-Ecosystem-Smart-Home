@@ -1,4 +1,5 @@
-// Function to add a new light connection for web..
+/*
+// Function to add a new light connection for web.
 function addLightConnection() {
     // Retrieve the values from input fields
     var name = document.getElementById('lightName').value;
@@ -23,3 +24,4 @@ function addLightConnection() {
         alert('Please fill in all fields.');
     }
 }
+*/

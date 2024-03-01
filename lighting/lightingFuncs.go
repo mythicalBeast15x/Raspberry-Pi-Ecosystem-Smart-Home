@@ -46,9 +46,10 @@ func NewLighting(name string, initialState bool) *Lighting {
 Purpose: This method changes the state of the lighting instance to "on" and prints a message indicating
 that the lighting is now turned on.
 */
-func (l *Lighting) TurnOn() {
+func (l *Lighting) TurnOn() bool {
 	l.State = true
 	fmt.Printf("%s is now turned ON\n", l.Name)
+	return true
 }
 
 // TurnOff turns the lighting off.
@@ -56,9 +57,10 @@ func (l *Lighting) TurnOn() {
 Purpose: This method changes the state of the lighting instance to "off" and prints a message indicating
 that the lighting is now turned off.
 */
-func (l *Lighting) TurnOff() {
+func (l *Lighting) TurnOff() bool {
 	l.State = false
 	fmt.Printf("%s is now turned OFF\n", l.Name)
+	return true
 }
 
 // SetTimer sets a timer to turn on or off the lighting after a specified duration.
@@ -90,7 +92,7 @@ Params:
     brightness : float32 - the brightness value to set (0.0-100.0)
     print : bool - whether to print a message indicating the brightness change
 */
-func (l *Lighting) SetBrightness(brightness float32, print bool) {
+func (l *Lighting) SetBrightness(brightness float32, print bool) bool {
 	if brightness < 0.0 {
 		brightness = 0.0
 	} else if brightness > 100.0 {
@@ -100,6 +102,7 @@ func (l *Lighting) SetBrightness(brightness float32, print bool) {
 	if print {
 		fmt.Printf("%s brightness is set to %.0f\n", l.Name, l.Brightness)
 	}
+	return true
 }
 
 // AdjustBrightnessOverTime gradually adjusts the brightness of the lighting over a specified duration.
@@ -137,11 +140,12 @@ Params:
     color : string - the color value to set
     print : bool - whether to print a message indicating the color change
 */
-func (l *Lighting) SetColor(color string, print bool) {
+func (l *Lighting) SetColor(color string, print bool) bool {
 	l.Color = color
 	if print {
 		fmt.Printf("%s color is set to %s\n", l.Name, l.Color)
 	}
+	return true
 }
 
 // ColorCycle initiates cycling through colors for a specified duration.
