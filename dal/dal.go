@@ -102,7 +102,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer client.Disconnect(context.Background())
+	defer func(client *mongo.Client, ctx context.Context) {
+		err := client.Disconnect(ctx)
+		if err != nil {
+
+		}
+	}(client, context.Background())
 
 	// Example: Creating a new user
 	newUser := User{
