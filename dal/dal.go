@@ -27,7 +27,7 @@ var myMap = map[string][]int{
 	returns bool from domain-function ex: Lights
 {Light : {Li1: "Turn On" }}
 */
-func RequestDisperser(m messaging.Message) {
+func MessageDisperser(m messaging.Message) {
 	//take message from INCOMING
 	//Validate Hash
 	//Decrypt and Dehash
