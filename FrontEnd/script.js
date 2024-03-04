@@ -1,4 +1,4 @@
-/*
+
 // Function to add a new light connection for web.
 function addLightConnection() {
     // Retrieve the values from input fields
@@ -24,4 +24,3 @@ function addLightConnection() {
         alert('Please fill in all fields.');
     }
 }
-*/
