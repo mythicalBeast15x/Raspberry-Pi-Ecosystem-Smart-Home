@@ -3,10 +3,11 @@ package dal
 //go get go.mongodb.org/mongo-driver/mongo
 //files to be imported: Appliances, lights, HVAC
 import (
-	hvac "CMPSC488SP24SecThursday/hvac"
+	"CMPSC488SP24SecThursday/hvac"
+	//hvac "CMPSC488SP24SecThursday/hvac"
 	light "CMPSC488SP24SecThursday/lighting"
+	"CMPSC488SP24SecThursday/messaging"
 	security "CMPSC488SP24SecThursday/security"
-	"CMPSC488SP24SecThursday/test/ZigbeeTests"
 	"context"
 	"fmt"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -22,26 +23,26 @@ var myMap = map[string][]int{
 }
 
 //Request Disperser
-/*Purpose: Takes in Request and depending on the domain, calls domain-specific function w/ args from request command block
-	r-> request block
+/*Purpose: Takes in Message and depending on the domain, calls domain-specific function w/ args from message command block
+	m-> message block
 	returns bool from domain-function ex: Lights
 {Light : {Li1: "Turn On" }}
 */
-func RequestDisperser(r ZigbeeTests.Request) {
-	//take request from INCOMING
+func MessageDisperser(m messaging.Message) {
+	//take message from INCOMING
 	//Validate Hash
 	//Decrypt and Dehash
 	//serialized message
 	//MessageCheck -> if messageID from OpenMessage return true
 	//get deserialized message from deserializedQueue
 	//if true -->
-	if r.Domain == "Light" {
+	if m.Domain == "Light" {
 
 	}
-	if r.Domain == "HVAC" {
+	if m.Domain == "HVAC" {
 		return
 	}
-	if r.Domain == "Security" {
+	if m.Domain == "Security" {
 		return
 	}
 	//if false
@@ -128,6 +129,7 @@ func SecuritySystem(OID int, s *security.Alarm) bool {
 	}
 	return false
 }
+
 func HVAC(OID int, h *hvac.HVAC, temperature int, fanspeed int, mode string) bool {
 	switch OID {
 	case 8: //set temperature
