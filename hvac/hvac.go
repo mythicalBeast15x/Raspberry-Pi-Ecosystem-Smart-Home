@@ -1,4 +1,4 @@
-package main
+package hvac
 
 import (
 	"fmt"
@@ -24,7 +24,8 @@ func NewHVAC(name string) *HVAC {
 }
 
 // SetTemperature sets the desired temperature for the HVAC system in Fahrenheit.
-func (h *HVAC) SetTemperature(temperature int) {
+func (h *HVAC) SetTemperature(temperature int) bool {
+	temp_temp := temperature
 	if temperature < 60 {
 		temperature = 60
 	} else if temperature > 90 {
@@ -32,7 +33,7 @@ func (h *HVAC) SetTemperature(temperature int) {
 	}
 	h.Temperature = temperature
 	fmt.Printf("%s temperature is set to %d°F\n", h.Name, h.Temperature)
-
+	return temp_temp == h.Temperature
 }
 
 // SetFanSpeed sets the fan speed for the HVAC system.
@@ -95,6 +96,7 @@ func (s *Scheduler) CheckAndApplyEvents(hvac *HVAC) {
 	s.Events = remainingEvents
 }
 
+/*
 func main() {
 	// Create a new HVAC system
 	livingRoomHVAC := NewHVAC("Living Room HVAC")
@@ -126,3 +128,4 @@ func main() {
 		scheduler.CheckAndApplyEvents(livingRoomHVAC)
 	}
 }
+*/

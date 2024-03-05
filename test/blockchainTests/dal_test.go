@@ -1,8 +1,8 @@
 package blockchainTests
 
 import (
-	dal "CMPSC488SP24SecThursday/dal"
-	hvac "CMPSC488SP24SecThursday/hvac"
+	"CMPSC488SP24SecThursday/dal"
+	"CMPSC488SP24SecThursday/hvac"
 	light "CMPSC488SP24SecThursday/lighting"
 	"CMPSC488SP24SecThursday/security"
 	"testing"

@@ -3,6 +3,7 @@ package dal
 //go get go.mongodb.org/mongo-driver/mongo
 //files to be imported: Appliances, lights, HVAC
 import (
+	"CMPSC488SP24SecThursday/hvac"
 	//hvac "CMPSC488SP24SecThursday/hvac"
 	light "CMPSC488SP24SecThursday/lighting"
 	"CMPSC488SP24SecThursday/messaging"
@@ -129,7 +130,6 @@ func SecuritySystem(OID int, s *security.Alarm) bool {
 	return false
 }
 
-/*
 func HVAC(OID int, h *hvac.HVAC, temperature int, fanspeed int, mode string) bool {
 	switch OID {
 	case 8: //set temperature
@@ -154,7 +154,6 @@ func HVAC(OID int, h *hvac.HVAC, temperature int, fanspeed int, mode string) boo
 	}
 	return false
 }
-*/
 
 // Define a struct to represent your data model
 type User struct {
