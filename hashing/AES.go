@@ -20,7 +20,7 @@ func generateRandomKey(keySize int) ([]byte, error) {
 	return key, nil
 }
 
-func encrypt(plaintext, key []byte) (string, error) {
+func Encrypt(plaintext, key []byte) (string, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return "", err
@@ -47,7 +47,7 @@ func encrypt(plaintext, key []byte) (string, error) {
 	return ciphertextBase64, nil
 }
 
-func decrypt(ciphertextBase64 string, key []byte) ([]byte, error) {
+func Decrypt(ciphertextBase64 string, key []byte) ([]byte, error) {
 	ciphertext, err := base64.StdEncoding.DecodeString(ciphertextBase64)
 	if err != nil {
 		return nil, err
@@ -114,13 +114,13 @@ func main() {
 
 	// Use the generated key in your encryption/decryption logic
 	fmt.Println("Generated key:", key)
-	// Example usage: Encrypt and decrypt data
+	// Example usage: Encrypt and Decrypt data
 	data := []byte("Hello, AES encryption!")
 
 	fmt.Println("Plaintext:", string(data))
 
 	// Encrypt the data
-	ciphertextBase64, err := encrypt(data, []byte(key))
+	ciphertextBase64, err := Encrypt(data, []byte(key))
 	if err != nil {
 		fmt.Println("Encryption error:", err)
 		return
@@ -128,7 +128,7 @@ func main() {
 	fmt.Println("Ciphertext:", ciphertextBase64)
 
 	// Decrypt the ciphertext
-	plaintext, err := decrypt(ciphertextBase64, []byte(key))
+	plaintext, err := Decrypt(ciphertextBase64, []byte(key))
 	if err != nil {
 		fmt.Println("Decryption error:", err)
 		return
