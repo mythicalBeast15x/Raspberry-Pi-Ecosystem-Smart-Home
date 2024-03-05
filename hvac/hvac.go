@@ -23,13 +23,6 @@ func NewHVAC(name string) *HVAC {
 	}
 }
 
-<<<<<<< HEAD
-// SetTemperature sets the desired temperature for the HVAC system.
-func (h *HVAC) SetTemperature(temperature int) bool {
-	h.Temperature = temperature
-	fmt.Printf("%s temperature is set to %d°C\n", h.Name, h.Temperature)
-	return true
-=======
 // SetTemperature sets the desired temperature for the HVAC system in Fahrenheit.
 func (h *HVAC) SetTemperature(temperature int) {
 	if temperature < 60 {
@@ -39,7 +32,7 @@ func (h *HVAC) SetTemperature(temperature int) {
 	}
 	h.Temperature = temperature
 	fmt.Printf("%s temperature is set to %d°F\n", h.Name, h.Temperature)
->>>>>>> ZigBee_Network_Group
+
 }
 
 // SetFanSpeed sets the fan speed for the HVAC system.
