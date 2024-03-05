@@ -331,7 +331,7 @@ func EncryptAndHash(qMessages *MessageQueue, key []byte) (string, error) {
 		return "", nil
 	}
 	// Encrypt the JSON data
-	encrypt, err := hashing.EncryptGCM(string(jsonData), string(key))
+	encrypt, err := hashing.Encrypt(jsonData, key)
 	if err != nil {
 		fmt.Println("Error encrypting JSON:", err)
 		return "", nil
@@ -395,7 +395,7 @@ func ValidateAndDecrypt(oMessages *OpenMessages, qMessages *MessageQueue, key []
 	fmt.Println("Time taken: ", time)
 	if hash == encryptedPlusHash.Hash { // if the generated hash matches the appended hash:
 		// Decrypt the JSON data
-		decrypt, err := hashing.DecryptGCM(encryptedPlusHash.EncryptedData, string(key))
+		decrypt, err := hashing.Decrypt(encryptedPlusHash.EncryptedData, key)
 		if err != nil {
 			fmt.Print("Error decrypting JSON:", err)
 			return err
@@ -404,7 +404,7 @@ func ValidateAndDecrypt(oMessages *OpenMessages, qMessages *MessageQueue, key []
 		fmt.Println("Decrypted message:", decrypt)
 
 		// Add decrypted data to message check in function
-		decryptedByte := []byte(decrypt)
+		decryptedByte := decrypt
 		MessageCheckIn(decryptedByte, oMessages, qMessages)
 		return err
 	}

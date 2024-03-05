@@ -11,7 +11,6 @@ import (
 	"io"
 )
 
-<<<<<<< HEAD
 func generateRandomKey(keySize int) ([]byte, error) {
 	key := make([]byte, keySize)
 	_, err := rand.Read(key)
@@ -21,18 +20,12 @@ func generateRandomKey(keySize int) ([]byte, error) {
 	return key, nil
 }
 
-func encrypt(plaintext, key []byte) (string, error) {
+func Encrypt(plaintext, key []byte) (string, error) {
 	block, err := aes.NewCipher(key)
-=======
-// EncryptGCM encrypts plaintext using AES-GCM with the given key and generates a random nonce.
-func EncryptGCM(plaintext, key string) (string, error) {
-	block, err := aes.NewCipher([]byte(key))
->>>>>>> ZigBee_Network_Group
 	if err != nil {
 		return "", err
 	}
 
-<<<<<<< HEAD
 	// CBC mode requires an initialization vector (IV)
 	iv := make([]byte, aes.BlockSize)
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
@@ -54,42 +47,17 @@ func EncryptGCM(plaintext, key string) (string, error) {
 	return ciphertextBase64, nil
 }
 
-func decrypt(ciphertextBase64 string, key []byte) ([]byte, error) {
+func Decrypt(ciphertextBase64 string, key []byte) ([]byte, error) {
 	ciphertext, err := base64.StdEncoding.DecodeString(ciphertextBase64)
-=======
-	gcm, err := cipher.NewGCM(block)
-	if err != nil {
-		return "", err
-	}
-
-	nonce := make([]byte, gcm.NonceSize())
-	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
-		return "", err
-	}
-
-	// Encrypt the plaintext and append the nonce at the beginning.
-	ciphertext := gcm.Seal(nonce, nonce, []byte(plaintext), nil)
-	return base64.URLEncoding.EncodeToString(ciphertext), nil
-}
-
-// DecryptGCM decrypts ciphertext using AES-GCM with the given key.
-func DecryptGCM(ciphertext, key string) (string, error) {
-	ciphertextBytes, err := base64.URLEncoding.DecodeString(ciphertext)
->>>>>>> ZigBee_Network_Group
 	if err != nil {
 		return nil, err
 	}
 
-<<<<<<< HEAD
 	block, err := aes.NewCipher(key)
-=======
-	block, err := aes.NewCipher([]byte(key))
->>>>>>> ZigBee_Network_Group
 	if err != nil {
 		return nil, err
 	}
 
-<<<<<<< HEAD
 	if len(ciphertext) < aes.BlockSize {
 		return nil, fmt.Errorf("ciphertext too short")
 	}
@@ -146,13 +114,13 @@ func main() {
 
 	// Use the generated key in your encryption/decryption logic
 	fmt.Println("Generated key:", key)
-	// Example usage: Encrypt and decrypt data
+	// Example usage: Encrypt and Decrypt data
 	data := []byte("Hello, AES encryption!")
 
 	fmt.Println("Plaintext:", string(data))
 
 	// Encrypt the data
-	ciphertextBase64, err := encrypt(data, []byte(key))
+	ciphertextBase64, err := Encrypt(data, []byte(key))
 	if err != nil {
 		fmt.Println("Encryption error:", err)
 		return
@@ -160,32 +128,11 @@ func main() {
 	fmt.Println("Ciphertext:", ciphertextBase64)
 
 	// Decrypt the ciphertext
-	plaintext, err := decrypt(ciphertextBase64, []byte(key))
+	plaintext, err := Decrypt(ciphertextBase64, []byte(key))
 	if err != nil {
 		fmt.Println("Decryption error:", err)
 		return
 	}
 	fmt.Println("Decrypted:", string(plaintext))
 }
-
 */
-=======
-	gcm, err := cipher.NewGCM(block)
-	if err != nil {
-		return "", err
-	}
-
-	if len(ciphertextBytes) < gcm.NonceSize() {
-		return "", fmt.Errorf("ciphertext too short")
-	}
-
-	// Extract the nonce and ciphertext.
-	nonce, ciphertextBytes := ciphertextBytes[:gcm.NonceSize()], ciphertextBytes[gcm.NonceSize():]
-	plaintext, err := gcm.Open(nil, nonce, ciphertextBytes, nil)
-	if err != nil {
-		return "", err
-	}
-
-	return string(plaintext), nil
-}
->>>>>>> ZigBee_Network_Group
