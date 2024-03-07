@@ -1,63 +1,13 @@
 package main
 
 import (
-	"bytes"
-	"crypto/aes"
-	"crypto/cipher"
-	"crypto/rand"
-	"encoding/json"
+	"CMPSC488SP24SecThursday/messaging" // Importing messaging package
 	"fmt"
 	"github.com/jacobsa/go-serial/serial"
-	"io"
 	"time"
 )
 
-// Message struct represents the JSON message format
-type Message struct {
-	Content string `json:"content"`
-}
-
-func generateRandomKey(keySize int) ([]byte, error) {
-	key := make([]byte, keySize)
-	_, err := rand.Read(key)
-	if err != nil {
-		return nil, err
-	}
-	return key, nil
-}
-
-func Encrypt(plaintext, key []byte) ([]byte, error) {
-	block, err := aes.NewCipher(key)
-	if err != nil {
-		return nil, err
-	}
-
-	// CBC mode requires an initialization vector (IV)
-	iv := make([]byte, aes.BlockSize)
-	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
-		return nil, err
-	}
-
-	// Pad plaintext if needed
-	plaintext = PKCS7Padding(plaintext, aes.BlockSize)
-
-	ciphertext := make([]byte, aes.BlockSize+len(plaintext))
-	mode := cipher.NewCBCEncrypter(block, iv)
-	mode.CryptBlocks(ciphertext[aes.BlockSize:], plaintext)
-
-	copy(ciphertext[:aes.BlockSize], iv)
-
-	return ciphertext, nil
-}
-
-// PKCS7Padding pads data using the PKCS#7 scheme
-func PKCS7Padding(data []byte, blockSize int) []byte {
-	padding := blockSize - len(data)%blockSize
-	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
-	return append(data, padtext...)
-}
-
-func controller(key []byte) {
+func controller() {
 	options := serial.OpenOptions{
 		PortName:        "/dev/ttyUSB0",
 		BaudRate:        9600,
@@ -73,45 +23,36 @@ func controller(key []byte) {
 	}
 	defer port.Close()
 
-	// Create a message struct
-	message := Message{
-		Content: "Hello from Server Zigbee",
-	}
+	// Create a message queue
+	qMessages := &messaging.MessageQueue{}
 
 	for {
-		// Marshal the message struct to JSON
-		jsonData, err := json.Marshal(message)
+		// Dequeue a message from the outgoing queue
+		outgoingMsg, err := qMessages.Dequeue("outgoing")
 		if err != nil {
-			fmt.Printf("Error marshalling JSON: %v\n", err)
+			fmt.Println("Error dequeuing from outgoing queue:", err)
 			continue
 		}
 
-		// Encrypt the JSON data
-		encryptedData, err := Encrypt(jsonData, key)
-		if err != nil {
-			fmt.Printf("Error encrypting data: %v\n", err)
+		// Convert the message to []byte
+		jsonData, ok := outgoingMsg.([]byte)
+		if !ok {
+			fmt.Println("Expected dequeued message to be of type []byte")
 			continue
 		}
 
-		// Write the encrypted data to the serial port
-		_, err = port.Write(encryptedData)
+		// Write the JSON data to the serial port
+		_, err = port.Write(jsonData)
 		if err != nil {
 			fmt.Printf("Error writing to serial port: %v\n", err)
 			continue
 		}
 
-		fmt.Printf("Message sent: %s\n", message.Content)
+		fmt.Println("Message sent:", string(jsonData))
 		time.Sleep(1 * time.Second) // Send a message every second
 	}
 }
 
 func main() {
-	// Generate a random encryption key
-	key, err := generateRandomKey(16)
-	if err != nil {
-		fmt.Println("Error generating random key:", err)
-		return
-	}
-
-	controller(key)
+	controller()
 }
