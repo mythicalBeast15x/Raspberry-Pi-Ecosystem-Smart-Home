@@ -1,6 +1,7 @@
 package networktraffic
 
 import (
+	//"CMPSC488SP24SecThursday/messaging"
 	"bufio"
 	"encoding/json"
 	"fmt"
@@ -13,7 +14,14 @@ type Response struct {
 	Content string `json:"content"`
 }
 
-func client() {
+/*
+Client function may take in the global instance of a Message Queue like the following:
+
+Client(qMessages messaging.MessageQueue) {
+}
+*/
+
+func Client() {
 	options := serial.OpenOptions{
 		PortName:        "/dev/ttyUSB0",
 		BaudRate:        9600,
@@ -49,12 +57,15 @@ func client() {
 		}
 
 		fmt.Printf("Message received: %s\n", response.Content)
+		/* Once a message is received, the content of the response may be placed into the
+		MessageQueue instance like shown below.*/
+		//qMessages.IncomingMessages = append(qMessages.IncomingMessages, string(response.Content))
 	}
 }
 
 /*
 func main() {
-	client()
+	Client()
 }
 
 */

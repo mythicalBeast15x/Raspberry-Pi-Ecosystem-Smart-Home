@@ -12,7 +12,19 @@ type Message struct {
 	Content string `json:"content"`
 }
 
-func controller() {
+/*
+Controller function may be changed to take in a value like a JSON string
+to act as the message to be sent.
+
+Example:
+func Controller(msg string){
+	message := Message{
+	Content: msg,
+	}
+}
+*/
+
+func Controller() {
 	options := serial.OpenOptions{
 		PortName:        "/dev/ttyUSB0",
 		BaudRate:        9600,
@@ -55,7 +67,7 @@ func controller() {
 
 /*
 func main() {
-	controller()
+	Controller()
 }
 
 */
