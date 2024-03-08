@@ -22,7 +22,7 @@ func main() {
 
 	//-------------------------------------
 	//listen for messages
-
+	fmt.Println("\n\n -------------------- Setting Up Message Demo -------------------- ")
 	// Initialize message queues:
 	oOutMessages := &messaging.OpenMessages{} // list of messageIDs for outgoing messages
 	oInMessages := &messaging.OpenMessages{}  // list of messageIDs for incoming messages
@@ -35,7 +35,7 @@ func main() {
 	mainBlockchain.CreateBlock("Block 1 Data")
 	mainBlockchain.CreateBlock("Block 2 Data")
 	mainBlockchain.CreateBlock("Block 3 Data")
-
+	fmt.Println("\n\n -------------------- Creating Block -------------------- ")
 	//Test Block as data
 	newBlock := blockchain.Block{
 		Index:     3,
@@ -46,24 +46,24 @@ func main() {
 		PrevHash: mainBlockchain.Chain[len(mainBlockchain.Chain)-1].Hash,
 		Hash:     "",
 	}
-	fmt.Println("\nNew block \n ", newBlock)
-	fmt.Println(string(newBlock.Data.Ciphertext))
+	fmt.Println("New block \n ", newBlock)
+	fmt.Println("\n\n -------------------- Creating Message With Data As the Block -------------------- ")
 	// Simulate message being made:
 	data := map[string]interface{}{
 		"Block": newBlock,
 	}
-
 	messaging.NewMessage("Pi-1", "Pi-2", "General", "21", data, oOutMessages, qMessages)
+
 	fmt.Println("Message to be processed (String):\n ", string(qMessages.OutgoingMessages[0]))
 	fmt.Println()
 	key := []byte("1234567890123456") // TODO - replace with generated AES key
-
+	fmt.Println("\n\n -------------------- Processing Message For Sending -------------------- ")
 	// Takes message from outgoing queue, so it can be sent over the Zigbee network
 	outgoingMsg, err := messaging.EncryptAndHash(qMessages, key)
 	if err != nil {
 		return
 	}
-	fmt.Println("\nMessage to be sent (String):\n ", outgoingMsg)
+	fmt.Println("Message to be sent (String):\n ", outgoingMsg)
 
 	//networktraffic.Controller(outgoingMsg)
 
@@ -78,19 +78,20 @@ func main() {
 	//	Note: This Client function will probably need to run continuously for the
 	//	entirety of the main scripts runtime, as such, using a separate thread may
 	//	be needed to accomplish this.
-
+	fmt.Println("\n\n -------------------- Message Being Received By Another PI (Simulation) -------------------- ")
 	//Simulating the message being received into the incoming queue
 	qMessages.IncomingMessages = append(qMessages.IncomingMessages, outgoingMsg)
 	fmt.Print("\n")
 
 	// ------------------- MESSAGE RECEIVED ------------------- //
-
+	fmt.Println("\n\n -------------------- Message being Processed In Reverse For Servicing -------------------- ")
 	// Takes message from incoming queue and runs MessageCheckIn function
 	err = messaging.ValidateAndDecrypt(oInMessages, qMessages, key)
 	if err != nil {
 		return
 	}
 
+	// If previous function worked, then the new message should now be in the deserial queue
 	nextMsg, err := qMessages.Dequeue("deserial")
 	if err != nil {
 		fmt.Println("Error dequeuing from outgoing queue:", err)
@@ -99,24 +100,23 @@ func main() {
 
 	// Turning deserialized data back into Message object
 	Msg := nextMsg.(messaging.Message)
-
+	fmt.Println("\n\n -------------------- Accessing Each Value From The Message -------------------- ")
 	// Accessing Message data individually
-	fmt.Println()
 	fmt.Println(Msg.MessageID)
 	fmt.Println(Msg.SenderID)
 	fmt.Println(Msg.ReceiverID)
 	fmt.Println(Msg.Domain)
 	fmt.Println(Msg.Data["Block"])
 
-	// Create a new blockchain
-	mainBlockchain2 := blockchain.NewBlockchain(4)
+	// Create a new blockchain for testing
+	receiverBlockchain := blockchain.NewBlockchain(4)
 
 	// Add some blocks to the blockchain
-	mainBlockchain2.CreateBlock("Block 1 Data")
-	mainBlockchain2.CreateBlock("Block 2 Data")
-	mainBlockchain2.CreateBlock("Block 3 Data")
+	receiverBlockchain.CreateBlock("Block 1 Data")
+	receiverBlockchain.CreateBlock("Block 2 Data")
+	receiverBlockchain.CreateBlock("Block 3 Data")
 
-	fmt.Println("\n -------------------- Using Block Test -------------------- ")
+	fmt.Println("\n\n -------------------- Accessing Internals Of A Block -------------------- ")
 
 	// Convert Msg.Data["Block"] to JSON bytes
 	jsonData, err := json.Marshal(Msg.Data["Block"])
@@ -133,14 +133,14 @@ func main() {
 		return
 	}
 
-	fmt.Println("\nOriginal Block: \n", newBlock)
-	fmt.Println("\nReceived Block:\n", receivedBlock)
+	fmt.Println("Original Block: \n", newBlock)
+	fmt.Println("Received Block:\n", receivedBlock)
 
-	fmt.Println("\nOriginal Block Data: \n", string(newBlock.Data.Ciphertext))
-	fmt.Println("\nReceived Block Data:\n", string(receivedBlock.Data.Ciphertext))
+	fmt.Println("Original Block Data: \n", string(newBlock.Data.Ciphertext))
+	fmt.Println("Received Block Data:\n", string(receivedBlock.Data.Ciphertext))
+	fmt.Println("\n\n -------------------- Adding Received Block To New Blockchain And Verifying The Updated Chain -------------------- ")
+	receiverBlockchain.AddToBlockchain(receivedBlock)
 
-	mainBlockchain2.AddToBlockchain(receivedBlock)
-
-	fmt.Println("\nIs receiver block chain verified?", mainBlockchain2.VerifyBlockChain())
+	fmt.Println("Is receiver block chain verified?", receiverBlockchain.VerifyBlockChain())
 }
 */
