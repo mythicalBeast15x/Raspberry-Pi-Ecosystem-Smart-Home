@@ -5,64 +5,63 @@ import (
 	"testing"
 )
 
-func TestUserJoiningProcess(t *testing.T) {
-	tc := security.NewTrustCenter()
-
-	// Authorize one user
-	authorizedUser := "AuthorizedUser"
-	tc.AuthorizeUser(authorizedUser) // Updated to AuthorizeUser
-
-	// Simulate join attempt by an authorized user
-	joinMessage := tc.AttemptJoin(authorizedUser)
-	expectedMessage := authorizedUser + " has successfully joined the network."
-	if joinMessage != expectedMessage {
-		t.Errorf("Expected '%s', got '%s'", expectedMessage, joinMessage)
-	}
-
-	// Simulate join attempt by an unauthorized user
-	unauthorizedUser := "UnauthorizedUser"
-	joinMessage = tc.AttemptJoin(unauthorizedUser)
-	expectedMessage = unauthorizedUser + " failed to join the network. Unauthorized user." // Updated message to reflect user context
-	if joinMessage != expectedMessage {
-		t.Errorf("Expected '%s', got '%s'", expectedMessage, joinMessage)
-	}
-}
-
-func TestMotionDetectionAndAlarmTrigger(t *testing.T) {
-	// Initialize the TrustCenter and authorize a user.
-	tc := security.NewTrustCenter()
-	tc.AuthorizeUser("AuthorizedUser")
-
-	// Create an alarm and a motion sensor with a callback to trigger the alarm.
-	alarmed := false // Use a flag to capture if the alarm was triggered.
-	securityAlarm := security.NewAlarm("Security Alarm")
-	motionSensor := security.NewMotionSensor("Motion Sensor", func(sensorName string) {
-		if securityAlarm.Armed {
-			securityAlarm.Trigger()
-			alarmed = true // Set the flag if the alarm is triggered.
-		}
+// TestMotionDetection checks if the motion sensor properly detects motion.
+func TestMotionDetection(t *testing.T) {
+	detected := false
+	motionSensor := security.NewMotionSensor("TestMotionSensor", func(name string) {
+		detected = true
 	})
-
-	// Arm the security system.
-	securityAlarm.Arm()
 
 	// Simulate motion detection.
 	motionSensor.DetectMotion()
 
-	// Check if the alarm was triggered.
-	if !alarmed {
-		t.Error("Expected the alarm to be triggered upon motion detection when armed.")
+	if !detected {
+		t.Errorf("Motion sensor did not detect motion when it should have.")
 	}
 
-	// Reset for disarmed scenario.
-	alarmed = false
-	securityAlarm.Disarm()
-
-	// Simulate motion detection again with the system disarmed.
-	motionSensor.DetectMotion()
-
-	// The alarm should not be triggered this time.
-	if alarmed {
-		t.Error("Expected the alarm not to be triggered upon motion detection when disarmed.")
+	if !motionSensor.MotionDetected {
+		t.Errorf("MotionDetected should be true after motion is detected.")
 	}
 }
+
+// TestDoorLock ensures that the door lock functions correctly.
+func TestDoorLock(t *testing.T) {
+	doorLock := security.NewDoorLock("TestDoorLock")
+	if !doorLock.Locked {
+		t.Errorf("New door lock should be locked by default.")
+	}
+
+	// Test unlocking the door.
+	doorLock.Unlock()
+	if doorLock.Locked {
+		t.Errorf("Door lock should be unlocked after calling Unlock.")
+	}
+
+	// Test locking the door.
+	doorLock.Lock()
+	if !doorLock.Locked {
+		t.Errorf("Door lock should be locked after calling Lock.")
+	}
+}
+
+// TestCamera ensures that the camera functions correctly.
+func TestCamera(t *testing.T) {
+	camera := security.NewCamera("TestCamera")
+	if camera.Active {
+		t.Errorf("New camera should be inactive by default.")
+	}
+
+	// Test activating the camera.
+	camera.Activate()
+	if !camera.Active {
+		t.Errorf("Camera should be active after calling Activate.")
+	}
+
+	// Test deactivating the camera.
+	camera.Deactivate()
+	if camera.Active {
+		t.Errorf("Camera should be inactive after calling Deactivate.")
+	}
+}
+
+// Remove TestUserJoiningProcess and TestMotionDetectionAndAlarmTrigger tests as TrustCenter and Alarm are no longer part of the package.

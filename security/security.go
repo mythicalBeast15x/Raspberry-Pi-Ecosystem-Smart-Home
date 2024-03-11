@@ -4,6 +4,58 @@ import (
 	"fmt"
 )
 
+// DoorLock represents a door lock system.
+type DoorLock struct {
+	Name   string
+	Locked bool
+}
+
+// NewDoorLock creates a new DoorLock instance with the given name.
+func NewDoorLock(name string) *DoorLock {
+	return &DoorLock{
+		Name:   name,
+		Locked: true, // Default to locked for security purposes.
+	}
+}
+
+// Lock will lock the door.
+func (dl *DoorLock) Lock() {
+	dl.Locked = true
+	fmt.Printf("%s is now locked.\n", dl.Name)
+}
+
+// Unlock will unlock the door.
+func (dl *DoorLock) Unlock() {
+	dl.Locked = false
+	fmt.Printf("%s is now unlocked.\n", dl.Name)
+}
+
+// Camera represents a surveillance camera.
+type Camera struct {
+	Name   string
+	Active bool
+}
+
+// NewCamera creates a new Camera instance with the given name.
+func NewCamera(name string) *Camera {
+	return &Camera{
+		Name:   name,
+		Active: false, // Default to not active.
+	}
+}
+
+// Activate starts the camera.
+func (c *Camera) Activate() {
+	c.Active = true
+	fmt.Printf("%s is now active.\n", c.Name)
+}
+
+// Deactivate stops the camera.
+func (c *Camera) Deactivate() {
+	c.Active = false
+	fmt.Printf("%s is now inactive.\n", c.Name)
+}
+
 // MotionSensor represents a motion sensor component.
 type MotionSensor struct {
 	Name             string
@@ -27,113 +79,3 @@ func (m *MotionSensor) DetectMotion() {
 		m.OnMotionDetected(m.Name)
 	}
 }
-
-// Alarm represents a simple alarm component.
-type Alarm struct {
-	Name    string
-	Armed   bool
-	Sounded bool
-}
-
-// NewAlarm creates a new Alarm instance with the given name.
-func NewAlarm(name string) *Alarm {
-	return &Alarm{
-		Name:  name,
-		Armed: false,
-	}
-}
-
-// Arm sets the alarm to the armed state.
-func (a *Alarm) Arm() bool {
-	a.Armed = true
-	fmt.Printf("%s is armed and ready.\n", a.Name)
-	return true
-}
-
-// Disarm disarms the alarm.
-func (a *Alarm) Disarm() bool {
-	a.Armed = false
-	fmt.Printf("%s is disarmed.\n", a.Name)
-	return true
-}
-
-// Trigger activates the alarm if it's armed.
-func (a *Alarm) Trigger() bool {
-	if a.Armed {
-		a.Sounded = true
-		fmt.Printf("%s is triggered! Alarm is sounding.\n", a.Name)
-		return true
-	}
-	return false
-}
-
-// TrustCenter now keeps track of users allowed to join and communicate within the network.
-type TrustCenter struct {
-	// authorizedUsers maps usernames to their authorization status.
-	authorizedUsers map[string]bool
-}
-
-// NewTrustCenter initializes and returns a new instance of TrustCenter.
-func NewTrustCenter() *TrustCenter {
-	return &TrustCenter{
-		authorizedUsers: make(map[string]bool), // Initialize the map to track authorized users.
-	}
-}
-
-// AuthorizeUser marks a user as authorized within the network.
-func (tc *TrustCenter) AuthorizeUser(userName string) bool {
-	tc.authorizedUsers[userName] = true
-	return true
-}
-
-// IsUserAuthorized checks if a given user is authorized to operate within the network.
-func (tc *TrustCenter) IsUserAuthorized(userName string) bool {
-	authorized, exists := tc.authorizedUsers[userName]
-	return exists && authorized
-}
-
-// AttemptJoin simulates a user attempting to join the network.
-func (tc *TrustCenter) AttemptJoin(userName string) string {
-	if tc.IsUserAuthorized(userName) {
-		return fmt.Sprintf("%s has successfully joined the network.", userName)
-	}
-	return fmt.Sprintf("%s failed to join the network. Unauthorized user.", userName)
-}
-
-/*
-func main() {
-	tc := NewTrustCenter()
-
-	// Authorizing users and attempting to join the network.
-	tc.AuthorizeUser("AuthorizedUser")
-	fmt.Println(tc.AttemptJoin("AuthorizedUser"))
-	fmt.Println(tc.AttemptJoin("UnauthorizedUser"))
-
-	// Create an alarm instance and arm it.
-	securityAlarm := NewAlarm("Security Alarm")
-	securityAlarm.Arm()
-
-	// Creating a motion sensor with a callback to automatically trigger the alarm on motion detection.
-	motionSensor := NewMotionSensor("Motion Sensor", func(sensorName string) {
-		if securityAlarm.Armed {
-			securityAlarm.Trigger()
-		}
-	})
-
-	// Simulate motion detection,should automatically trigger the alarm if it's armed.
-	motionSensor.DetectMotion()
-
-	// Trigger the alarm to demonstrate manual activation, regardless of motion detection.
-	// This call might represent a direct interaction, like a panic button being pressed.
-	fmt.Println("Manually triggering the alarm to test behavior when armed.")
-	securityAlarm.Trigger()
-
-	// Disarm the security system to prevent the alarm from sounding on further motion detection.
-	securityAlarm.Disarm()
-
-	// Attempt to manually trigger the alarm again to illustrate it doesn't sound when disarmed.
-	// This might be useful for testing the disarm functionality.
-	fmt.Println("Attempting to manually trigger the alarm after disarming to test behavior.")
-	securityAlarm.Trigger()
-}
-*/
