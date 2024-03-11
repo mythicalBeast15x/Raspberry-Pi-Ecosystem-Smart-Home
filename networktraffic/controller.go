@@ -13,15 +13,17 @@ func Controller(msg string){
 package networktraffic
 
 import (
-	"CMPSC488SP24SecThursday/messaging" // Import the messaging package
-	"encoding/json"
+
+	"CMPSC488SP24SecThursday/messaging" // Importing messaging package
+
 	"fmt"
 	"github.com/jacobsa/go-serial/serial"
 	"time"
 )
 
-// Controller function to handle message creation and sending
-func Controller(msg string, oMessages *messaging.OpenMessages, qMessages *messaging.MessageQueue) {
+
+func controller() {
+
 	options := serial.OpenOptions{
 		PortName:        "/dev/ttyUSB0",
 		BaudRate:        9600,
@@ -37,19 +39,23 @@ func Controller(msg string, oMessages *messaging.OpenMessages, qMessages *messag
 	}
 	defer port.Close()
 
+
+	// Create a message queue
+	qMessages := &messaging.MessageQueue{}
+
 	for {
-		// Unmarshal the JSON string to create a message
-		var message messaging.Message
-		err := json.Unmarshal([]byte(msg), &message)
+		// Dequeue a message from the outgoing queue
+		outgoingMsg, err := qMessages.Dequeue("outgoing")
+
 		if err != nil {
-			fmt.Printf("Error unmarshalling JSON: %v\n", err)
+			fmt.Println("Error dequeuing from outgoing queue:", err)
 			continue
 		}
 
-		// Marshal the message struct to JSON
-		jsonData, err := json.Marshal(message)
-		if err != nil {
-			fmt.Printf("Error marshalling JSON: %v\n", err)
+		// Convert the message to []byte
+		jsonData, ok := outgoingMsg.([]byte)
+		if !ok {
+			fmt.Println("Expected dequeued message to be of type []byte")
 			continue
 		}
 
@@ -60,7 +66,9 @@ func Controller(msg string, oMessages *messaging.OpenMessages, qMessages *messag
 			continue
 		}
 
-		fmt.Printf("Message sent: %s\n", message.MessageID)
+
+		fmt.Println("Message sent:", string(jsonData))
+
 		time.Sleep(1 * time.Second) // Send a message every second
 	}
 }
@@ -84,5 +92,4 @@ func main() {
 func main() {
 	Controller()
 }
-
 */
