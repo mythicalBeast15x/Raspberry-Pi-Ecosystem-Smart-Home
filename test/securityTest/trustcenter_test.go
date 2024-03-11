@@ -64,4 +64,59 @@ func TestCamera(t *testing.T) {
 	}
 }
 
-// Remove TestUserJoiningProcess and TestMotionDetectionAndAlarmTrigger tests as TrustCenter and Alarm are no longer part of the package.
+// TestAlarm checks the functionality of arming, disarming, and triggering the alarm.
+func TestAlarm(t *testing.T) {
+	alarm := security.NewAlarm("TestAlarm")
+
+	// Test arming the alarm.
+	alarm.Arm()
+	if !alarm.Armed {
+		t.Errorf("Alarm should be armed after calling Arm.")
+	}
+
+	// Test triggering the alarm when armed.
+	alarm.Trigger()
+	if !alarm.Sounded {
+		t.Errorf("Alarm should be sounded after calling Trigger when armed.")
+	}
+
+	// Reset alarm
+	alarm.Sounded = false
+	alarm.Disarm()
+	if alarm.Armed {
+		t.Errorf("Alarm should be disarmed after calling Disarm.")
+	}
+
+	// Test triggering the alarm when disarmed.
+	alarm.Trigger()
+	if alarm.Sounded {
+		t.Errorf("Alarm should not be sounded after calling Trigger when disarmed.")
+	}
+}
+
+// TestTrustCenter checks the user authorization process.
+func TestTrustCenter(t *testing.T) {
+	tc := security.NewTrustCenter()
+
+	// Authorize a user and check authorization.
+	userName := "AuthorizedUser"
+	tc.AuthorizeUser(userName)
+	if !tc.IsUserAuthorized(userName) {
+		t.Errorf("User should be authorized after calling AuthorizeUser.")
+	}
+
+	// Attempt to join with an authorized user.
+	joinMsg := tc.AttemptJoin(userName)
+	expectedMsg := userName + " has successfully joined the network.\n"
+	if joinMsg != expectedMsg {
+		t.Errorf("Expected '%s', got '%s'", expectedMsg, joinMsg)
+	}
+
+	// Attempt to join with an unauthorized user.
+	unauthUserName := "UnauthorizedUser"
+	joinMsg = tc.AttemptJoin(unauthUserName)
+	expectedMsg = unauthUserName + " is not authorized to join the network.\n"
+	if joinMsg != expectedMsg {
+		t.Errorf("Expected '%s', got '%s'", expectedMsg, joinMsg)
+	}
+}

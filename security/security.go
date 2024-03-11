@@ -79,3 +79,70 @@ func (m *MotionSensor) DetectMotion() {
 		m.OnMotionDetected(m.Name)
 	}
 }
+
+// Alarm represents a simple alarm component.
+type Alarm struct {
+	Name    string
+	Armed   bool
+	Sounded bool
+}
+
+// NewAlarm creates a new Alarm instance with the given name.
+func NewAlarm(name string) *Alarm {
+	return &Alarm{
+		Name:  name,
+		Armed: false,
+	}
+}
+
+// Arm sets the alarm to the armed state.
+func (a *Alarm) Arm() {
+	a.Armed = true
+	fmt.Printf("%s is armed.\n", a.Name)
+}
+
+// Disarm disarms the alarm.
+func (a *Alarm) Disarm() {
+	a.Armed = false
+	fmt.Printf("%s is disarmed.\n", a.Name)
+}
+
+// Trigger activates the alarm if it's armed.
+func (a *Alarm) Trigger() {
+	if a.Armed {
+		a.Sounded = true
+		fmt.Printf("%s alarm is triggered!\n", a.Name)
+	}
+}
+
+// TrustCenter manages user authorization to interact with the security system.
+type TrustCenter struct {
+	AuthorizedUsers map[string]bool
+}
+
+// NewTrustCenter creates a new TrustCenter instance.
+func NewTrustCenter() *TrustCenter {
+	return &TrustCenter{
+		AuthorizedUsers: make(map[string]bool),
+	}
+}
+
+// AuthorizeUser adds a user to the list of authorized users.
+func (tc *TrustCenter) AuthorizeUser(userName string) {
+	tc.AuthorizedUsers[userName] = true
+	fmt.Printf("%s is authorized.\n", userName)
+}
+
+// IsUserAuthorized checks if a user is authorized.
+func (tc *TrustCenter) IsUserAuthorized(userName string) bool {
+	authorized, exists := tc.AuthorizedUsers[userName]
+	return exists && authorized
+}
+
+// AttemptJoin simulates a user attempting to join the network.
+func (tc *TrustCenter) AttemptJoin(userName string) string {
+	if tc.IsUserAuthorized(userName) {
+		return fmt.Sprintf("%s has successfully joined the network.\n", userName)
+	}
+	return fmt.Sprintf("%s is not authorized to join the network.\n", userName)
+}
