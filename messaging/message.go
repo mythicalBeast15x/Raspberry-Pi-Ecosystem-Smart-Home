@@ -323,7 +323,7 @@ func EncryptAndHash(qMessages *MessageQueue, key []byte) (string, error) {
 		fmt.Println("Error dequeuing from outgoing queue:", err)
 		return "", nil
 	}
-	fmt.Println("Dequeued from outgoing queue: Some byte message")
+	fmt.Println("Dequeued from outgoing queue: \n ", deqMsg)
 	// Convert the dequeued message to []byte
 	jsonData, ok := deqMsg.([]byte)
 	if !ok {
@@ -336,11 +336,11 @@ func EncryptAndHash(qMessages *MessageQueue, key []byte) (string, error) {
 		fmt.Println("Error encrypting JSON:", err)
 		return "", nil
 	}
-	fmt.Println("Encrypted message:", encrypt)
+	fmt.Println("Encrypted message: \n ", encrypt)
 
 	// Generate the HMAC hash and append it to the encrypted data:
-	hash, time := hashing.CalculateSHA256(encrypt)
-	fmt.Println("Time taken: ", time)
+	hash, _ := hashing.CalculateSHA256(encrypt)
+	//fmt.Println("Time taken: ", time)
 
 	// Create the EncryptedMessage struct
 	encryptedMsg := EncryptedMessage{
@@ -375,7 +375,7 @@ func ValidateAndDecrypt(oMessages *OpenMessages, qMessages *MessageQueue, key []
 		fmt.Println("Error dequeuing from incoming queue:", err)
 		return err
 	}
-	fmt.Println("Dequeued from incoming queue: Some string message")
+	fmt.Println("Dequeued from incoming queue: \n", deqMsg)
 
 	// Convert the dequeued message to string
 	jsonStr, ok := deqMsg.(string)
@@ -391,8 +391,8 @@ func ValidateAndDecrypt(oMessages *OpenMessages, qMessages *MessageQueue, key []
 	}
 
 	// Split the encrypted message from the hash and validate the HMAC hash to see if the message was tampered with:
-	hash, time := hashing.CalculateSHA256(encryptedPlusHash.EncryptedData)
-	fmt.Println("Time taken: ", time)
+	hash, _ := hashing.CalculateSHA256(encryptedPlusHash.EncryptedData)
+	//fmt.Println("Time taken: ", time)
 	if hash == encryptedPlusHash.Hash { // if the generated hash matches the appended hash:
 		// Decrypt the JSON data
 		decrypt, err := hashing.Decrypt(encryptedPlusHash.EncryptedData, key)
