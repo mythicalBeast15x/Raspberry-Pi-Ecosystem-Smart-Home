@@ -1,16 +1,11 @@
 package networktraffic
 
 import (
-	"encoding/json"
+	"CMPSC488SP24SecThursday/messaging" // Importing messaging package
 	"fmt"
 	"github.com/jacobsa/go-serial/serial"
 	"time"
 )
-
-// Message struct represents the JSON message format
-type Message struct {
-	Content string `json:"content"`
-}
 
 func controller() {
 	options := serial.OpenOptions{
@@ -28,16 +23,21 @@ func controller() {
 	}
 	defer port.Close()
 
-	// Create a message struct
-	message := Message{
-		Content: "Hello from Server Zigbee",
-	}
+	// Create a message queue
+	qMessages := &messaging.MessageQueue{}
 
 	for {
-		// Marshal the message struct to JSON
-		jsonData, err := json.Marshal(message)
+		// Dequeue a message from the outgoing queue
+		outgoingMsg, err := qMessages.Dequeue("outgoing")
 		if err != nil {
-			fmt.Printf("Error marshalling JSON: %v\n", err)
+			fmt.Println("Error dequeuing from outgoing queue:", err)
+			continue
+		}
+
+		// Convert the message to []byte
+		jsonData, ok := outgoingMsg.([]byte)
+		if !ok {
+			fmt.Println("Expected dequeued message to be of type []byte")
 			continue
 		}
 
@@ -48,7 +48,7 @@ func controller() {
 			continue
 		}
 
-		fmt.Printf("Message sent: %s\n", message.Content)
+		fmt.Println("Message sent:", string(jsonData))
 		time.Sleep(1 * time.Second) // Send a message every second
 	}
 }
@@ -57,5 +57,4 @@ func controller() {
 func main() {
 	controller()
 }
-
 */
