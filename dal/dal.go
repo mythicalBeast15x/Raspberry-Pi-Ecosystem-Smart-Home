@@ -36,10 +36,19 @@ func MessageDisperser(m messaging.Message) {
 	//MessageCheck -> if messageID from OpenMessage return true
 	//get deserialized message from deserializedQueue
 	//if true -->
-	if m.Domain == "Light" {
-
+	if m.Domain == "General" {
+		return
+	}
+	if m.Domain == "Master" {
+		return
+	}
+	if m.Domain == "Lighting" {
+		return
 	}
 	if m.Domain == "HVAC" {
+		return
+	}
+	if m.Domain == "Appliance" {
 		return
 	}
 	if m.Domain == "Security" {

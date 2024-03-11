@@ -573,8 +573,7 @@
                     <p><strong>Username:</strong> <input type="text" value="johndoe123" readonly></p>
                     <p><strong>Password:</strong> <input type="password" value="secret" readonly></p>
                     <div class="d-flex justify-content-center">
-                        <a href="/login.html" class="btn btn-primary"
-                           style="background-color: rgb(38, 106, 207) !important;">Logout</a>
+                        <button id="logoutButton" class="btn btn-primary" style="background-color: rgb(38, 106, 207) !important;">Logout</button>
                     </div>
                 </div>
             </div>
@@ -593,6 +592,13 @@
             var target = $(this).attr('href');
             $('.tab-pane').removeClass('active');
             $(target).addClass('active');
+        });
+        $('#logoutButton').click(function() {
+            // Clear the authentication token from localStorage
+            localStorage.removeItem('token'); // Adjust this line when actual token is implemented.
+
+            // Redirect the user to the login page
+            window.location.href = 'login.html';
         });
     });
 </script>

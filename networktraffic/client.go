@@ -8,8 +8,9 @@ import (
 	"io"
 )
 
+
 func client() {
-	options := serial.OpenOptions{
+	  options := serial.OpenOptions{
 		PortName:        "/dev/ttyUSB0",
 		BaudRate:        9600,
 		DataBits:        8,
@@ -61,14 +62,16 @@ func client() {
 			continue
 		}
 
+
 		// Display the received message
 		fmt.Println("Message received:")
 		messaging.DisplayMessage(message)
+
 	}
 }
 
 /*
 func main() {
-	client()
+	Client()
 }
 */
