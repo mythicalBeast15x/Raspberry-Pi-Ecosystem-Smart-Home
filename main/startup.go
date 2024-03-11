@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"time"
 )
 
 // Config struct holds the configuration data for the device
@@ -20,12 +21,40 @@ type Config struct {
 	// TODO: HMAC key
 }
 
+// response is used for confirming the existence of other devices in the network
+func response() {
+	attempts := 0
+	maxAttempts := 3
+	sendInterval := time.Second * 10
+	for attempts < maxAttempts {
+		// Get message
+		// TODO: Implement message logic
+		/*
+			if len(msg) != 0 {
+				fmt.Println("There's a device in the network")
+				// do logic
+				return
+			}
+		*/
+		attempts++
+		// Wait for sendInterval before sending the message again
+		time.Sleep(sendInterval)
+	}
+	// Check if it's the only device in the network
+	if attempts == maxAttempts {
+		fmt.Println("This device is the only one in the network")
+		// do logic
+	}
+}
+
 // startUp function runs on Pi start up
 func startUp() {
 	// parse startup config JSON file into config struct
 	var config Config
 	parseConfigJSON("main/startup.json", &config)
 	fmt.Println(config) // DEBUG
+
+	// response()
 
 	// TODO: Account for first Pi on the network
 	// 	- generate AES and HMAC key
