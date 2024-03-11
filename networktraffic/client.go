@@ -1,4 +1,4 @@
-package main
+package networktraffic
 
 import (
 	"CMPSC488SP24SecThursday/messaging" // Importing messaging package
@@ -67,6 +67,8 @@ func client() {
 	}
 }
 
+/*
 func main() {
 	client()
 }
+*/
