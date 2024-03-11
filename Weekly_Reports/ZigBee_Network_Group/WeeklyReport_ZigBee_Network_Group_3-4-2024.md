@@ -93,9 +93,16 @@
 - Help any group that needs it.
 
 #### Key Points
+- Went around asking teams if they need help (No response)
+- Wrote code for doorlock, camera, and motion detection
+- Wrote documentation on secuirty file
+- Created test files
 
 #### Next Week Goals
-
+- Enhance the code for doorlock, camera, and motion detection
+- Keep going around asking groups if they need assistance.
+- Work on anything that needs to get done.
+- 
 ### ❖ Mitkumar Patel
 
 #### Previous Individual Goals/Objectives
