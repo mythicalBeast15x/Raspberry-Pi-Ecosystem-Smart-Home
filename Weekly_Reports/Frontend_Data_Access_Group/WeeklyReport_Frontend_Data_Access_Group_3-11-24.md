@@ -35,4 +35,21 @@
 
 ### Previous week Goals
 - Made a login and registration page using HTML/CSS
-- Did more reasearch on home security system webpages to make it more user friendly 
+- Did more reasearch on home security system webpages to make it more user friendly
+
+### David Weisman
+
+### Previous week Goals
+- Figure out how and what FE passes to BE
+- Help FE with additional tasks as they pop up
+  
+### Key Points
+- Fixed pathways on links around website
+- Created logout functionality
+  - Takes you to log in page
+  - Began working on unvalidating token upon logout
+- Need log in system finalized to finish up logout
+  
+### Next Week Goals
+- Get log in and log out operational
+- Sync that up in the account tab of the dashboard
