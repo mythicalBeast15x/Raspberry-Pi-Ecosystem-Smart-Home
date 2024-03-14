@@ -331,16 +331,17 @@ func EncryptAndHash(qMessages *MessageQueue, key []byte) (string, error) {
 		return "", nil
 	}
 	// Encrypt the JSON data
+	fmt.Println("Encrypting Message...")
 	encrypt, err := hashing.Encrypt(jsonData, key)
 	if err != nil {
 		fmt.Println("Error encrypting JSON:", err)
 		return "", nil
 	}
+	fmt.Println("Message Encrypted!")
 	fmt.Println("Encrypted message: \n ", encrypt)
 
 	// Generate the HMAC hash and append it to the encrypted data:
 	hash, _ := hashing.CalculateSHA256(encrypt)
-	//fmt.Println("Time taken: ", time)
 
 	// Create the EncryptedMessage struct
 	encryptedMsg := EncryptedMessage{
@@ -390,17 +391,21 @@ func ValidateAndDecrypt(oMessages *OpenMessages, qMessages *MessageQueue, key []
 		return fmt.Errorf("error unmarshalling JSON message: %v", err)
 	}
 
+	fmt.Println("Validating Hash...")
 	// Split the encrypted message from the hash and validate the HMAC hash to see if the message was tampered with:
 	hash, _ := hashing.CalculateSHA256(encryptedPlusHash.EncryptedData)
 	//fmt.Println("Time taken: ", time)
 	if hash == encryptedPlusHash.Hash { // if the generated hash matches the appended hash:
+		fmt.Println("Hash Validated!")
 		// Decrypt the JSON data
+		fmt.Println("decrypting Message...")
 		decrypt, err := hashing.Decrypt(encryptedPlusHash.EncryptedData, key)
 		if err != nil {
 			fmt.Print("Error decrypting JSON:", err)
 			return err
 		}
 		// Use the encrypted message as needed
+		fmt.Println("Message Decrypted!")
 		fmt.Println("Decrypted message:", decrypt)
 
 		// Add decrypted data to message check in function

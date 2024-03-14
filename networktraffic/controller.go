@@ -1,29 +1,15 @@
-/*
-Controller function may be changed to take in a value like a JSON string
-to act as the message to be sent.
-
-Example:
-func Controller(msg string){
-	message := Message{
-	Content: msg,
-	}
-}
-*/
-
 package networktraffic
 
 import (
-
-	"CMPSC488SP24SecThursday/messaging" // Importing messaging package
-
+	"CMPSC488SP24SecThursday/hashing"
+	"CMPSC488SP24SecThursday/messaging"
 	"fmt"
 	"github.com/jacobsa/go-serial/serial"
 	"time"
 )
 
-
-func controller() {
-
+// Controller function to handle message creation and sending
+func Controller(msg string, oMessages *messaging.OpenMessages, qMessages *messaging.MessageQueue) {
 	options := serial.OpenOptions{
 		PortName:        "/dev/ttyUSB0",
 		BaudRate:        9600,
@@ -39,37 +25,31 @@ func controller() {
 	}
 	defer port.Close()
 
+	// Encrypt message into a single byte string of characters
+	key := []byte("1234567890123456") // TODO - replace with generated AES key
+	encryptedMsg, err := hashing.Encrypt([]byte(msg), key)
+	if err != nil {
+		fmt.Println("Error encrypting JSON:", err)
+		return
+	}
 
-	// Create a message queue
-	qMessages := &messaging.MessageQueue{}
+	// Prefix the encrypted message with its length
+	completeMsg := fmt.Sprintf("%d:%s", len(encryptedMsg), encryptedMsg)
 
-	for {
-		// Dequeue a message from the outgoing queue
-		outgoingMsg, err := qMessages.Dequeue("outgoing")
-
-		if err != nil {
-			fmt.Println("Error dequeuing from outgoing queue:", err)
-			continue
+	for i := 0; i < 2; i++ {
+		for {
+			//time.Sleep(1 * time.Second)
+			// Write the JSON data to the serial port
+			_, err = port.Write([]byte(completeMsg))
+			if err != nil {
+				fmt.Printf("Error writing to serial port: %v\n", err)
+				continue
+			}
+			//fmt.Printf("\nMessage sent: %s\n", msgBytes)
+			fmt.Printf("\nMessage sent: %s\n", completeMsg)
+			time.Sleep(2000 * time.Millisecond)
+			break
 		}
-
-		// Convert the message to []byte
-		jsonData, ok := outgoingMsg.([]byte)
-		if !ok {
-			fmt.Println("Expected dequeued message to be of type []byte")
-			continue
-		}
-
-		// Write the JSON data to the serial port
-		_, err = port.Write(jsonData)
-		if err != nil {
-			fmt.Printf("Error writing to serial port: %v\n", err)
-			continue
-		}
-
-
-		fmt.Println("Message sent:", string(jsonData))
-
-		time.Sleep(1 * time.Second) // Send a message every second
 	}
 }
 

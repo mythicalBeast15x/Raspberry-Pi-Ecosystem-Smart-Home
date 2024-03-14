@@ -1,6 +1,5 @@
 package ZigbeeTests
 
-/*
 import (
 	"CMPSC488SP24SecThursday/blockchain"
 	"CMPSC488SP24SecThursday/messaging"
@@ -57,13 +56,14 @@ func main() {
 	fmt.Println("Message to be processed (String):\n ", string(qMessages.OutgoingMessages[0]))
 	fmt.Println()
 	key := []byte("1234567890123456") // TODO - replace with generated AES key
+
 	fmt.Println("\n\n -------------------- Processing Message For Sending -------------------- ")
 	// Takes message from outgoing queue, so it can be sent over the Zigbee network
 	outgoingMsg, err := messaging.EncryptAndHash(qMessages, key)
 	if err != nil {
 		return
 	}
-	fmt.Println("Message to be sent (String):\n ", outgoingMsg)
+	fmt.Println("Message to be sent (String):\n ", string(outgoingMsg))
 
 	//networktraffic.Controller(outgoingMsg)
 
@@ -71,7 +71,10 @@ func main() {
 	//	which should come from the messaging.EncryptAndHash function.
 
 	//networktraffic.Client(qMessages)
-
+	// Continuously check if the incoming queue is not empty
+	//for len(qMessages.IncomingMessages) == 0 {
+	//	time.Sleep(1 * time.Second) // Wait for 1 second before checking again
+	//}
 	//	The Client function should be called with the same MessageQueue instance
 	//	uses for all messages for any one Raspberry PI.
 
@@ -94,7 +97,7 @@ func main() {
 	// If previous function worked, then the new message should now be in the deserial queue
 	nextMsg, err := qMessages.Dequeue("deserial")
 	if err != nil {
-		fmt.Println("Error dequeuing from outgoing queue:", err)
+		fmt.Println("Error dequeuing from deserial queue:", err)
 		return
 	}
 
@@ -143,4 +146,3 @@ func main() {
 
 	fmt.Println("Is receiver block chain verified?", receiverBlockchain.VerifyBlockChain())
 }
-*/
