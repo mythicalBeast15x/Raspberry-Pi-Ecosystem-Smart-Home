@@ -1,0 +1,56 @@
+<script>
+    $(document).ready(function () {
+        $('#loginForm').submit(function (e) {
+            e.preventDefault();
+
+            // Validation flags
+            var isValid = true;
+
+            // Error messages container
+            var errorMessage = "";
+
+            // Get user input
+            var username = $('#username').val();
+            var password = $('#password').val();
+
+            // Username (email) validation regex
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(username)) {
+                isValid = false;
+                errorMessage += "Please enter a valid email address.<br>";
+            }
+
+            // Password validation regex
+            var passwordRegex = /^(?=.*[A-Z]).{8,}$/;
+            if (!passwordRegex.test(password)) {
+                isValid = false;
+                errorMessage += "Password must be at least 8 characters long and contain one uppercase letter.<br>";
+            }
+
+            // Show error message(s) if validation fails
+            if (!isValid) {
+                $('#errorMessage').html(errorMessage);
+                return; // Stop the function if there are validation errors
+            }
+
+            // Proceed with AJAX request if validation is successful
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:8080/login',
+                contentType: 'application/json',
+                data: JSON.stringify({ username: username, password: password }),
+                success: function (response) {
+                    localStorage.setItem('token', response.token);
+                    window.location.href = '/dashboard.html';
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 401) {
+                        $('#errorMessage').text('Invalid username or password.');
+                    } else {
+                        $('#errorMessage').text('An error occurred while processing your request.');
+                    }
+                }
+            });
+        });
+    });
+</script>
