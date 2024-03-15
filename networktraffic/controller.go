@@ -5,6 +5,7 @@ import (
 	"CMPSC488SP24SecThursday/messaging"
 	"fmt"
 	"github.com/jacobsa/go-serial/serial"
+	"io"
 	"time"
 )
 
@@ -23,7 +24,12 @@ func Controller(msg string, oMessages *messaging.OpenMessages, qMessages *messag
 		fmt.Printf("Error opening serial port: %v\n", err)
 		return
 	}
-	defer port.Close()
+	defer func(port io.ReadWriteCloser) {
+		err := port.Close()
+		if err != nil {
+
+		}
+	}(port)
 
 	// Encrypt message into a single byte string of characters
 	key := []byte("1234567890123456") // TODO - replace with generated AES key
