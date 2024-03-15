@@ -24,6 +24,7 @@ func Controller(msg string, oMessages *messaging.OpenMessages, qMessages *messag
 		fmt.Printf("Error opening serial port: %v\n", err)
 		return
 	}
+
 	defer func(port io.ReadWriteCloser) {
 		err := port.Close()
 		if err != nil {
@@ -39,12 +40,11 @@ func Controller(msg string, oMessages *messaging.OpenMessages, qMessages *messag
 		return
 	}
 
-	// Prefix the encrypted message with its length
-	completeMsg := fmt.Sprintf("%d:%s ", len(encryptedMsg), encryptedMsg)
+	// Encase the encrypted message with open and closed brackets to mark the start and end of the message
+	completeMsg := fmt.Sprintf("{%s}", encryptedMsg)
 
 	for i := 0; i < 1; i++ {
 		for {
-
 			time.Sleep(4500 * time.Millisecond)
 
 			// Write the JSON data to the serial port
@@ -61,22 +61,7 @@ func Controller(msg string, oMessages *messaging.OpenMessages, qMessages *messag
 	}
 }
 
-/* Testing
-// Example usage:
-func main() {
-	// Initialize necessary structures
-	oMessages := &messaging.OpenMessages{}
-	qMessages := &messaging.MessageQueue{}
-
-	// Dummy message in JSON format
-	dummyMessage := `{"messageID": "12345", "senderID": "Pi-1", "receiverID": "Pi-2", "domain": "Testing", "operationID": "TestOperation", "Data": {"key1": "value1", "key2": 42, "key3": true}}`
-
-	// Call the Controller function with the dummy message
-	Controller(dummyMessage, oMessages, qMessages)
-}
-
-
-
+/*
 func main() {
 	Controller()
 }

@@ -149,7 +149,7 @@ func NewMessage(senderID, receiverID, domain, operationID string, data map[strin
 	// Serialize the message into a JSON structure
 	jsonData, err := json.Marshal(message)
 	if err != nil {
-		fmt.Println("Error marshalling JSON:", err)
+		fmt.Println("\nError marshalling JSON:", err)
 		return message
 	}
 	// Add serialized outgoing message to the outgoing queue
@@ -202,7 +202,7 @@ Prints:
 Returns: None
 */
 func DisplayMessage(msg Message) {
-	fmt.Println("MessageID:", msg.MessageID)
+	fmt.Println("\nMessageID:", msg.MessageID)
 	fmt.Println("SenderID:", msg.SenderID)
 	fmt.Println("ReceiverID:", msg.ReceiverID)
 	fmt.Println("Domain:", msg.Domain)
@@ -235,12 +235,12 @@ func MessageCheckIn(serialMsg []byte, oMessages *OpenMessages, qMessages *Messag
 	// Check if the messageID already exists in the OpenMessages struct
 	for _, existingMsgID := range oMessages.messages {
 		if existingMsgID == msg.MessageID {
-			fmt.Println("Message ID already exists in OpenMessages struct")
+			fmt.Println("\nMessage ID already exists in OpenMessages struct")
 			return false
 		}
 	}
 	if msg.ReceiverID == globalPiID {
-		fmt.Println("Global ID matched! Message is meant for all devices")
+		fmt.Println("\nGlobal ID matched! Message is meant for all devices")
 		qMessages.DeserialMessages = append(qMessages.DeserialMessages, msg)
 		oMessages.messages = append(oMessages.messages, msg.MessageID)
 		EchoMessage(msg, qMessages) // call to echo the message out again
@@ -248,12 +248,12 @@ func MessageCheckIn(serialMsg []byte, oMessages *OpenMessages, qMessages *Messag
 	}
 	// Check if the receiverID matches the global Pi ID
 	if msg.ReceiverID != localPiID {
-		fmt.Println("Receiver ID does not match the local Pi ID")
+		fmt.Println("\nReceiver ID does not match the local Pi ID")
 		EchoMessage(msg, qMessages) // call to echo the message out again
 		return false
 	}
 	// If MessageID and ReceiverID checks pass, then it can be serviced. Adds the message of type Message to the deserialized message queue.
-	fmt.Println("Message is serviceable!")
+	fmt.Println("\nMessage is serviceable!")
 	qMessages.DeserialMessages = append(qMessages.DeserialMessages, msg)
 	oMessages.messages = append(oMessages.messages, msg.MessageID)
 	return true
@@ -351,21 +351,22 @@ func EncryptAndHash(qMessages *MessageQueue, key []byte) (string, error) {
 	// Dequeue a message from the outgoing queue
 	deqMsg, err := qMessages.Dequeue("outgoing")
 	if err != nil {
-		fmt.Println("Error dequeuing from outgoing queue:", err)
+		fmt.Println("\nError dequeuing from outgoing queue:", err)
 		return "", nil
 	}
-	fmt.Println("Dequeued from outgoing queue: \n ", deqMsg)
+	//fmt.Println("Dequeued from outgoing queue: \n ", deqMsg)
+
 	// Convert the dequeued message to []byte
 	jsonData, ok := deqMsg.([]byte)
 	if !ok {
-		fmt.Println("Expected dequeued message to be of type []byte")
+		fmt.Println("\nExpected dequeued message to be of type []byte")
 		return "", nil
 	}
 	// Encrypt the JSON data
 	fmt.Println("Encrypting Message...")
 	encrypt, err := hashing.Encrypt(jsonData, key)
 	if err != nil {
-		fmt.Println("Error encrypting JSON:", err)
+		fmt.Println("\nError encrypting JSON:", err)
 		return "", nil
 	}
 	fmt.Println("Message Encrypted!")
@@ -383,7 +384,7 @@ func EncryptAndHash(qMessages *MessageQueue, key []byte) (string, error) {
 	// Marshal the EncryptedMessage struct into JSON
 	encryptPlusHash, err := json.Marshal(encryptedMsg)
 	if err != nil {
-		return "", fmt.Errorf("error marshalling encrypted message to JSON: %v", err)
+		return "", fmt.Errorf("\nError marshalling encrypted message to JSON: %v", err)
 	}
 
 	return string(encryptPlusHash), err
@@ -404,22 +405,22 @@ func ValidateAndDecrypt(oMessages *OpenMessages, qMessages *MessageQueue, key []
 	// Dequeue a JSON string message from the incoming queue
 	deqMsg, err := qMessages.Dequeue("incoming")
 	if err != nil {
-		fmt.Println("Error dequeuing from incoming queue:", err)
+		fmt.Println("\nError dequeuing from incoming queue:", err)
 		return err
 	}
-	fmt.Println("Dequeued from incoming queue: \n", deqMsg)
+	//fmt.Println("\nDequeued from incoming queue: \n", deqMsg)
 
 	// Convert the dequeued message to string
 	jsonStr, ok := deqMsg.(string)
 	if !ok {
-		return fmt.Errorf("expected dequeued message to be of type string")
+		return fmt.Errorf("\nExpected dequeued message to be of type string")
 	}
 
 	// Unmarshal the JSON string into EncryptedMessage struct
 	var encryptedPlusHash EncryptedMessage
 	err = json.Unmarshal([]byte(jsonStr), &encryptedPlusHash)
 	if err != nil {
-		return fmt.Errorf("error unmarshalling JSON message: %v", err)
+		return fmt.Errorf("\nError unmarshalling JSON message: %v", err)
 	}
 
 	fmt.Println("Validating Hash...")
@@ -432,12 +433,12 @@ func ValidateAndDecrypt(oMessages *OpenMessages, qMessages *MessageQueue, key []
 		fmt.Println("decrypting Message...")
 		decrypt, err := hashing.Decrypt(encryptedPlusHash.EncryptedData, key)
 		if err != nil {
-			fmt.Print("Error decrypting JSON:", err)
+			fmt.Print("\nError decrypting JSON:", err)
 			return err
 		}
 		// Use the encrypted message as needed
 		fmt.Println("Message Decrypted!")
-		fmt.Println("Decrypted message:", decrypt)
+		fmt.Println("\nDecrypted message:", string(decrypt))
 
 		// Add decrypted data to message check in function
 		decryptedByte := decrypt
