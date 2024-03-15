@@ -34,11 +34,13 @@ func Controller(msg string, oMessages *messaging.OpenMessages, qMessages *messag
 	}
 
 	// Prefix the encrypted message with its length
-	completeMsg := fmt.Sprintf("%d:%s", len(encryptedMsg), encryptedMsg)
+	completeMsg := fmt.Sprintf("%d:%s ", len(encryptedMsg), encryptedMsg)
 
-	for i := 0; i < 2; i++ {
+	for i := 0; i < 1; i++ {
 		for {
-			//time.Sleep(1 * time.Second)
+
+			time.Sleep(4500 * time.Millisecond)
+
 			// Write the JSON data to the serial port
 			_, err = port.Write([]byte(completeMsg))
 			if err != nil {
@@ -47,7 +49,7 @@ func Controller(msg string, oMessages *messaging.OpenMessages, qMessages *messag
 			}
 			//fmt.Printf("\nMessage sent: %s\n", msgBytes)
 			fmt.Printf("\nMessage sent: %s\n", completeMsg)
-			time.Sleep(2000 * time.Millisecond)
+			time.Sleep(2500 * time.Millisecond)
 			break
 		}
 	}

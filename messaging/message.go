@@ -7,11 +7,13 @@ relevant device nodes.
 
 import (
 	"CMPSC488SP24SecThursday/Helper"
+	"CMPSC488SP24SecThursday/blockchain"
 	"CMPSC488SP24SecThursday/hashing"
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"time"
 )
 
 // globalPiID temp variable simulates the ID representing a message intended for all devices.
@@ -152,6 +154,35 @@ func NewMessage(senderID, receiverID, domain, operationID string, data map[strin
 	}
 	// Add serialized outgoing message to the outgoing queue
 	qMessages.OutgoingMessages = append(qMessages.OutgoingMessages, jsonData)
+	// Returns the un-serialized version of the data.
+	return message
+}
+
+// LocalMessage creates a new Message object with the given parameters.
+/*
+Purpose: Creates a new message object
+Data:
+- MessageID: The unique ID of the message
+- SenderID: The ID of the sending PI device.
+- ReceiverID: The ID of the target PI device.
+- Domain: The domain of the message (e.g., lighting, HVAC, security).
+- OperationID: The ID of the specific operation that the message wants to invoke.
+- Data: Any additional data/parameters that the message needs to service the operation.
+- oMessages: A list to keep track of opened messages for the sake if giving the message a unique MessageID.
+- qMessages: A queue to add the serialized message too.
+Returns: Message: The newly created Message object.
+*/
+func LocalMessage(senderID, receiverID, domain, operationID string, data map[string]interface{}, oMessages *OpenMessages, qMessages *MessageQueue) Message {
+	messageID := oMessages.generateMessageID()
+	message := Message{
+		MessageID:   messageID,
+		SenderID:    senderID,
+		ReceiverID:  receiverID,
+		Domain:      domain,
+		OperationID: operationID,
+		Data:        data,
+	}
+
 	// Returns the un-serialized version of the data.
 	return message
 }
@@ -414,6 +445,44 @@ func ValidateAndDecrypt(oMessages *OpenMessages, qMessages *MessageQueue, key []
 		return err
 	}
 	return nil
+}
+
+// PseudoTest creates three messages.
+/*
+Purpose: To create a few messages for testing purposes.
+Data:
+- oMessages: A list to keep track of opened messages for the sake if giving the message a unique MessageID.
+- qMessages: Pointer to the MessageQueue where the incoming messages are stored.
+Returns:
+- None
+*/
+func PseudoTest(oMessages *OpenMessages, qMessages *MessageQueue) {
+	// Create a new blockchain
+	mainBlockchain := blockchain.NewBlockchain(4)
+
+	//Test Block as data
+	newBlock := blockchain.Block{
+		Index:     3,
+		Timestamp: time.Now().String(),
+		Data: blockchain.EncryptedData{
+			Ciphertext: []byte("Block 1 Data"),
+			Error:      nil},
+		PrevHash: mainBlockchain.Chain[len(mainBlockchain.Chain)-1].Hash,
+		Hash:     "",
+	}
+	// Simulate message being made:
+	data := map[string]interface{}{
+		"Block": newBlock,
+	}
+	NewMessage("Pi-1", "Pi-2", "General", "21", data, oMessages, qMessages)
+
+	NewMessage("Pi-1", "Pi-2", "Lighting", "2", map[string]interface{}{
+		"ApplianceID": "lamp-1",
+	}, oMessages, qMessages)
+
+	NewMessage("Pi-1", "Pi-2", "Lighting", "2", map[string]interface{}{
+		"ApplianceID": "lamp-1",
+	}, oMessages, qMessages)
 }
 
 /*
