@@ -1,12 +1,6 @@
 package configstruct
 
-import (
-    "encoding/json"
-    "fmt"
-    "io/ioutil"
-    "log"
-)
-
+/*
 func main() {
     configFile := "config.json"
     fileContent, err := ioutil.ReadFile(configFile)
@@ -17,4 +11,5 @@ func main() {
     var config ConfigurationStructure
     if err := json.Unmarshal(fileContent, &config); err != nil {
         log.Fatalf("Error decoding configuration: %s", err)
-    } 
+    }
+*/
