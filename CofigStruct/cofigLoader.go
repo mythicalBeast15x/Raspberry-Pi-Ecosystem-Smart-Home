@@ -1,4 +1,4 @@
-/*package configstruct
+package configstruct
 
 import (
     "encoding/json"
@@ -19,9 +19,23 @@ func main() {
         log.Fatalf("Error decoding configuration: %s", err)
     }
 
-*/
 
+// Resolve connected appliance references in each device
+    applianceMap := make(map[string]*Appliance)
+    for , appliance := range config.Appliances {
+        applianceMap[appliance.ApplianceID] = appliance
+    }
 
+    for , device := range config.Devices {
+        for _, applianceID := range device.ConnectedApplianceIDs {
+            if appliance, exists := applianceMap[applianceID]; exists {
+                device.ConnectedAppliances = append(device.ConnectedAppliances, appliance)
+            }
+        }
+    }
+
+    fmt.Printf("Configuration loaded: %+v\n", config)
+}
 
 
 
