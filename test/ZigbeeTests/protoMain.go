@@ -44,7 +44,7 @@ func main() {
 		}
 	}()
 
-	time.Sleep(5 * time.Second) // Wait for 5 seconds before beginning the next go routine
+	time.Sleep(8 * time.Second) // Wait for 8 seconds before beginning the next go routine
 
 	// Initialize go routine constantly looking for an outgoing messages before sending them out
 	go func() {
