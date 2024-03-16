@@ -4,11 +4,9 @@ import (
 	"CMPSC488SP24SecThursday/hashing"
 	"CMPSC488SP24SecThursday/messaging"
 	"bufio"
-	"bytes"
 	"fmt"
 	"github.com/jacobsa/go-serial/serial"
 	"io"
-	"strconv"
 	"strings"
 )
 
@@ -22,61 +20,85 @@ func Client(oMessages *messaging.OpenMessages, qMessages *messaging.MessageQueue
 		MinimumReadSize: 4,
 	}
 
-	port, err := serial.Open(options)
-	if err != nil {
-		fmt.Printf("Error opening serial port: %v\n", err)
-		return
-	}
-	defer port.Close()
-
-	reader := bufio.NewReader(port)
+clientLoop:
 	for {
-		// Read encrypted data length from the serial port
-		lengthStr, err := reader.ReadString(':')
+		// Open serial port
+		port, err := serial.Open(options)
 		if err != nil {
-			if err != io.EOF {
-				fmt.Printf("Error reading from serial port: %v\n", err)
+			fmt.Printf("\nError opening serial port: %v\n", err)
+			continue // Restart the loop to try opening the serial port again
+		}
+
+		reader := bufio.NewReader(port)
+		for {
+			// Clear the reader buffer
+			reader.Reset(port)
+
+			// Read until the start of a message ('{')
+			for {
+				startByte, err := reader.ReadByte()
+				if err != nil {
+					if err != io.EOF {
+						fmt.Printf("\nError reading from serial port: %v\n", err)
+					}
+					err := port.Close()
+					if err != nil {
+						return
+					}
+					continue clientLoop // Restart the client loop if serial port error occurs
+				}
+				if startByte == '{' {
+					break // Break out of the loop if the open bracket is found: Beginning of new message
+				}
 			}
-			continue
-		}
 
-		// Parse the length
-		length, err := strconv.Atoi(strings.TrimSuffix(lengthStr, ":"))
-		if err != nil {
-			fmt.Printf("Error parsing message length: %v\n", err)
-			continue
-		}
-
-		// Read encrypted data of specified length
-		encryptedData := make([]byte, length)
-		_, err = io.ReadFull(reader, encryptedData)
-		if err != nil {
-			if err != io.EOF {
-				fmt.Printf("Error reading from serial port: %v\n", err)
+			// Read bytes until the end of the message ('}')
+			var encryptedData strings.Builder
+			for {
+				nextByte, err := reader.ReadByte()
+				if err != nil {
+					if err != io.EOF {
+						fmt.Printf("\nError reading from serial port: %v\n", err)
+					}
+					err := port.Close()
+					if err != nil {
+						return
+					}
+					continue clientLoop // Restart the client loop  if serial port error occurs
+				}
+				if nextByte == '}' {
+					break // Break out of the loop if the closed bracket is found: End of new message
+				}
+				encryptedData.WriteByte(nextByte)
 			}
-			continue
+
+			// Process the received message
+			fmt.Print("\nReceived Encrypted Message:\n", encryptedData.String())
+
+			// Remove '{' and '}' character markers
+			message := strings.Trim(encryptedData.String(), "{}")
+
+			// Decrypt data
+			key := []byte("1234567890123456") // TODO: replace with generated AES key
+			decryptedMsg, err := hashing.Decrypt(message, key)
+			if err != nil {
+				fmt.Printf("\nError decrypting JSON: %v\n", err)
+				err := port.Close()
+				if err != nil {
+					return
+				}
+				continue clientLoop // Restart the client loop if decryption error occurs
+			}
+
+			fmt.Println("\nDecrypted Message:\n", string(decryptedMsg))
+
+			// Add the received message to the incoming messages queue in MessageQueue instance
+			if string(decryptedMsg) != "" {
+				qMessages.IncomingMessages = append(qMessages.IncomingMessages, string(decryptedMsg))
+			} else {
+				fmt.Println("\nDecrypted message is empty.")
+			}
 		}
-
-		// Find the index of the first '=' character
-		charIndex := bytes.IndexByte(encryptedData, '=')
-		if charIndex != -1 {
-			// Remove characters after '=' character
-			encryptedData = encryptedData[:charIndex+1]
-		}
-
-		fmt.Print("\nReceived Encrypted Message:\n", string(encryptedData))
-
-		// Decrypt data
-		key := []byte("1234567890123456") // TODO - replace with generated AES key
-		decryptedMsg, err := hashing.Decrypt(string(encryptedData), key)
-		if err != nil {
-			fmt.Print("Error decrypting JSON:", err)
-			return
-		}
-		fmt.Println("Decrypted Message:\n", decryptedMsg)
-
-		// Add the received message to the incoming messages queue in MessageQueue instance
-		qMessages.IncomingMessages = append(qMessages.IncomingMessages, string(decryptedMsg))
 	}
 }
 
