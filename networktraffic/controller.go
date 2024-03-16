@@ -45,6 +45,13 @@ func Controller(msg string, oMessages *messaging.OpenMessages, qMessages *messag
 
 	for i := 0; i < 1; i++ {
 		for {
+			// Write the black data to the serial port
+			_, err = port.Write([]byte(" "))
+			if err != nil {
+				fmt.Printf("Error writing to serial port: %v\n", err)
+				continue
+			}
+
 			time.Sleep(4500 * time.Millisecond)
 
 			// Write the JSON data to the serial port
