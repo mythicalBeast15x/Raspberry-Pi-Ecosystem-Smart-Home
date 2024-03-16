@@ -1,58 +1,33 @@
 package databaseTests
 
-/* Commented out test as it will fail on GitHub without an actual database to connect too.
-import (
-	mongodbdal "CMPSC488SP24SecThursday/bam"
-	"context"
-	"fmt"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"log"
-	"testing"
-)
-
+/*
 func TestDatabaseOperation(t *testing.T) {
-	// Set client options
-	clientOptions := options.Client().ApplyURI(mongodbdal.MongoURI)
-
-	// Connect to MongoDB
-	client, err := mongo.Connect(context.Background(), clientOptions)
+	// Initialize MongoDBDAL
+	dbName := "test"
+	collectionName := "users"
+	dal, err := mongodb_dal.NewMongoDBDAL(mongodb_dal.MongoURI, dbName, collectionName)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Failed to initialize MongoDBDAL:", err)
 	}
-
-	// Check if the connection was successful
-	if err := client.Ping(context.Background(), nil); err != nil {
-		log.Fatal("Failed to connect to the database:", err)
-	} else {
-		log.Println("Successfully connected to MongoDB!")
-	}
-
-	defer func(client *mongo.Client, ctx context.Context) {
-		err := client.Disconnect(ctx)
-		if err != nil {
-			t.Error(err)
-		}
-	}(client, context.Background())
-
-	// Get a handle for the collection
-	collection := client.Database("test").Collection("users")
+	defer dal.Close() // Defer closing the connection
 
 	// Inserting a user
-	hashedPassword, err := mongodbdal.HashPassword("secret_password")
+	hashedPassword1, err := mongodb_dal.HashPassword("secret_password_1")
+	hashedPassword2, err := mongodb_dal.HashPassword("secret_password_2")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	user1 := mongodbdal.User{
+	user1 := mongodb_dal.User{
 		Username: "exampleUser1",
-		Password: hashedPassword,
+		Password: hashedPassword1,
+		Token:    "",
 	}
 
-	user2 := mongodbdal.User{
+	user2 := mongodb_dal.User{
 		Username: "exampleUser2",
-		Password: hashedPassword,
+		Password: hashedPassword2,
+		Token:    "",
 	}
 
 	fmt.Println("User insertion")
@@ -60,41 +35,39 @@ func TestDatabaseOperation(t *testing.T) {
 	fmt.Println("User to be inserted:", user2)
 	fmt.Println()
 
-	insertResult1, err := collection.InsertOne(context.Background(), user1)
-	if err != nil {
-		log.Fatal(err)
+	insertedID, err := dal.AddUser(user1)
+	if err != nil && !errors.Is(err, mongodb_dal.ErrUsernameExists) {
+		t.Errorf("Error inserting user1: %v", err)
 	}
-	fmt.Println("Inserted a single document: ", insertResult1.InsertedID)
+	fmt.Println("Inserted a single document: ", insertedID)
 
-	insertResult2, err := collection.InsertOne(context.Background(), user2)
-	if err != nil {
-		log.Fatal(err)
+	insertedID2, err := dal.AddUser(user2)
+	if err != nil && !errors.Is(err, mongodb_dal.ErrUsernameExists) {
+		t.Errorf("Error inserting user1: %v", err)
 	}
-	fmt.Println("Inserted a single document: ", insertResult2.InsertedID)
+	fmt.Println("Inserted a single document: ", insertedID2)
 
-	// Print the entire contents of the database
-	cursor, err := collection.Find(context.Background(), bson.D{})
+	// Retrieve all accounts in the database and have then in a list
+	userList, err := dal.ExtractUserInfo()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Failed to retrieve users:", err)
 	}
 
 	fmt.Println()
-	for cursor.Next(context.Background()) {
-		var user mongodbdal.User
-		if err := cursor.Decode(&user); err != nil {
-			log.Fatal(err)
-		}
+
+	// Print the list of users
+	fmt.Println("List of Users:")
+	for _, user := range userList {
 		fmt.Println("User:", user)
 	}
-	if err := cursor.Err(); err != nil {
-		log.Fatal(err)
-	}
+
 	fmt.Println()
 
-	// Finding a user
-	var result mongodbdal.User
-	filter := mongodbdal.User{Username: "exampleUser1", Password: hashedPassword}
-	err = collection.FindOne(context.Background(), filter).Decode(&result)
+	// Finding a user on the database
+	var result mongodb_dal.User
+	filter := bson.D{{Key: "username", Value: "exampleUser1"}}
+	//filter := bam.User{Username: "exampleUser1"}
+	err = dal.FindOne(filter, &result)
 
 	if err != nil {
 		log.Fatal(err)
@@ -102,18 +75,49 @@ func TestDatabaseOperation(t *testing.T) {
 	fmt.Println("Found user:", result)
 
 	// Comparing password
-	err = mongodbdal.ComparePasswords(result.Password, "secret_password")
+	err = mongodb_dal.ComparePasswords(result.Password, "secret_password_1")
 	if err != nil {
 		fmt.Println("Password does not match")
 	} else {
 		fmt.Println("Password matches")
 	}
 
-	// Dropping the entire database
-	err = client.Database("test").Drop(context.Background())
+	// Test document deletion and dropping db
+	deleteFilter := bson.D{{Key: "username", Value: "exampleUser1"}}
+	deleteErr := dal.DeleteUser(deleteFilter)
+	if deleteErr != nil {
+		log.Fatal("Failed to delete document:", err)
+	}
+
+	// Call the DeleteAllUsers method to delete all documents in the user collection
+	err = dal.DeleteAllUsers()
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Database dropped successfully.")
+
+	// Drop the entire database
+	err = dal.DropDatabase()
+	if err != nil {
+		log.Fatal("\nFailed to drop the database:", err)
+	}
+	fmt.Println("\nDatabase dropped successfully.")
+
+	// Retrieve all accounts in the database and have then in a list
+	userList1, err := dal.ExtractUserInfo()
+	if err != nil {
+		log.Fatal("Failed to retrieve users:", err)
+	}
+
+	fmt.Println()
+
+	// Print the list of users
+	fmt.Println("List of Users:")
+	for _, user := range userList1 {
+		fmt.Println("User:", user)
+	}
+
+	fmt.Println()
+
 }
+
 */
