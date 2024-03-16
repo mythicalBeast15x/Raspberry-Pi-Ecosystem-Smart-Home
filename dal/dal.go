@@ -4,9 +4,10 @@ package dal
 //files to be imported: Appliances, lights, HVAC
 import (
 	"CMPSC488SP24SecThursday/hvac"
+	message "CMPSC488SP24SecThursday/messaging"
+	"encoding/json"
 	//hvac "CMPSC488SP24SecThursday/hvac"
 	light "CMPSC488SP24SecThursday/lighting"
-	"CMPSC488SP24SecThursday/messaging"
 	security "CMPSC488SP24SecThursday/security"
 	"context"
 	"fmt"
@@ -15,12 +16,12 @@ import (
 	"log"
 )
 
-// Key/Value Demo of OIDs
-var myMap = map[string][]int{
-	"Light":          {1, 2, 3, 4},
-	"SecuritySystem": {5, 6, 7},
-	"HVAC ":          {9, 10, 11},
-}
+//// Key/Value Demo of OIDs
+//var myMap = map[string][]int{
+//	"Light":          {'0', '1', '2', 3, 4},
+//	"SecuritySystem": {5, 6, 7},
+//	"HVAC ":          {9, 10, 11},
+//}
 
 //Request Disperser
 /*Purpose: Takes in Message and depending on the domain, calls domain-specific function w/ args from message command block
@@ -28,7 +29,7 @@ var myMap = map[string][]int{
 	returns bool from domain-function ex: Lights
 {Light : {Li1: "Turn On" }}
 */
-func MessageDisperser(m messaging.Message) {
+func MessageDisperser(m message.Message) interface{} {
 	//take message from INCOMING
 	//Validate Hash
 	//Decrypt and Dehash
@@ -37,26 +38,57 @@ func MessageDisperser(m messaging.Message) {
 	//get deserialized message from deserializedQueue
 	//if true -->
 	if m.Domain == "General" {
-		return
+		return true
 	}
 	if m.Domain == "Master" {
-		return
+		return true
 	}
 	if m.Domain == "Lighting" {
-		return
+		// Convert Msg.Data["Block"] to JSON bytes
+
+		jsonData, err := json.Marshal(m.Data["Structure"])
+
+		if err != nil {
+			fmt.Println("Error marshaling JSON:", err)
+			return false
+		}
+
+		// Unmarshal JSON bytes into blockchain.Block struct
+		//var receivedBlock blockchain.Block
+		var lightstruct *light.Lighting
+		err = json.Unmarshal(jsonData, &lightstruct)
+
+		if err != nil {
+			fmt.Println("Error unmarshaling JSON:", err)
+			return false
+		}
+
+		if Light(m.OperationID, lightstruct) {
+			Data := map[string]interface{}{
+				"Structure": map[string]interface{}{
+					"DeviceName": "Light",
+					"Status":     "true",
+				},
+				"Status": "true",
+			}
+			return message.NewMessage(m.ReceiverID, m.SenderID, "Lighting", "successID", Data, &message.OpenMessages{}, &message.MessageQueue{})
+		} else {
+			return false
+		}
+
 	}
 	if m.Domain == "HVAC" {
-		return
+		return "case"
 	}
 	if m.Domain == "Appliance" {
-		return
+		return "case"
 	}
 	if m.Domain == "Security" {
-		return
+		return "case"
 	}
 	//if false
 	//cannot service request error
-
+	return "null"
 }
 
 // //Lights communicates with Zigbee Devices & Adjusts device status
@@ -70,44 +102,45 @@ func MessageDisperser(m messaging.Message) {
 	color: color name
 	Returns Bool (True if request is successful, False if not)*/
 
-func Light(OID int, l *light.Lighting, brightness float32, color string) bool {
+func Light(OID string, l *light.Lighting) bool {
 	switch OID {
-	case 0: //turn on lights
-		if l.TurnOn() && l.SetBrightness(brightness, true) {
+	case "0": //turn on lights
+		if l.TurnOn() {
 			return true
 		} else {
 			panic("Lights failed to turn on")
 			return false
 		}
 
-	case 1: //turn off lights
-		if l.TurnOff() && l.SetBrightness(brightness, true) {
+	case "1": //turn off lights
+		if l.TurnOff() {
 			return true
 		} else {
 			panic("Lights failed to turn off")
 			return false
 		}
-	case 2: //set brightness
-		if l.TurnOn() && l.SetBrightness(brightness, true) {
-			return true
-		} else {
-			panic("Lights failed to turn on")
-			return false
-		}
-	case 3: //set color
-		if l.SetColor(color, true) {
-			return true
-		} else {
-			panic("Color not set")
-			return false
-		}
-	case 4: //Adjust Brightness over time
-		if l.SetBrightness(brightness, true) {
-			return true
-		} else {
-			panic("Brightness not set")
-			return false
-		}
+		//in the event of other lighting features:
+		//case 2: //set brightness
+		//	if l.TurnOn() && l.SetBrightness(brightness, true) {
+		//		return true
+		//	} else {
+		//		panic("Lights failed to turn on")
+		//		return false
+		//	}
+		//case 3: //set color
+		//	if l.SetColor(color, true) {
+		//		return true
+		//	} else {
+		//		panic("Color not set")
+		//		return false
+		//	}
+		//case 4: //Adjust Brightness over time
+		//	if l.SetBrightness(brightness, true) {
+		//		return true
+		//	} else {
+		//		panic("Brightness not set")
+		//		return false
+		//	}
 	}
 	return false
 }
