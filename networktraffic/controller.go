@@ -5,6 +5,7 @@ import (
 	"CMPSC488SP24SecThursday/messaging"
 	"fmt"
 	"github.com/jacobsa/go-serial/serial"
+	"io"
 	"time"
 )
 
@@ -23,7 +24,13 @@ func Controller(msg string, oMessages *messaging.OpenMessages, qMessages *messag
 		fmt.Printf("Error opening serial port: %v\n", err)
 		return
 	}
-	defer port.Close()
+
+	defer func(port io.ReadWriteCloser) {
+		err := port.Close()
+		if err != nil {
+
+		}
+	}(port)
 
 	// Encrypt message into a single byte string of characters
 	key := []byte("1234567890123456") // TODO - replace with generated AES key
@@ -33,12 +40,20 @@ func Controller(msg string, oMessages *messaging.OpenMessages, qMessages *messag
 		return
 	}
 
-	// Prefix the encrypted message with its length
-	completeMsg := fmt.Sprintf("%d:%s", len(encryptedMsg), encryptedMsg)
+	// Encase the encrypted message with open and closed brackets to mark the start and end of the message
+	completeMsg := fmt.Sprintf("{%s}", encryptedMsg)
 
-	for i := 0; i < 2; i++ {
+	for i := 0; i < 1; i++ {
 		for {
-			//time.Sleep(1 * time.Second)
+			// Write the black data to the serial port
+			_, err = port.Write([]byte(" "))
+			if err != nil {
+				fmt.Printf("Error writing to serial port: %v\n", err)
+				continue
+			}
+
+			time.Sleep(4500 * time.Millisecond)
+
 			// Write the JSON data to the serial port
 			_, err = port.Write([]byte(completeMsg))
 			if err != nil {
@@ -47,28 +62,13 @@ func Controller(msg string, oMessages *messaging.OpenMessages, qMessages *messag
 			}
 			//fmt.Printf("\nMessage sent: %s\n", msgBytes)
 			fmt.Printf("\nMessage sent: %s\n", completeMsg)
-			time.Sleep(2000 * time.Millisecond)
+			time.Sleep(2500 * time.Millisecond)
 			break
 		}
 	}
 }
 
-/* Testing
-// Example usage:
-func main() {
-	// Initialize necessary structures
-	oMessages := &messaging.OpenMessages{}
-	qMessages := &messaging.MessageQueue{}
-
-	// Dummy message in JSON format
-	dummyMessage := `{"messageID": "12345", "senderID": "Pi-1", "receiverID": "Pi-2", "domain": "Testing", "operationID": "TestOperation", "Data": {"key1": "value1", "key2": 42, "key3": true}}`
-
-	// Call the Controller function with the dummy message
-	Controller(dummyMessage, oMessages, qMessages)
-}
-
-
-
+/*
 func main() {
 	Controller()
 }

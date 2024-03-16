@@ -66,13 +66,23 @@ func Decrypt(ciphertextBase64 string, key []byte) ([]byte, error) {
 	ciphertext = ciphertext[aes.BlockSize:]
 
 	plaintext := make([]byte, len(ciphertext))
+
+	// Wrap the decryption operation in a recover block to catch panic errors
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Panic occurred during decryption:", r)
+			err = fmt.Errorf("decryption panic: %v", r)
+			plaintext = nil
+		}
+	}()
+
 	mode := cipher.NewCBCDecrypter(block, iv)
 	mode.CryptBlocks(plaintext, ciphertext)
 
 	// Unpad plaintext
 	plaintext = PKCS7Unpadding(plaintext)
 
-	return plaintext, nil
+	return plaintext, err
 }
 
 // PKCS7Padding pads data using the PKCS#7 scheme
