@@ -36,7 +36,7 @@
             border: 1px solid #ccc;
         }
 
-        .btn-primary {
+        .btn-sub {
             border-radius: 20px;
             padding: 12px 20px;
             font-weight: bold;
@@ -46,7 +46,8 @@
             transition: background-color 0.3s ease;
         }
 
-        .btn-primary:hover {
+        .btn-sub:hover {
+            color: #ffffff;
             background-color: #AF6141;
         }
 
@@ -72,6 +73,21 @@
             font-size: 12px;
             margin-top: 10px;
         }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
     </style>
 </head>
 
@@ -79,7 +95,7 @@
 
 <div class="container">
     <div class="text-center mb-4">
-        <img src="images/ha.png" alt="Image" class="img-fluid mb-4 mx-auto " style="max-width: 100px;">
+        <img src="static/images/ha.png" alt="Image" class="img-fluid mb-4 mx-auto " style="max-width: 100px;">
         <h1 class="h3 mb-3 font-weight-normal">Welcome back!</h1>
         <p>Sign in to your account</p>
     </div>
@@ -94,8 +110,15 @@
                    required>
         </div>
         <div class="text-center">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="submit" class="btn btn-sub btn-block">Sign In</button>
         </div>
+
+        <!-- Error message -->
+        {{ if .Error }}
+        <div class="alert alert-danger" role="alert">
+            Incorrect username or password. Please try again.
+        </div>
+        {{ end }}
     </form>
 
     <div class="text-center mt-4">
@@ -104,7 +127,7 @@
     </div>
 
     <div class="help-block mt-2">
-        <span class="tp mb-5 mt-10"><a href="/terms" style="color: #0000006a;">Terms of Use</a> | <a href="/PrivacyPolicy.html"
+        <span class="tp mb-5 mt-10"><a href="/static/terms.html" style="color: #0000006a;">Terms of Use</a> | <a href="/static/policy.html"
                                                                                                      style="color: #0000006a;">Privacy Policy</a></span>
     </div>
 </div>

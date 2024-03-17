@@ -173,6 +173,7 @@
         }
 
         .btn-primary:hover {
+            color: #ffffff;
             background-color: #AF6141;
         }
 
@@ -325,6 +326,35 @@
             border: none;
             color: #ffffff;
         }
+
+        /* Styling for buttons in the devices section */
+        #devices .btn {
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        #devices .btn-primary {
+            background-color: #AF6141;
+            border: none;
+            color: #ffffff;
+        }
+
+        #devices .btn-primary:hover {
+            background-color: #8b4633;
+        }
+
+        #devices .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            color: #ffffff;
+        }
+
+        #devices .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
     </style>
 </head>
 
@@ -332,7 +362,7 @@
 <nav class="navbar navbar-expand-lg mt-2">
     <div class="container">
         <a class="navbar-brand" href="#">
-            <img src="images/ha.png" alt="Logo" height="35px">
+            <img src="static/images/ha.png" alt="Logo" height="35px">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -504,13 +534,13 @@
     </div>
 
 
-    <!-- Modal for adding a new device (by Frontend team -->
+    <!-- Modal for adding a new device -->
     <div class="modal fade" id="addDeviceModal" tabindex="-1" role="dialog" aria-labelledby="addDeviceModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content rounded-lg">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addDeviceModalLabel">Add New Device</h5>
+            <div class="modal-content rounded-lg" style="background-color: #EEECE3; color: #000000;">
+                <div class="modal-header" style="border-bottom: none;">
+                    <h5 class="modal-title" id="addDeviceModalLabel" style="color: #AF6141;">Add New Device</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -540,9 +570,8 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="addDevice()">Save changes</button>
+                <div class="modal-footer" style="border-top: none;">
+                    <button type="button" class="btn btn-primary" onclick="addDevice()" style="background-color: rgba(175, 97, 65, 0.89);">Save changes</button>
                 </div>
             </div>
         </div>
