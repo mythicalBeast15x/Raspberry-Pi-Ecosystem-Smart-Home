@@ -21,7 +21,8 @@
 
 ### Caitlin Crowe
 ### Key Points
-- Generated device startup config file and loaded into a structure
+- Generated device startup config file
+- Stored config file into in a structure (this is where the aforementioned device map will be held)
 
 ### Next Week Goals
 - Send device map to other Pis via messaging structure
