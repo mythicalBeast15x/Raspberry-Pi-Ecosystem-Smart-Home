@@ -1,4 +1,4 @@
-package cofigstruct
+package configstruct
 
 import (
     "encoding/json"
