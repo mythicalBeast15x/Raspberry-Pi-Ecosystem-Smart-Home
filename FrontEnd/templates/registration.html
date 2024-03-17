@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background-color: #F0EEE6;
+            color: #000000;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 350px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            border-radius: 20px;
+            background-color: #edf2f7;
+            color: #000000;
+        }
+
+        .btn-primary {
+            border-radius: 20px;
+            padding: 10px;
+            width: 100px;
+            font-weight: bold;
+            background-color: #3498db;
+            border: none;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .help-block {
+            text-align: center;
+            margin-top: 20px;
+            color: #6c757d;
+            font-size: 12px;
+        }
+
+        .help-link {
+            display: block;
+            text-decoration: none;
+            color: #000000;
+            margin-bottom: 10px;
+        }
+
+        .tp {
+            color: #0000006a;
+            margin-bottom: 10px;
+            text-decoration: none;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="text-center">
+        <img src="ha.png" alt="Image" class="img-fluid mb-4 mx-auto" style="max-width: 100px;">
+    </div>
+
+    <form id="registrationForm">
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Choose a username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Create a password" required>
+            <div class="help-block">
+                <p style="color: #6c757d; font-size: 10px;">Password must be at least 8 characters long and contain one uppercase letter.</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+        </div>
+        <div class="text-center mb-2">
+            <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+    </form>
+    <div class="help-block mt-4">
+        <a href="/login.html" class="help-link">Already have an account? Login</a>
+    </div>
+    <!-- Error message container -->
+    <div id="errorMessage" class="error-message"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#registrationForm').submit(function (e) {
+            e.preventDefault();
+            var email = $('#email').val();
+            var username = $('#username').val();
+            var password = $('#password').val();
+            var confirmPassword = $('#confirmPassword').val();
+
+            if(password !== confirmPassword) {
+                $('#errorMessage').text('Passwords do not match.');
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:8080/register',
+                contentType: 'application/json',
+                data: JSON.stringify({ email: email, username: username, password: password }),
+                success: function (response) {
+                    window.location.href = '/login.html';
+                },
+                error: function (xhr, status, error) {
+                    $('#errorMessage').text('An error occurred during registration.');
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
