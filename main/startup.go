@@ -4,6 +4,10 @@ package main
 
 import (
 	"CMPSC488SP24SecThursday/blockchain"
+	"CMPSC488SP24SecThursday/hashing"
+	"CMPSC488SP24SecThursday/messaging"
+	"crypto/rand"
+	"crypto/rsa"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -12,66 +16,13 @@ import (
 
 // Config struct holds the configuration data for the device
 type Config struct {
-	ID         int                   `json:"id"`         // the id of the device
+	ID         string                `json:"id"`         // the id of the device
 	SecretKey  string                `json:"secret-key"` // the secret key for the network
-	AESKey     string                // the AES key for the network  TODO: Implement properly
-	Blockchain blockchain.Blockchain // the blockchain for the device
-	Devices    []string              // the devices on the network  TODO: Implement properly
-	// TODO: hash key
-	// TODO: HMAC key
-}
-
-// response is used for confirming the existence of other devices in the network
-func response() {
-	attempts := 0
-	maxAttempts := 3
-	sendInterval := time.Second * 10
-	for attempts < maxAttempts {
-		// Get message
-		// TODO: Implement message logic
-		/*
-			if len(msg) != 0 {
-				fmt.Println("There's a device in the network")
-				// do logic
-				return
-			}
-		*/
-		attempts++
-		// Wait for sendInterval before sending the message again
-		time.Sleep(sendInterval)
-	}
-	// Check if it's the only device in the network
-	if attempts == maxAttempts {
-		fmt.Println("This device is the only one in the network")
-		// do logic
-	}
-}
-
-// startUp function runs on Pi start up
-func startUp() {
-	// parse startup config JSON file into config struct
-	var config Config
-	parseConfigJSON("main/startup.json", &config)
-	fmt.Println(config) // DEBUG
-
-	// response()
-
-	// TODO: Account for first Pi on the network
-	// 	- generate AES and HMAC key
-	// 	- confirm secret key
-	// 	- mongoDB
-	// 		- blockchain?
-	// 		- user IDs?
-
-	confirmKey(config.SecretKey)
-
-	// retrieve info form another device on the network
-	retrieveInfo(&config)
-
-	// announce successful startup to the network
-	announceStartup()
-
-	fmt.Println(config) // DEBUG
+	AESKey     string                `json:"aes-key"`    // the AES key for the network
+	HashKey    string                `json:"hash-key"`   // the hash key for the network
+	Appliances []string              `json:"appliances"` // the appliances on the network
+	Devices    []string              `json:"devices"`    // the devices on the network
+	Blockchain blockchain.Blockchain // the blockchain for the device  // TODO: To be implemented
 }
 
 // parseConfigJSON reads a JSON file and parses the data into a Config struct
@@ -97,6 +48,84 @@ func parseConfigJSON(filepath string, config *Config) {
 	}
 }
 
+// TODO: Remove - Temporary for testing purposes, keys will be stored elsewhere
+func generateKeyPair() (*rsa.PrivateKey, *rsa.PublicKey, error) {
+	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
+	if err != nil {
+		return nil, nil, err
+	}
+	publicKey := &privateKey.PublicKey
+	return privateKey, publicKey, nil
+}
+
+// response is used for confirming the existence of other devices in the network
+func response(config *Config, privateKey *rsa.PrivateKey) {
+	attempts := 0
+	maxAttempts := 3
+	sendInterval := time.Second * 10
+
+	// TODO: Remove and update - Temporary for testing purposes, will be in main file
+	oOutMessages := &messaging.OpenMessages{}
+	qMessages := &messaging.MessageQueue{}
+
+	// Store key within a format for message
+	data := map[string]interface{}{
+		"Data": privateKey,
+	}
+
+	// Make the new message
+	// OID 21 = waiting for response?
+	messaging.NewMessage(config.ID, "all", "General", "21", data, oOutMessages, qMessages)
+
+	// Dequeue message for setting encryption and hash
+	deqMsg, err := qMessages.Dequeue("outgoing")
+	if err != nil {
+		fmt.Println("Error dequeuing from outgoing queue:", err)
+		return
+	}
+	jsonData, ok := deqMsg.([]byte)
+	if !ok {
+		fmt.Println("Expected dequeued message to be of type []byte")
+		return
+	}
+	encrypt, err := hashing.Encrypt(jsonData, []byte(config.AESKey))
+	if err != nil {
+		fmt.Println("Error encrypting JSON:", err)
+		return
+	}
+	hash, _ := hashing.CalculateSHA256(encrypt)
+	config.HashKey = hash
+	encryptedMsg := messaging.EncryptedMessage{
+		EncryptedData: encrypt,
+		Hash:          hash,
+	}
+	encryptPlusHash, err := json.Marshal(encryptedMsg)
+	if err != nil {
+		return
+	}
+	fmt.Println("Message to be sent (String):\n ", encryptPlusHash)
+
+	// Start process to check for devices in the network
+	for attempts < maxAttempts {
+		// networktraffic.Controller()
+		time.Sleep(1000 * time.Millisecond)
+		if len(qMessages.IncomingMessages) != 0 {
+			fmt.Printf("There is another device on the network\n")
+			announceStartup(2)
+			return
+		}
+		attempts++
+		// Wait for sendInterval before sending the message again
+		time.Sleep(sendInterval)
+	}
+	// Check if it's the only device in the network
+	if attempts == maxAttempts {
+		fmt.Printf("This device is the only one in the network\n")
+		announceStartup(1)
+		return
+	}
+}
+
 // confirmKey confirms the device's secret key with the other devices on the network
 func confirmKey(secretKey string) {
 	// confirm device ID is unique
@@ -107,14 +136,10 @@ func retrieveInfo(config *Config) {
 	// TODO: Stop other Pis from validating once one begins
 
 	// TODO: Retrieve AES key from another device on the network
-	config.AESKey = "Placeholder AES Key" // Placeholder AES key
 
 	// TODO: Retrieve blockchain from another device on the network
-	localBlockchain := blockchain.NewBlockchain(4) // Placeholder blockchain
-	config.Blockchain = *localBlockchain           // Placeholder blockchain
 
 	// TODO: Retrieve device list from another device on the network
-	config.Devices = []string{"Placeholder Device 1", "Placeholder Device 2"} // Placeholder device list
 
 	// TODO: Retrieve hash key
 
@@ -122,4 +147,54 @@ func retrieveInfo(config *Config) {
 }
 
 // announceStartup announces the device's startup to the other devices on the network
-func announceStartup() {} // TODO: Implement this function
+func announceStartup(caseValue int) {
+	switch caseValue {
+	case 1:
+		// To be implemented
+	case 2:
+		// To be implemented
+	default:
+		fmt.Println("Unknown startup case")
+	}
+} // TODO: Implement this function
+
+// startUp function runs on Pi start up
+func startUp() {
+	// parse startup config JSON file into config struct
+	var config Config
+	parseConfigJSON("main/startup.json", &config)
+
+	// Generate temporary key for AES
+	aesKey, err := hashing.GenerateRandomKey(16)
+	if err != nil {
+		fmt.Println("Error generating key for device:", err)
+		return
+	}
+	config.AESKey = string(aesKey)
+
+	// TODO: Remove and update, keys will be added from elsewhere
+	privateKey, _, err := generateKeyPair()
+	if err != nil {
+		fmt.Println("Error generating key pair for device:", err)
+		return
+	}
+
+	response(&config, privateKey)
+
+	// Account for first Pi on the network
+	// 	- generate AES and HMAC key
+	// 	- confirm secret key
+	// 	- mongoDB
+	// 		- blockchain?
+	// 		- user IDs?
+
+	// confirmKey(config.SecretKey)
+
+	// retrieve info form another device on the network
+	// retrieveInfo(&config)
+
+	// announce successful startup to the network
+	// announceStartup()
+
+	// fmt.Println(config) // DEBUG
+}

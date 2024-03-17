@@ -11,7 +11,7 @@ import (
 	"io"
 )
 
-func generateRandomKey(keySize int) ([]byte, error) {
+func GenerateRandomKey(keySize int) ([]byte, error) {
 	key := make([]byte, keySize)
 	_, err := rand.Read(key)
 	if err != nil {

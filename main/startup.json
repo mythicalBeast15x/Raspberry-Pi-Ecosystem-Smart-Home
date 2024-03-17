@@ -1,4 +1,8 @@
 {
-  "id": 1,
-  "secret-key": "abc"
+  "id": "1",
+  "secret-key": "UtboqybgIX9L8NF48iooNV3Dt7a8E2qM",
+  "aes-key": "",
+  "hash-key": "",
+  "appliances": [],
+  "devices": []
 }
