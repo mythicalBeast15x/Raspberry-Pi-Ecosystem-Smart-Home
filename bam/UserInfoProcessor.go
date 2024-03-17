@@ -7,6 +7,12 @@ import (
 )
 
 // SerializeUsersToJSON serializes the list of users to a JSON file
+/*
+Purpose: to turn the user list in to json file
+users: the user list
+filename: the Json file to store the serialized user list
+return: error
+*/
 func SerializeUsersToJSON(users []User, filename string) error {
 	// Open the file for writing
 	file, err := os.Create(filename)
@@ -27,6 +33,11 @@ func SerializeUsersToJSON(users []User, filename string) error {
 }
 
 // DeserializeUsersFromJSON deserializes user data from a JSON file
+/*
+Purpose: to turn the serialized user list back to user list
+filename: the json file
+return: the user list and error
+*/
 func DeserializeUsersFromJSON(filename string) ([]User, error) {
 	// Open the file for reading
 	file, err := os.Open(filename)
@@ -50,6 +61,12 @@ func DeserializeUsersFromJSON(filename string) ([]User, error) {
 }
 
 // UserListMatch compares two slices of User structs and returns true if they are identical, false otherwise
+/*
+Purpose: to test the serialized process work properly
+usersList1: list of user
+usersList2: list of user
+return: boolean
+*/
 func UserListMatch(usersList1, userList2 []User) bool {
 	// Check if the lengths of the slices are equal
 	if len(usersList1) != len(userList2) {
@@ -70,6 +87,14 @@ func UserListMatch(usersList1, userList2 []User) bool {
 	return true
 }
 
+// UpdateUserToken update user token
+/*
+Purpose: to update user token
+userList: list of users
+userName: targeted user
+newToken: updated token
+return: error
+*/
 func UpdateUserToken(userList []User, username, newToken string) error {
 	// Search for the user by username
 	for i, user := range userList {
@@ -83,6 +108,14 @@ func UpdateUserToken(userList []User, username, newToken string) error {
 	return errors.New("user not found")
 }
 
+// UpdateUsername update user username
+/*
+Purpose: to update user token
+userList: list of users
+oldUsername: targeted user
+newUsername: updated user name
+return: error
+*/
 func UpdateUsername(userList []User, oldUsername, newUsername string) error {
 	// Search for the user by old username
 	for i, user := range userList {
@@ -96,6 +129,14 @@ func UpdateUsername(userList []User, oldUsername, newUsername string) error {
 	return errors.New("user not found")
 }
 
+// UpdatePassword update user password
+/*
+Purpose: to update user token
+userList: list of users
+username: targeted user
+newPassword: updated password
+return: error
+*/
 func UpdatePassword(userList []User, username, newPassword string) error {
 	// Search for the user by username
 	for i, user := range userList {
