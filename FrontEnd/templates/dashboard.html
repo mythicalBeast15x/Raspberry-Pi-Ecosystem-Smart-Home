@@ -308,7 +308,23 @@
             background-color: #AF6141;
         }
 
+        .add-device {
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-weight: bold;
+            background-color: rgba(175, 97, 65, 0.67);
+            border: none;
+            color: #ffffff;
+        }
 
+        .s-button {
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-weight: bold;
+            background-color: rgba(175, 97, 65, 0.89);
+            border: none;
+            color: #ffffff;
+        }
     </style>
 </head>
 
@@ -453,7 +469,7 @@
                                     <i class="fas fa-user-shield fa-3x mb-3"></i>
                                     <h5>User Access Control</h5>
                                     <p class="mb-4">Manage user access and permissions to your home automation system.</p>
-                                    <button class="btn btn-primary btn-sm">Manage Users</button>
+                                    <button class="btn s-button btn-sm">Manage Users</button>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
@@ -461,7 +477,7 @@
                                     <i class="fas fa-lock fa-3x mb-3"></i>
                                     <h5>Password Security</h5>
                                     <p class="mb-4">Enhance password security settings for your account.</p>
-                                    <button class="btn btn-primary btn-sm">Change Password</button>
+                                    <button class="btn s-button btn-sm">Change Password</button>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
@@ -469,7 +485,7 @@
                                     <i class="fas fa-shield-alt fa-3x mb-3"></i>
                                     <h5>Firewall Protection</h5>
                                     <p class="mb-4">Set up firewall rules to protect your home network.</p>
-                                    <button class="btn btn-primary btn-sm">Configure Firewall</button>
+                                    <button class="btn s-button btn-sm">Configure Firewall</button>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
@@ -477,7 +493,7 @@
                                     <i class="fas fa-cogs fa-3x mb-3"></i>
                                     <h5>System Updates</h5>
                                     <p class="mb-4">Manage automatic system updates for enhanced security.</p>
-                                    <button class="btn btn-primary btn-sm">Check Update</button>
+                                    <button class="btn s-button btn-sm">Check Update</button>
                                 </div>
                             </div>
                         </div>
@@ -535,9 +551,10 @@
     <!-- Devices tab content -->
     <div id="devices" class="tab-pane">
         <div class="text-center">
-            <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addDeviceModal">Add Device</button>
+            <button type="button" class="btn add-device mb-3" data-toggle="modal" data-target="#addDeviceModal">
+                <i class="fas fa-plus"></i>
+            </button>
         </div>
-
 
         <div class="row justify-content-center" id="deviceList">
             <div class="col-lg-4">
