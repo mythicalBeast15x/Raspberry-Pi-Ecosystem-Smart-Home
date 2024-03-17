@@ -1,6 +1,14 @@
 package databaseTests
 
-/*
+import (
+	mongodb_dal "CMPSC488SP24SecThursday/bam"
+	"errors"
+	"fmt"
+	"go.mongodb.org/mongo-driver/bson"
+	"log"
+	"testing"
+)
+
 func TestDatabaseOperation(t *testing.T) {
 	// Initialize MongoDBDAL
 	dbName := "test"
@@ -63,6 +71,35 @@ func TestDatabaseOperation(t *testing.T) {
 
 	fmt.Println()
 
+	replaceErr := dal.ReplaceUsers(userList)
+	if err != nil {
+		fmt.Println("Error replacing users:", replaceErr)
+	} else {
+		fmt.Println("Users replaced successfully")
+	}
+
+	fmt.Println()
+
+	// Serialize user list
+	fileName := "users.json"
+	err = mongodb_dal.SerializeUsersToJSON(userList, fileName)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Deserialize user list
+	deserializeUserList, err := mongodb_dal.DeserializeUsersFromJSON(fileName)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if !mongodb_dal.UserListMatch(userList, deserializeUserList) {
+		log.Fatal("Users list does not match")
+	} else {
+		fmt.Println("Users list match")
+	}
+
+	fmt.Println()
+
 	// Finding a user on the database
 	var result mongodb_dal.User
 	filter := bson.D{{Key: "username", Value: "exampleUser1"}}
@@ -119,5 +156,3 @@ func TestDatabaseOperation(t *testing.T) {
 	fmt.Println()
 
 }
-
-*/

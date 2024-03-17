@@ -137,8 +137,24 @@ func (d *MongoDBDAL) DeleteAllUsers() error {
 	}
 
 	// Print delete result
-	fmt.Println(deleteResult)
 	fmt.Println("Deleted", deleteResult.DeletedCount, "documents")
+
+	return nil
+}
+
+func (d *MongoDBDAL) ReplaceUsers(userList []User) error {
+	// Delete all existing users
+	if err := d.DeleteAllUsers(); err != nil {
+		return err
+	}
+
+	// Add new users from the provided user list
+	for _, user := range userList {
+		_, err := d.AddUser(user)
+		if err != nil {
+			return err
+		}
+	}
 
 	return nil
 }
