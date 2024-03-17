@@ -14,10 +14,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
+
         body {
             font-family: 'Roboto', sans-serif;
             font-size: 1rem;
-            background-color: #000022;
+            background-color: #EEECE3;
         }
 
         .navbar {
@@ -33,7 +34,7 @@
 
         .navbar-toggler {
             margin-left: auto;
-            color: #0094C6;
+            color: #AF6141;
         }
 
         .navbar-toggler-icon {
@@ -48,9 +49,13 @@
 
         .nav-link {
             font-size: 1.2rem;
-            color: #BDDDE7;
+            color: #393939;
             padding: 10px;
             position: relative;
+        }
+
+        .nav-link:hover {
+            color: #AF6141;
         }
 
         .nav-link::after {
@@ -58,7 +63,7 @@
             display: block;
             width: 0;
             height: 2px;
-            background: linear-gradient(to left, #BDDDE7, #0094C6, #001242);
+            background: linear-gradient(to right, #AF6141, #c98164, #daa084, #f6bd9e);
             position: absolute;
             bottom: -5px;
             left: 0;
@@ -82,7 +87,7 @@
         }
 
         .widget {
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.42);
             padding: 20px;
             margin-bottom: 20px;
             border-radius: 10px;
@@ -90,7 +95,7 @@
         }
 
         .device-card {
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.42);;
             padding: 20px;
             margin-bottom: 20px;
             border-radius: 10px;
@@ -116,11 +121,12 @@
         }
 
         #account-info {
-            background-color: #fff;
+            max-width: 500px;
+            margin: 0 auto;
             padding: 20px;
-            margin-bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.42);
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
 
         #account-info h4 {
@@ -132,30 +138,46 @@
         }
 
         #account-info input[type="text"],
-        #account-info input[type="password"] {
+        #account-info input[type="password"],
+        #account-info input[type="email"]{
             width: 100%;
             margin-bottom: 10px;
-            padding: 10px;
+            padding: 15px;
+            border-radius: 20px;
+            background-color: #edf2f7;
+            color: #000000;
             border: 1px solid #ccc;
-            border-radius: 5px;
             outline: none;
         }
 
         #account-info button {
-            padding: 10px 20px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 5px;
-            background-color: #dc3545;
-            color: white;
+            border-radius: 20px;
+            background-color: rgba(175, 97, 65, 0.89);
+            color: #ffffff;
             cursor: pointer;
         }
 
         #account-info button:hover {
-            background-color: #c82333;
+            background-color: #AF6141;
+        }
+
+        .btn-primary {
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-weight: bold;
+            background-color: rgba(175, 97, 65, 0.89);
+            border: none;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #AF6141;
         }
 
         .widget {
-            background-color: #BDDDE7;
+            background-color: rgba(255, 255, 255, 0.42);
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -248,6 +270,7 @@
                 justify-content: space-between;
             }
 
+
             .btn-secondary {
                 flex-grow: 1;
             }
@@ -260,6 +283,48 @@
                 align-items: center;
             }
         }
+
+        .delete-icon {
+            font-size: 17px;
+            color: rgba(175, 97, 65, 0.68);
+            margin-left: 60%;
+            padding-left: 13px;
+            cursor: pointer;
+        }
+
+
+        .delete-icon:hover {
+            color: rgb(175, 58, 6);
+        }
+
+        .btn-custom {
+            background-color: rgba(175, 97, 65, 0.89);
+            border-color: rgba(175, 97, 65, 0.89);
+            color: #ffffff;
+            border-radius: 10px;
+        }
+
+        .btn-custom:hover {
+            background-color: #AF6141;
+        }
+
+        .add-device {
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-weight: bold;
+            background-color: rgba(175, 97, 65, 0.67);
+            border: none;
+            color: #ffffff;
+        }
+
+        .s-button {
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-weight: bold;
+            background-color: rgba(175, 97, 65, 0.89);
+            border: none;
+            color: #ffffff;
+        }
     </style>
 </head>
 
@@ -267,7 +332,7 @@
 <nav class="navbar navbar-expand-lg mt-2">
     <div class="container">
         <a class="navbar-brand" href="#">
-            <img src="ha.png" alt="Logo" height="35">
+            <img src="images/ha.png" alt="Logo" height="35px">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -300,84 +365,96 @@
 <div class="tab-content mt-3">
     <!-- Home tab content -->
     <div id="home" class="tab-pane active">
-        <div class="row justify-content-center">
-
-            <!-- Large widget -->
-            <div class="col-lg-6 mb-4">
-                <div class="widget large-widget">
-                    <h4>Hi User,</h4>
-                    <div class="time text-center">
-                        <span id="current-time" style="font-size: 50px;"></span>
-                    </div>
-                    <div class="temperature-control text-center mt-4">
-                        <h5>House Temperature</h5>
-                        <div class="temperature-circle">
-                            <span id="house-temperature">72°F</span>
-                        </div>
-                        <div class="fan-speed-control mt-3">
-                            <h5>Fan Speed</h5>
-                            <!-- Fan Speed Buttons -->
-                            <div class="btn-group-vertical" role="group" aria-label="Fan Speed">
-                                <button type="button" class="btn btn" onclick="setFanSpeed('Low')">
-                                    <i class="fas fa-arrow-down"></i>
-                                </button>
-                                <button type="button" class="btn btn" onclick="setFanSpeed('Medium')">
-                                    <i class="fas fa-exchange-alt"></i>
-                                </button>
-                                <button type="button" class="btn btn" onclick="setFanSpeed('High')">
-                                    <i class="fas fa-arrow-up"></i>
-                                </button>
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- Large widget -->
+                <div class="col-lg-6 mb-4">
+                    <div class="widget large-widget">
+                        <h4 class="text-left mb-4">Greetings, Explorer!</h4>
+                        <div class="text-center">
+                            <div class="time">
+                                <span id="current-time" style="font-size: 50px;"></span>
                             </div>
-
-
+                            <div class="temperatures mt-4">
+                                <div class="temperature">
+                                    <h5>Indoor Temperature</h5>
+                                    <div class="temperature-circle">
+                                        <span id="house-temperature">72°F</span>
+                                    </div>
+                                    <p class="subtle-hint">Steady as your spirit.</p>
+                                </div>
+                                <div class="temperature">
+                                    <h5>Outdoor Temperature</h5>
+                                    <div class="temperature-circle">
+                                        <span id="outside-temperature">68°F</span>
+                                    </div>
+                                    <p class="subtle-hint">Feel the winds of adventure.</p>
+                                </div>
+                            </div>
+                            <div class="fan-speed-control mt-4">
+                                <h5>Fan Speed</h5>
+                                <div class="btn-group-vertical" role="group" aria-label="Fan Speed">
+                                    <button type="button" class="btn btn-custom" onclick="setFanSpeed('Low')">
+                                        <i class="fas fa-arrow-down"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-custom" onclick="setFanSpeed('Medium')">
+                                        <i class="fas fa-exchange-alt"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-custom" onclick="setFanSpeed('High')">
+                                        <i class="fas fa-arrow-up"></i>
+                                    </button>
+                                </div>
+                                <p class="subtle-hint mt-3">Adjust the breeze of your journey.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Small widgets -->
-            <div class="col-lg-6">
-                <div class="row mt-4">
-                    <div class="col-lg-4 mb-4">
-                        <div class="widget small-widget">
-                            <i class="fas fa-lightbulb"></i>
-                            <p>Light</p>
+                <!-- Small widgets -->
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="widget small-widget text-center">
+                                <i class="fas fa-lightbulb" style="font-size: 3rem;"></i>
+                                <p>Light</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-6 mb-4">
-                        <div class="widget small-widget">
-                            <i class="fas fa-fan"></i>
-                            <p>Fan</p>
+                        <div class="col-md-6 mb-4">
+                            <div class="widget small-widget text-center">
+                                <i class="fas fa-fan" style="font-size: 3rem;"></i>
+                                <p>Fan</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4 mb-4">
-                        <div class="widget small-widget">
-                            <i class="fas fa-volume-up"></i>
-                            <p>Speaker</p>
+                        <div class="col-md-6 mb-4">
+                            <div class="widget small-widget text-center">
+                                <i class="fas fa-volume-up" style="font-size: 3rem;"></i>
+                                <p>Speaker</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-5 mb-4">
-                        <div class="widget small-widget">
-                            <i class="fas fa-lightbulb"></i>
-                            <p>Light</p>
+                        <div class="col-md-6 mb-4">
+                            <div class="widget small-widget text-center">
+                                <i class="fas fa-lightbulb" style="font-size: 3rem;"></i>
+                                <p>Light</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4 mb-4">
-                        <div class="widget small-widget">
-                            <i class="fas fa-fan"></i>
-                            <p>Fan</p>
+                        <div class="col-md-6 mb-4">
+                            <div class="widget small-widget text-center">
+                                <i class="fas fa-fan" style="font-size: 3rem;"></i>
+                                <p>Fan</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-6 mb-4">
-                        <div class="widget small-widget">
-                            <i class="fas fa-volume-up"></i>
-                            <p>Speaker</p>
+                        <div class="col-md-6 mb-4">
+                            <div class="widget small-widget text-center">
+                                <i class="fas fa-volume-up" style="font-size: 3rem;"></i>
+                                <p>Speaker</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- Security tab content -->
     <div id="security" class="tab-pane">
@@ -392,7 +469,7 @@
                                     <i class="fas fa-user-shield fa-3x mb-3"></i>
                                     <h5>User Access Control</h5>
                                     <p class="mb-4">Manage user access and permissions to your home automation system.</p>
-                                    <button class="btn btn-primary btn-sm">Manage Users</button>
+                                    <button class="btn s-button btn-sm">Manage Users</button>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
@@ -400,7 +477,7 @@
                                     <i class="fas fa-lock fa-3x mb-3"></i>
                                     <h5>Password Security</h5>
                                     <p class="mb-4">Enhance password security settings for your account.</p>
-                                    <button class="btn btn-primary btn-sm">Change Password</button>
+                                    <button class="btn s-button btn-sm">Change Password</button>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
@@ -408,7 +485,7 @@
                                     <i class="fas fa-shield-alt fa-3x mb-3"></i>
                                     <h5>Firewall Protection</h5>
                                     <p class="mb-4">Set up firewall rules to protect your home network.</p>
-                                    <button class="btn btn-primary btn-sm">Configure Firewall</button>
+                                    <button class="btn s-button btn-sm">Configure Firewall</button>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
@@ -416,7 +493,7 @@
                                     <i class="fas fa-cogs fa-3x mb-3"></i>
                                     <h5>System Updates</h5>
                                     <p class="mb-4">Manage automatic system updates for enhanced security.</p>
-                                    <button class="btn btn-primary btn-sm">Check for Updates</button>
+                                    <button class="btn s-button btn-sm">Check Update</button>
                                 </div>
                             </div>
                         </div>
@@ -474,8 +551,9 @@
     <!-- Devices tab content -->
     <div id="devices" class="tab-pane">
         <div class="text-center">
-            <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addDeviceModal"
-                    style="background-color: rgb(63, 124, 215);">Add Device</button>
+            <button type="button" class="btn add-device mb-3" data-toggle="modal" data-target="#addDeviceModal">
+                <i class="fas fa-plus"></i>
+            </button>
         </div>
 
         <div class="row justify-content-center" id="deviceList">
@@ -561,30 +639,51 @@
         </div>
     </div>
 
-
     <!-- Account tab content -->
     <div id="account" class="tab-pane">
-        <div class="row justify-content-center">
-            <div class="col-lg-4">
-                <div id="account-info">
-                    <h4>Account Information</h4>
-                    <p><strong>Name:</strong> <input type="text" value="John Doe" readonly></p>
-                    <p><strong>Email:</strong> <input type="text" value="johndoe@example.com" readonly></p>
-                    <p><strong>Username:</strong> <input type="text" value="johndoe123" readonly></p>
-                    <p><strong>Password:</strong> <input type="password" value="secret" readonly></p>
-                    <div class="d-flex justify-content-center">
-                        <button id="logoutButton" class="btn btn-primary" style="background-color: rgb(38, 106, 207) !important;">Logout</button>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div id="account-info">
+                        <h4 class="text-center mb-4">Account Information</h4>
+                        <form>
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" id="username" class="form-control" placeholder="Enter your username">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" id="password" class="form-control" placeholder="Enter your password">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" class="form-control" placeholder="Enter your email">
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Update Information</button>
+                        </form>
+                        <button onclick="logout()" class="btn btn-danger btn-block mt-3">Logout</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
+
+    function logout() {
+        // Perform any logout logic here (e.g., clearing session, cookies, etc.) when we add database
+
+        // Redirect the user to the login page
+        window.location.href = "/login";
+    }
+
+
     $(document).ready(function () {
         $('.nav-link').on('click', function () {
             $('.nav-link').removeClass('active');
@@ -593,15 +692,28 @@
             $('.tab-pane').removeClass('active');
             $(target).addClass('active');
         });
-        $('#logoutButton').click(function() {
-            // Clear the authentication token from localStorage
-            localStorage.removeItem('token'); // Adjust this line when actual token is implemented.
 
-            // Redirect the user to the login page
-            window.location.href = 'login.html';
+        // Add event listener to the logout button
+        $('#logoutButton').click(function() {
+            // Make a GET request to the logout endpoint
+            fetch('/logout', {
+                method: 'GET'
+            })
+                .then(response => {
+                    // Clear the authentication token from localStorage
+                    localStorage.removeItem('token'); // Adjust this line when actual token is implemented.
+
+                    // Redirect the user to the login page after successful logout
+                    window.location.href = '/login';
+                })
+                .catch(error => {
+                    // Handle error if logout fails
+                    console.error('Error logging out:', error);
+                });
         });
     });
 </script>
+
 <script>
     // Array to store devices
     let devices = [
@@ -647,7 +759,7 @@
           <p><strong>Category:</strong> ${device.category}</p>
           <p><strong>Status:</strong> ${device.status}</p>
           <button class="btn btn-primary" onclick="toggleDeviceStatus(${index})">Turn ${device.status === 'off' ? 'On' : 'Off'}</button>
-          <button class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</button>
+           <i class="fas fa-trash-alt delete-icon ml-40" data-toggle="modal" data-target="#deleteConfirmationModal"></i>
         </div>
       </div>
     `;

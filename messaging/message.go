@@ -481,7 +481,7 @@ func PseudoTest(oMessages *OpenMessages, qMessages *MessageQueue) {
 		"ApplianceID": "lamp-1",
 	}, oMessages, qMessages)
 
-	NewMessage("Pi-1", "Pi-2", "Lighting", "2", map[string]interface{}{
+	NewMessage("Pi-1", "all", "Lighting", "2", map[string]interface{}{
 		"ApplianceID": "lamp-1",
 	}, oMessages, qMessages)
 }
