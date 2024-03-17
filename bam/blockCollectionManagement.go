@@ -39,7 +39,7 @@ func (d *MongoDBDAL) AddBlock(block MongoBlock) (interface{}, error) {
 // ExtractBlockInfo retrieves all the block database and returns them as a slice
 /*
 Purpose: get a copy of the blockchain from the database
-Return: List of users and error
+Return: List of block and error
 */
 func (d *MongoDBDAL) ExtractBlockInfo() ([]blockchain.Block, error) {
 	// Initialize a slice to hold the data
@@ -71,7 +71,12 @@ func (d *MongoDBDAL) ExtractBlockInfo() ([]blockchain.Block, error) {
 	return blockChain, nil
 }
 
-// ConvertToBlockchainBlock from the database back into blockchain blocks.
+// ConvertToBlockchainBlock from the mongoblock back into blockchain blocks.
+/*
+Purpose: from the database block format back to blockchain block format. To convert back to blockchain.
+mongoBlock: block to be converted back
+return: blockchain block format.
+*/
 func ConvertToBlockchainBlock(mongoBlock MongoBlock) blockchain.Block {
 	blockchainBlock := blockchain.Block{
 		Index:     mongoBlock.Index,
@@ -83,6 +88,12 @@ func ConvertToBlockchainBlock(mongoBlock MongoBlock) blockchain.Block {
 	return blockchainBlock
 }
 
+// ConvertToMongoBlock to convert blockchain blocks to mongoblocks
+/*
+Purpose: formatting the block to be able to store in the database
+block: the block to be formatted
+return: formatted block
+*/
 func ConvertToMongoBlock(block blockchain.Block) MongoBlock {
 	mongoBlock := MongoBlock{
 		Index:     block.Index,
@@ -94,7 +105,12 @@ func ConvertToMongoBlock(block blockchain.Block) MongoBlock {
 	return mongoBlock
 }
 
-// BlockchainToList converts a blockchain to a list of blocks.
+// BlockchainToList converts a blockchain to a list of blocks
+/*
+Purpose: make the blocks from the blockchain to be able to store into the database
+bc: block chain to store in the database
+return: list of blocks
+*/
 func BlockchainToList(bc blockchain.Blockchain) []blockchain.Block {
 	// Create an empty list to store blocks
 	blockList := make([]blockchain.Block, 0)
@@ -108,7 +124,14 @@ func BlockchainToList(bc blockchain.Blockchain) []blockchain.Block {
 	return blockList
 }
 
-// ListToBlockchain converts a list of blocks back to a blockchain.
+// ListToBlockchain
+/*
+Purpose: to convert blockchain pull from the database back to blockchain
+blocks: blocks from the database
+difficulty: the difficulty of the blockchain
+return: blockchain
+*/
+
 func ListToBlockchain(blocks []blockchain.Block, difficulty int) blockchain.Blockchain {
 	// Ensure the blocklist is not empty
 	if len(blocks) == 0 {
@@ -132,10 +155,22 @@ func ListToBlockchain(blocks []blockchain.Block, difficulty int) blockchain.Bloc
 	return bc
 }
 
+// serializeEncryptedData
+/*
+Purpose: to serialize data to be able to be stored in the database
+data: data to be serialize
+return: serialized data
+*/
 func serializeEncryptedData(data blockchain.EncryptedData) []byte {
 	return []byte(base64.StdEncoding.EncodeToString(data.Ciphertext))
 }
 
+// deserializeEncryptedData
+/*
+Purpose: convert data back to processable data
+data serialize data
+return: blockchain.EncryptedData
+*/
 func deserializeEncryptedData(data []byte) blockchain.EncryptedData {
 	// Deserialize BSON-compatible data back into EncryptedData struct
 	// For example, decode base64 string into []byte
