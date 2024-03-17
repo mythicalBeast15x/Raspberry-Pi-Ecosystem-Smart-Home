@@ -23,6 +23,7 @@
 ### Key Points
 - Generated device startup config file
 - Stored config file into in a structure (this is where the aforementioned device map will be held)
+- Generated a map of device statuses with their respective device IDs
 
 ### Next Week Goals
 - Properly link FrontEnd package to the main function

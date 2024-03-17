@@ -1,4 +1,4 @@
-package FrontEnd
+package main
 
 import (
 	"html/template"
@@ -96,23 +96,23 @@ func pageNotFoundHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func main() {
-	// Register handlers
-	http.HandleFunc("/login", loginHandler)
-	http.HandleFunc("/dashboard", dashboardHandler)
-	http.HandleFunc("/logout", logoutHandler)
-	http.HandleFunc("/forgotpassword.html", forgotPasswordHandler)
-	http.HandleFunc("/signup.html", signupHandler)
-	http.HandleFunc("/", pageNotFoundHandler)
-
-	// Serve static files
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("templates/static"))))
-	http.Handle("/terms/", http.StripPrefix("/terms/", http.FileServer(http.Dir("static"))))
-	http.Handle("/privacy/", http.StripPrefix("/privacy/", http.FileServer(http.Dir("static"))))
-
-	// Start the server
-	err := http.ListenAndServe(":8080", nil)
-	if err != nil {
-		return
-	}
-}
+//func main() {
+//	// Register handlers
+//	http.HandleFunc("/login", loginHandler)
+//	http.HandleFunc("/dashboard", dashboardHandler)
+//	http.HandleFunc("/logout", logoutHandler)
+//	http.HandleFunc("/forgotpassword.html", forgotPasswordHandler)
+//	http.HandleFunc("/signup.html", signupHandler)
+//	http.HandleFunc("/", pageNotFoundHandler)
+//
+//	// Serve static files
+//	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("templates/static"))))
+//	http.Handle("/terms/", http.StripPrefix("/terms/", http.FileServer(http.Dir("static"))))
+//	http.Handle("/privacy/", http.StripPrefix("/privacy/", http.FileServer(http.Dir("static"))))
+//
+//	// Start the server
+//	err := http.ListenAndServe(":8080", nil)
+//	if err != nil {
+//		return
+//	}
+//}
