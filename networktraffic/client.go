@@ -8,6 +8,7 @@ import (
 	"github.com/jacobsa/go-serial/serial"
 	"io"
 	"strings"
+	"time"
 )
 
 // Client function to handle receiving and processing messages
@@ -26,6 +27,7 @@ clientLoop:
 		port, err := serial.Open(options)
 		if err != nil {
 			fmt.Printf("\nError opening serial port: %v\n", err)
+			time.Sleep(1000 * time.Millisecond)
 			continue // Restart the loop to try opening the serial port again
 		}
 
@@ -98,6 +100,7 @@ clientLoop:
 			} else {
 				fmt.Println("\nDecrypted message is empty.")
 			}
+			time.Sleep(1000 * time.Millisecond)
 		}
 	}
 }
