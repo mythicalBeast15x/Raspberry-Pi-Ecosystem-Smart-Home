@@ -11,6 +11,14 @@
 - Integrate device status map with messaging structure to ensure data is consistent across all devices
 
 ## Individual Report
+### Catherine Monteith
+### Key Points
+- Generated device status map from frontend webpage
+- Linked map to Go using AJAX
+- Worked on DAL
+
+### Next Week Goals
+
 ### Caitlin Crowe
 ### Key Points
 - Generated device startup config file and loaded into a structure
