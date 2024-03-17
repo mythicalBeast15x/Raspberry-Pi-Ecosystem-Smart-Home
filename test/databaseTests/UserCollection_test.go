@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-func TestDatabaseOperation(t *testing.T) {
+func TestUserCollectionOperation(t *testing.T) {
 	// Initialize MongoDBDAL
 
 	// MongoURI MongoDB connection URI
