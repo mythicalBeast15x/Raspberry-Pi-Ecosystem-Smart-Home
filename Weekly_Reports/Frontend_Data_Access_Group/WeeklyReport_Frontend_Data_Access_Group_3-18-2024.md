@@ -25,4 +25,5 @@
 - Stored config file into in a structure (this is where the aforementioned device map will be held)
 
 ### Next Week Goals
+- Properly link FrontEnd package to the main function
 - Send device map to other Pis via messaging structure
