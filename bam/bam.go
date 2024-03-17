@@ -10,7 +10,7 @@ import (
 type MongoDBDAL struct {
 	client     *mongo.Client
 	database   *mongo.Database
-	collection *mongo.Collection
+	Collection *mongo.Collection
 }
 
 func NewMongoDBDAL(connectionString, dbName, collectionName string) (*MongoDBDAL, error) {
@@ -34,12 +34,12 @@ func NewMongoDBDAL(connectionString, dbName, collectionName string) (*MongoDBDAL
 	return &MongoDBDAL{
 		client:     client,
 		database:   db,
-		collection: coll,
+		Collection: coll,
 	}, nil
 }
 
 func (d *MongoDBDAL) InsertOne(data interface{}) (*mongo.InsertOneResult, error) {
-	result, err := d.collection.InsertOne(context.Background(), data)
+	result, err := d.Collection.InsertOne(context.Background(), data)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (d *MongoDBDAL) InsertOne(data interface{}) (*mongo.InsertOneResult, error)
 }
 
 func (d *MongoDBDAL) FindOne(filter interface{}, result interface{}) error {
-	err := d.collection.FindOne(context.Background(), filter).Decode(result)
+	err := d.Collection.FindOne(context.Background(), filter).Decode(result)
 	if err != nil {
 		return err
 	}
@@ -55,7 +55,7 @@ func (d *MongoDBDAL) FindOne(filter interface{}, result interface{}) error {
 }
 
 func (d *MongoDBDAL) UpdateOne(filter interface{}, update interface{}) (*mongo.UpdateResult, error) {
-	result, err := d.collection.UpdateOne(context.Background(), filter, update)
+	result, err := d.Collection.UpdateOne(context.Background(), filter, update)
 	if err != nil {
 		return nil, err
 	}
@@ -63,11 +63,20 @@ func (d *MongoDBDAL) UpdateOne(filter interface{}, update interface{}) (*mongo.U
 }
 
 func (d *MongoDBDAL) DeleteOne(filter interface{}) (*mongo.DeleteResult, error) {
-	result, err := d.collection.DeleteOne(context.Background(), filter)
+	result, err := d.Collection.DeleteOne(context.Background(), filter)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
+}
+
+// DropDatabase drops the entire database
+func (d *MongoDBDAL) DropDatabase() error {
+	err := d.client.Database(d.database.Name()).Drop(context.Background())
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *MongoDBDAL) Close() {
