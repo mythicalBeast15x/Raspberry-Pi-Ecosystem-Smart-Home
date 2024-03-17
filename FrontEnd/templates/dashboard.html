@@ -12,6 +12,7 @@
           crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
     <style>
 
@@ -724,6 +725,36 @@
         { name: 'Device 5', category: 'Category 5', status: 'off' }
     ];
 
+    function getDeviceStatuses(){
+        $.ajax({
+            url: "/devices",
+            type: "POST",
+            data: JSON.stringify(devices),
+            success: function(response) {
+                // Handle the successful response from the server
+                console.log("Response from server:", response);
+                // Update your dashboard with the received data
+                // For now, let's just log it
+            },
+            error: function(xhr, status, error) {
+                // Handle any errors that occur during the request
+                console.error("Error:", error);
+            }
+        });
+    }
+        //Using $.post
+    //     $.post('/FrontEnd/DeepHCI/ApplianceStatuses.go', devices)
+    //         .done(function(response) {
+    //             console.log(response);
+    //             // Handle success response here
+    //         })
+    //         .fail(function(xhr, status, error) {
+    //             console.error('Failed:', error);
+    //             // Handle error here
+    //         });
+    //
+    // }
+
     function addDevice() {
         let name = document.getElementById('deviceName').value;
         let category = document.getElementById('deviceCategory').value;
@@ -735,6 +766,7 @@
     // Function to toggle device status
     function toggleDeviceStatus(index) {
         devices[index].status = devices[index].status === 'off' ? 'on' : 'off';
+        getDeviceStatuses();
         renderDevices();
     }
 
