@@ -17,18 +17,28 @@ type User struct {
 	Token    string `bson:"token"`
 }
 
-// MongoURI MongoDB connection URI
-const (
-	MongoURI = "mongodb://localhost:27017"
-)
+// SetUser to set up user data structure
+/*
+Purpose:
+username: the name of the user
+password: the password of the user
+return: user data structure
+*/
+func SetUser(username string, password string) User {
+	newUser := User{
+		Username: username,
+		Password: password,
+		Token:    "",
+	}
+	return newUser
+}
 
 // UsernameExists to check if a user with the username already exit.
 /*
 Purpose: Organize a database ensure no user has the same name.
-	username: The name to check
-	return: boolean and err
+username: The name to check
+return: boolean and err
 */
-
 func (d *MongoDBDAL) UsernameExists(username string) (bool, error) {
 	// Define a filter to check if the username exists
 	filter := bson.M{"username": username}

@@ -11,9 +11,13 @@ import (
 
 func TestDatabaseOperation(t *testing.T) {
 	// Initialize MongoDBDAL
+
+	// MongoURI MongoDB connection URI
+	const MongoURI = "mongodb://localhost:27017"
+
 	dbName := "test"
 	collectionName := "users"
-	dal, err := mongodb_dal.NewMongoDBDAL(mongodb_dal.MongoURI, dbName, collectionName)
+	dal, err := mongodb_dal.NewMongoDBDAL(MongoURI, dbName, collectionName)
 	if err != nil {
 		log.Fatal("Failed to initialize MongoDBDAL:", err)
 	}
@@ -26,17 +30,8 @@ func TestDatabaseOperation(t *testing.T) {
 		log.Fatal(err)
 	}
 
-	user1 := mongodb_dal.User{
-		Username: "exampleUser1",
-		Password: hashedPassword1,
-		Token:    "",
-	}
-
-	user2 := mongodb_dal.User{
-		Username: "exampleUser2",
-		Password: hashedPassword2,
-		Token:    "",
-	}
+	user1 := mongodb_dal.SetUser("exampleUser1", hashedPassword1)
+	user2 := mongodb_dal.SetUser("exampleUser2", hashedPassword2)
 
 	fmt.Println("User insertion")
 	fmt.Println("User to be inserted:", user1)
