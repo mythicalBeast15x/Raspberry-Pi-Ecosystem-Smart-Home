@@ -1,4 +1,4 @@
-package main
+package FrontEnd
 
 import (
 	"html/template"
