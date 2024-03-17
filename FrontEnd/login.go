@@ -85,10 +85,9 @@ func signupHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Handler for 404 page
 func pageNotFoundHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
-	tmpl := template.Must(template.ParseFiles("templates/static/404.html"))
+	tmpl := template.Must(template.ParseFiles("templates/404.html"))
 	err := tmpl.Execute(w, nil)
 	if err != nil {
 		// Handle error if template execution fails
