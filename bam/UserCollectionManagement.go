@@ -33,6 +33,23 @@ func SetUser(username string, password string) User {
 	return newUser
 }
 
+// ConnectToDatabase connects to the MongoDB database and returns a MongoDBDAL instance.
+/*
+Purpose: to use the database
+return mongoDB access layer and error
+*/
+func ConnectToDatabase() (*MongoDBDAL, error) {
+	const MongoURI = "mongodb://localhost:27017"
+	dbName := "test"
+	collectionName := "users"
+
+	dal, err := NewMongoDBDAL(MongoURI, dbName, collectionName)
+	if err != nil {
+		return nil, err
+	}
+	return dal, nil
+}
+
 // UsernameExists to check if a user with the username already exit.
 /*
 Purpose: Organize a database ensure no user has the same name.

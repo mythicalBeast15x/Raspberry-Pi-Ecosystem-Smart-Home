@@ -65,7 +65,7 @@ func TestBlockCollectionOperation(t *testing.T) {
 }
 
 func CompareBlockLists(t *testing.T, expectedBlocks, actualBlocks []blockchain.Block) {
-	// Compare the length of both block lists
+	// Compare the length of both blocklists
 	if len(expectedBlocks) != len(actualBlocks) {
 		t.Errorf("Block lists have different lengths: expected %d, got %d", len(expectedBlocks), len(actualBlocks))
 		return

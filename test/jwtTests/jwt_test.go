@@ -2,15 +2,15 @@ package jwtTests
 
 import (
 	"CMPSC488SP24SecThursday/JWT"
+	mongodb_dal "CMPSC488SP24SecThursday/bam"
 	"github.com/golang-jwt/jwt/v5"
 	"testing"
 	"time"
 )
 
 func TestGenerateAndVerifyJWT(t *testing.T) {
-	// Generate JWT token
-	client := JWT.ClientInfo{Username: "Sam", Password: "123"}
-	tokenString, err := JWT.GenerateJWT(client)
+	user := mongodb_dal.User{Username: "exampleUser1", Password: "$2a$10$hCgo2q1eSYT6cA.VsAoDpOGy4WtlRNTK3q1loIorWC/savo3D79xO", Token: ""}
+	tokenString, err := JWT.GenerateJWT(user)
 	if err != nil {
 		t.Errorf("Error generating JWT token: %v", err)
 	}
@@ -35,8 +35,8 @@ func TestGenerateAndVerifyJWT(t *testing.T) {
 	if !ok {
 		t.Error("Failed to extract username claim from JWT token")
 	}
-	if usernameClaim != client.Username {
-		t.Errorf("Invalid username claim in JWT token: got %s, expected %s", usernameClaim, client.Username)
+	if usernameClaim != user.Username {
+		t.Errorf("Invalid username claim in JWT token: got %s, expected %s", usernameClaim, user.Username)
 	}
 
 	// Check token expiration

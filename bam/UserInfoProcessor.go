@@ -149,3 +149,57 @@ func UpdatePassword(userList []User, username, newPassword string) error {
 	// If the loop completes without finding the user, return an error
 	return errors.New("user not found")
 }
+
+// SerializeUserToJSON serializes a single user to a JSON file
+/*
+Purpose: Serialize a single user to a JSON file
+user: The user to be serialized
+filename: The JSON file to store the serialized user
+return: error
+*/
+func SerializeUserToJSON(user User, filename string) error {
+	// Open the file for writing
+	file, err := os.Create(filename)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	// Create a JSON encoder
+	encoder := json.NewEncoder(file)
+
+	// Write the user to the file
+	if err := encoder.Encode(user); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// DeserializeUserFromJSON deserializes user data from a JSON file
+/*
+Purpose: Deserialize user data from a JSON file
+filename: The JSON file containing the serialized user
+return: The user and error
+*/
+func DeserializeUserFromJSON(filename string) (User, error) {
+	// Open the file for reading
+	file, err := os.Open(filename)
+	if err != nil {
+		return User{}, err
+	}
+	defer file.Close()
+
+	// Create a variable to hold the decoded user
+	var user User
+
+	// Create a JSON decoder
+	decoder := json.NewDecoder(file)
+
+	// Decode the JSON data into the user variable
+	if err := decoder.Decode(&user); err != nil {
+		return User{}, err
+	}
+
+	return user, nil
+}
