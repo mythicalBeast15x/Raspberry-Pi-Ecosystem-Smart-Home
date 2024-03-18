@@ -8,15 +8,16 @@ import (
 )
 
 func main() {
-    configFile := "config.json"
-    fileContent, err := ioutil.ReadFile(configFile)
+    configFile := "config.json" //file that will be configured
+    fileContent, err := ioutil.ReadFile(configFile) // read entire file 
     if err != nil {
         log.Fatalf("Error reading configuration file: %s", err)
     }
 
     var config ConfigurationStructure
     if err := json.Unmarshal(fileContent, &config); err != nil {
-        log.Fatalf("Error decoding configuration: %s", err)
+        log.Fatalf("Error decoding configuration: %s", err) // If there is an error reading the file it will be logged and exit
+
     }
 
 
