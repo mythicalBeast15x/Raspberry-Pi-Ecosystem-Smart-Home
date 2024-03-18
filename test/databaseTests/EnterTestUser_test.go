@@ -23,18 +23,18 @@ func TestEnterTestUser(t *testing.T) {
 	defer dal.Close() // Defer closing the connection
 
 	// Inserting a user
-	hashedPassword1, err := mongodb_dal.HashPassword("secret_password_1")
-	hashedPassword2, err := mongodb_dal.HashPassword("secret_password_2")
-	hashedPassword3, err := mongodb_dal.HashPassword("secret_password_3")
-	hashedPassword4, err := mongodb_dal.HashPassword("secret_password_4")
+	hashedPassword1, err := mongodb_dal.HashPassword("skyGreen@123456")
+	hashedPassword2, err := mongodb_dal.HashPassword("dogRed@456789")
+	hashedPassword3, err := mongodb_dal.HashPassword("catBlue@789123")
+	hashedPassword4, err := mongodb_dal.HashPassword("miceBrown@123456")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	user1 := mongodb_dal.SetUser("exampleUser1", hashedPassword1)
-	user2 := mongodb_dal.SetUser("exampleUser2", hashedPassword2)
-	user3 := mongodb_dal.SetUser("exampleUser3", hashedPassword3)
-	user4 := mongodb_dal.SetUser("exampleUser4", hashedPassword4)
+	user1 := mongodb_dal.SetUser("Tom", hashedPassword1)
+	user2 := mongodb_dal.SetUser("Bob", hashedPassword2)
+	user3 := mongodb_dal.SetUser("Sam", hashedPassword3)
+	user4 := mongodb_dal.SetUser("David", hashedPassword4)
 
 	fmt.Println("User insertion")
 	fmt.Println("User to be inserted:", user1)
