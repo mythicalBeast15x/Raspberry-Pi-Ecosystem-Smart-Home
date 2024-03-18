@@ -1,5 +1,5 @@
 
-<h1 align="center"> Weekly Report 3/4/2024 </h1>
+<h1 align="center"> Weekly Report 3/18/2024 </h1>
 
 ## ❖ Team Report
 
@@ -7,9 +7,10 @@
 - Have the AES integrated when sending data to the network and possibly blockchain.
 
 ### Key Points
-
+- Integrated AES for data transmission with the network.
 
 ### Next Week Goals
+- Continue the steps towards blockchain integration.
 
 ## ❖ Individual Report
 
@@ -52,8 +53,16 @@
 - Complete the setup of the web certificate.
 
 #### Key Points
+- Revamped Cait's config files to read in a temporary AES key and a temporary hash key. The list of appliances will still need to be done.
+- For now, there is a function within startup.go that generates the private and public key.
+- The response function currently sets up a message with the private key and temporary hashed hash key on the network. It is encrypted with the temporary AES key.
+- I will need more insight on how to send the message out and if it needs blockchain to function.
+- In the response function, it goes to announceStartUp function with an int value. The value given depends on the response. The announceStartUp has switch cases to determine what to do next.
 
 #### Next Week Goals
+- Get ready for MVP presentation.
+- Further configure startup.go and config file based on team suggestion and once main.go prototype is set up.
+- Help with DAL integration.
 
 ### ❖ Joshua Murillo
 
