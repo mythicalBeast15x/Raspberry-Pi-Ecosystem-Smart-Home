@@ -18,17 +18,17 @@ func (a *Appliance) GetStatus() string {
 
 // Device that can control one or more appliances -> connected appliances
 type Device struct {
-	DeviceID              string   `json:"deviceID"` // Identifying device 
+	DeviceID              string   `json:"deviceID"`            // Identifying device
 	ConnectedApplianceIDs []string `json:"connectedAppliances"` // ConnectedApplianceIDs saves the IDs of appliances connected to each device.
 	ConnectedAppliances   []*Appliance
 }
 
 // ConfigurationStructure holds the configuration needed for the application to work with devices and appliances.
 type ConfigurationStructure struct {
-	PrivateKey string       `json:"privateKey"`
-	PublicKey  string       `json:"publicKey"`
-	HMACKey    string       `json:"hmacKey"`
-	AESKey     string       `json:"aesKey"`
-	Appliances []*Appliance `json:"appliances"`
-	Devices    []*Device    `json:"devices"`
+	PrivateKey       string       `json:"privateKey"`
+	PublicKey        string       `json:"publicKey"`
+	HMACKey          string       `json:"hmacKey"`
+	AESKey           string       `json:"aesKey"`
+	Appliances       []*Appliance `json:"appliances"`
+	ConnectedDevices []*Device    `json:"devices"`
 }

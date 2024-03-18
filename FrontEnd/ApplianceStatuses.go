@@ -1,4 +1,4 @@
-package FrontEnd
+package main
 
 //Change the above to package main for testing
 

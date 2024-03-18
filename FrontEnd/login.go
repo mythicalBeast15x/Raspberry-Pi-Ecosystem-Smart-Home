@@ -1,4 +1,4 @@
-package FrontEnd
+package main
 
 import (
 	"CMPSC488SP24SecThursday/UserProcessing"

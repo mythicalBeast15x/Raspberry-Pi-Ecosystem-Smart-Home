@@ -747,11 +747,11 @@
 <script>
     // Array to store devices
     let devices = [
-        { name: 'Appliances', category: 'Home Appliances', status: 'off' },
-        { name: 'HVAC', category: 'Heating, Ventilation, and AC', status: 'off' },
-        { name: 'Lighting', category: 'Indoor Lighting', status: 'off' },
-        { name: 'Device 4', category: 'Category 4', status: 'off' },
-        { name: 'Device 5', category: 'Category 5', status: 'off' }
+        { name: 'Appliances', deviceID: 1, category: 'Home Appliances', status: 'off' },
+        { name: 'HVAC', deviceID: 2, category: 'Heating, Ventilation, and AC', status: 'off' },
+        { name: 'Lighting', deviceID: 3, category: 'Indoor Lighting', status: 'off' },
+        { name: 'Device 4', deviceID: 4, category: 'Category 4', status: 'off' },
+        { name: 'Device 5', deviceID: 5, category: 'Category 5', status: 'off' }
     ];
 
     function getDeviceStatuses(){
@@ -787,7 +787,8 @@
     function addDevice() {
         let name = document.getElementById('deviceName').value;
         let category = document.getElementById('deviceCategory').value;
-        devices.push({ name: name, category: category, status: 'off' });
+        let deviceID = document.getElementById('deviceId').value;
+        devices.push({ name: name, deviceID: deviceID, category: category, status: 'off' });
         $('#addDeviceModal').modal('hide');
         renderDevices();
     }
