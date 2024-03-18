@@ -1,20 +1,24 @@
 package FrontEnd
 
 import (
+	"CMPSC488SP24SecThursday/UserProcessing"
+	mongodb_dal "CMPSC488SP24SecThursday/bam"
 	"html/template"
 	"net/http"
 )
 
-// User represents a user in the system
-type User struct {
-	Username string
-	Password string
-}
-
 // Hardcoded users (for demonstration purposes)
-var users = []User{
-	{Username: "user1", Password: "password1"},
-	{Username: "deep", Password: "Deeppatel"},
+var users []mongodb_dal.User
+
+func init() {
+	// Read user data from the JSON file
+	file := "users.json"
+
+	usersFromFile, err := UserProcessing.DeserializeUsersFromJSON(file)
+	if err != nil {
+		panic(err) // Handle error appropriately
+	}
+	users = usersFromFile
 }
 
 // Handler for the login page
