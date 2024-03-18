@@ -52,7 +52,7 @@ func Controller(msg string, oMessages *messaging.OpenMessages, qMessages *messag
 				continue
 			}
 
-			time.Sleep(4500 * time.Millisecond)
+			time.Sleep(1000 * time.Millisecond)
 
 			// Write the JSON data to the serial port
 			_, err = port.Write([]byte(completeMsg))
@@ -62,7 +62,7 @@ func Controller(msg string, oMessages *messaging.OpenMessages, qMessages *messag
 			}
 			//fmt.Printf("\nMessage sent: %s\n", msgBytes)
 			fmt.Printf("\nMessage sent: %s\n", completeMsg)
-			time.Sleep(2500 * time.Millisecond)
+			time.Sleep(9000 * time.Millisecond)
 			break
 		}
 	}
