@@ -1,8 +1,12 @@
-package mongodb_dal
+package UserProcessing
 
 import (
+	"CMPSC488SP24SecThursday/JWT"
+	"CMPSC488SP24SecThursday/bam"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"log"
 	"os"
 )
 
@@ -13,7 +17,7 @@ users: the user list
 filename: the Json file to store the serialized user list
 return: error
 */
-func SerializeUsersToJSON(users []User, filename string) error {
+func SerializeUsersToJSON(users []mongodb_dal.User, filename string) error {
 	// Open the file for writing
 	file, err := os.Create(filename)
 	if err != nil {
@@ -38,7 +42,7 @@ Purpose: to turn the serialized user list back to user list
 filename: the json file
 return: the user list and error
 */
-func DeserializeUsersFromJSON(filename string) ([]User, error) {
+func DeserializeUsersFromJSON(filename string) ([]mongodb_dal.User, error) {
 	// Open the file for reading
 	file, err := os.Open(filename)
 	if err != nil {
@@ -47,7 +51,7 @@ func DeserializeUsersFromJSON(filename string) ([]User, error) {
 	defer file.Close()
 
 	// Create a slice to hold the decoded users
-	var users []User
+	var users []mongodb_dal.User
 
 	// Create a JSON decoder
 	decoder := json.NewDecoder(file)
@@ -67,7 +71,7 @@ usersList1: list of user
 usersList2: list of user
 return: boolean
 */
-func UserListMatch(usersList1, userList2 []User) bool {
+func UserListMatch(usersList1, userList2 []mongodb_dal.User) bool {
 	// Check if the lengths of the slices are equal
 	if len(usersList1) != len(userList2) {
 		return false
@@ -95,7 +99,7 @@ userName: targeted user
 newToken: updated token
 return: error
 */
-func UpdateUserToken(userList []User, username, newToken string) error {
+func UpdateUserToken(userList []mongodb_dal.User, username, newToken string) error {
 	// Search for the user by username
 	for i, user := range userList {
 		if user.Username == username {
@@ -116,7 +120,7 @@ oldUsername: targeted user
 newUsername: updated user name
 return: error
 */
-func UpdateUsername(userList []User, oldUsername, newUsername string) error {
+func UpdateUsername(userList []mongodb_dal.User, oldUsername, newUsername string) error {
 	// Search for the user by old username
 	for i, user := range userList {
 		if user.Username == oldUsername {
@@ -137,7 +141,7 @@ username: targeted user
 newPassword: updated password
 return: error
 */
-func UpdatePassword(userList []User, username, newPassword string) error {
+func UpdatePassword(userList []mongodb_dal.User, username, newPassword string) error {
 	// Search for the user by username
 	for i, user := range userList {
 		if user.Username == username {
@@ -150,6 +154,23 @@ func UpdatePassword(userList []User, username, newPassword string) error {
 	return errors.New("user not found")
 }
 
+// GetUserByUsername retrieves a user from a user list based on the username
+/*
+Purpose: Retrieve a user from a user list based on the username
+userList: List of users
+username: Username of the user to retrieve
+return: The user and error
+*/
+func GetUserByUsername(userList []mongodb_dal.User, username string) (mongodb_dal.User, error) {
+	for _, user := range userList {
+		if user.Username == username {
+			return user, nil // User found, return the user and nil error
+		}
+	}
+	// If the loop completes without finding the user, return an error
+	return mongodb_dal.User{}, errors.New("user not found")
+}
+
 // SerializeUserToJSON serializes a single user to a JSON file
 /*
 Purpose: Serialize a single user to a JSON file
@@ -157,7 +178,7 @@ user: The user to be serialized
 filename: The JSON file to store the serialized user
 return: error
 */
-func SerializeUserToJSON(user User, filename string) error {
+func SerializeUserToJSON(user mongodb_dal.User, filename string) error {
 	// Open the file for writing
 	file, err := os.Create(filename)
 	if err != nil {
@@ -182,24 +203,61 @@ Purpose: Deserialize user data from a JSON file
 filename: The JSON file containing the serialized user
 return: The user and error
 */
-func DeserializeUserFromJSON(filename string) (User, error) {
+func DeserializeUserFromJSON(filename string) (mongodb_dal.User, error) {
 	// Open the file for reading
 	file, err := os.Open(filename)
 	if err != nil {
-		return User{}, err
+		return mongodb_dal.User{}, err
 	}
 	defer file.Close()
 
 	// Create a variable to hold the decoded user
-	var user User
+	var user mongodb_dal.User
 
 	// Create a JSON decoder
 	decoder := json.NewDecoder(file)
 
 	// Decode the JSON data into the user variable
 	if err := decoder.Decode(&user); err != nil {
-		return User{}, err
+		return mongodb_dal.User{}, err
 	}
 
 	return user, nil
+}
+
+func GenerateandUpdateUserToken(user mongodb_dal.User, filename string) error {
+	// Connect to the database
+	dal, err := mongodb_dal.ConnectToDatabase()
+	if err != nil {
+		return fmt.Errorf("failed to connect to the database: %v", err)
+	}
+	defer dal.Close()
+
+	verifiedUsers, err := dal.ExtractUserInfo()
+	if err != nil {
+		log.Fatal("Failed to retrieve users:", err)
+	}
+
+	// Generate a JWT token
+	token, err := JWT.GenerateJWT(user)
+	if err != nil {
+		return fmt.Errorf("failed to generate JWT token: %v", err)
+	}
+
+	// Update the token for the user
+	err = UpdateUserToken(verifiedUsers, user.Username, token)
+	if err != nil {
+		return fmt.Errorf("failed to update user token: %v", err)
+	}
+
+	// Get the user to be sent out
+	UpdatedUser, err := GetUserByUsername(verifiedUsers, user.Username)
+	if err != nil {
+		return fmt.Errorf("failed to retrieve user: %v", err)
+	}
+
+	// Serialize the updated user information to a JSON file
+	err = SerializeUserToJSON(UpdatedUser, filename)
+
+	return nil
 }

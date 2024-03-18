@@ -1,6 +1,7 @@
 package databaseTests
 
 import (
+	"CMPSC488SP24SecThursday/UserProcessing"
 	mongodb_dal "CMPSC488SP24SecThursday/bam"
 	"errors"
 	"fmt"
@@ -90,17 +91,17 @@ func TestUserCollectionOperation(t *testing.T) {
 
 	// Serialize user list
 	fileName := "users.json"
-	err = mongodb_dal.SerializeUsersToJSON(userList, fileName)
+	err = UserProcessing.SerializeUsersToJSON(userList, fileName)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Deserialize user list
-	deserializeUserList, err := mongodb_dal.DeserializeUsersFromJSON(fileName)
+	deserializeUserList, err := UserProcessing.DeserializeUsersFromJSON(fileName)
 	if err != nil {
 		log.Fatal(err)
 	}
-	if !mongodb_dal.UserListMatch(userList, deserializeUserList) {
+	if !UserProcessing.UserListMatch(userList, deserializeUserList) {
 		log.Fatal("Users list does not match")
 	} else {
 		fmt.Println("Users list match")

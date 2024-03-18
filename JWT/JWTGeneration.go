@@ -23,14 +23,14 @@ func GenerateJWT(user mongodb_dal.User) (string, error) {
 	// Create a new token object
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
-	validUser, err := isValidUsername(user) // Verification Process Stub
+	validClient, err := isValidUsername(user) // Verification Process Stub
 
 	if err != nil {
 		return "", err
 	}
 
 	// Set claims (payload) for the token
-	claims["username"] = validUser.Username
+	claims["username"] = validClient.Username
 	claims["exp"] = time.Now().Add(jwtExpiration).Unix() // Token expires in 24 hours
 
 	// Sign the token with the secret key
