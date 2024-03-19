@@ -96,15 +96,18 @@ func NewAlarm(name string) *Alarm {
 }
 
 // Arm sets the alarm to the armed state.
-func (a *Alarm) Arm() {
+func (a *Alarm) Arm() bool {
 	a.Armed = true
 	fmt.Printf("%s is armed.\n", a.Name)
+	return a.Armed == true
+
 }
 
 // Disarm disarms the alarm.
-func (a *Alarm) Disarm() {
+func (a *Alarm) Disarm() bool {
 	a.Armed = false
 	fmt.Printf("%s is disarmed.\n", a.Name)
+	return a.Armed == false
 }
 
 // Trigger activates the alarm if it's armed.
