@@ -1,53 +1,247 @@
 package FrontEnd
 
 import (
+	"CMPSC488SP24SecThursday/UserProcessing"
+	mongodb_dal "CMPSC488SP24SecThursday/bam"
 	"html/template"
 	"net/http"
 )
 
-func startLogin() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		t, _ := template.ParseFiles("FrontEnd/login.html")
-		err := t.Execute(w, nil)
-		if err != nil {
-			return
+// Hardcoded users (for demonstration purposes)
+var users []mongodb_dal.User
+
+func init() {
+	// Read user data from the JSON file
+	file := "users.json"
+
+	usersFromFile, err := UserProcessing.DeserializeUsersFromJSON(file)
+	if err != nil {
+		panic(err) // Handle error appropriately
+	}
+	users = usersFromFile
+}
+
+// Handler for the login page
+func loginHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		// Render the login template without any error message
+		tmpl := template.Must(template.ParseFiles("templates/login.html"))
+		tmpl.Execute(w, nil)
+	} else if r.Method == "POST" {
+		username := r.FormValue("username")
+		password := r.FormValue("password")
+
+		// Check if the provided credentials match any user
+		for _, user := range users {
+			if username == user.Username && password == user.Password {
+				// Successful login, redirect to the dashboard
+				http.Redirect(w, r, "/dashboard?username="+username, http.StatusSeeOther)
+				return
+			}
 		}
-	})
 
+		// Invalid credentials, render login template with error message
+		data := map[string]interface{}{
+			"Error": true,
+		}
+		tmpl := template.Must(template.ParseFiles("templates/login.html"))
+		tmpl.Execute(w, data)
+	}
+}
+
+// Handler for the dashboard
+func dashboardHandler(w http.ResponseWriter, r *http.Request) {
+	// Check if the user is authenticated
+	username := r.FormValue("username")
+	if username == "" {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Render the dashboard template
+	tmpl := template.Must(template.ParseFiles("templates/dashboard.html"))
+	tmpl.Execute(w, username)
+}
+
+// Handler for logout
+func logoutHandler(w http.ResponseWriter, r *http.Request) {
+	// Redirect the user to the login page after logout
+	http.Redirect(w, r, "/login", http.StatusSeeOther)
+}
+
+// Handler for the forgot password page
+func forgotPasswordHandler(w http.ResponseWriter, r *http.Request) {
+	// Render the forgot password template
+	tmpl := template.Must(template.ParseFiles("templates/forgotpassword.html"))
+	tmpl.Execute(w, nil)
+}
+
+// Handler for the signup page
+func signupHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		// Render the signup template for GET requests
+		tmpl := template.Must(template.ParseFiles("templates/signup.html"))
+		tmpl.Execute(w, nil)
+	} else if r.Method == "POST" {
+		// Process the signup form submission for POST requests
+		// Your signup logic goes here
+		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+	}
+}
+
+func pageNotFoundHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotFound)
+	tmpl := template.Must(template.ParseFiles("templates/404.html"))
+	err := tmpl.Execute(w, nil)
+	if err != nil {
+		// Handle error if template execution fails
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+/*
+// ----UNCOMMENT FOR TESTING------
+func main() {
+	// Register handlers
 	http.HandleFunc("/login", loginHandler)
-	http.HandleFunc("/forgot-password", forgotPasswordHandler)
-	http.HandleFunc("/forgot-username", forgotUsernameHandler)
-	http.HandleFunc("/signup", signupHandler)
+	http.HandleFunc("/dashboard", dashboardHandler)
+	http.HandleFunc("/logout", logoutHandler)
+	http.HandleFunc("/forgotpassword.html", forgotPasswordHandler)
+	http.HandleFunc("/signup.html", signupHandler)
+	http.HandleFunc("/", pageNotFoundHandler)
 
-	err := http.ListenAndServeTLS(":8080", "etc/server.crt", "etc/server.key", nil)
-	if err != nil {
-		return
-	}
+	// Serve static files
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("templates/static"))))
+	http.Handle("/terms/", http.StripPrefix("/terms/", http.FileServer(http.Dir("static"))))
+	http.Handle("/privacy/", http.StripPrefix("/privacy/", http.FileServer(http.Dir("static"))))
 
-}
-
-func loginHandler(http.ResponseWriter, *http.Request) {
-}
-
-func forgotPasswordHandler(w http.ResponseWriter, _ *http.Request) {
-	_, err := w.Write([]byte("Forgot Password?"))
-	if err != nil {
-		return
-	}
-}
-
-func forgotUsernameHandler(w http.ResponseWriter, _ *http.Request) {
-
-	_, err := w.Write([]byte("Forgot Username?"))
+	// Start the server
+	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		return
 	}
 }
+*/
+//Hard coded Authentication
+/*
+package main
 
-func signupHandler(w http.ResponseWriter, _ *http.Request) {
-	_, err := w.Write([]byte("Sign Up"))
-	if err != nil {
+import (
+	"html/template"
+	"net/http"
+)
+
+// User represents a user in the system
+type User struct {
+	Username string
+	Password string
+}
+
+// Hardcoded users (for demonstration purposes)
+var users = []User{
+	{Username: "user1", Password: "password1"},
+	{Username: "deep", Password: "Deeppatel"},
+}
+
+// Handler for the login page
+func loginHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		// Render the login template without any error message
+		tmpl := template.Must(template.ParseFiles("templates/login.html"))
+		tmpl.Execute(w, nil)
+	} else if r.Method == "POST" {
+		username := r.FormValue("username")
+		password := r.FormValue("password")
+
+		// Check if the provided credentials match any user
+		for _, user := range users {
+			if username == user.Username && password == user.Password {
+				// Successful login, redirect to the dashboard
+				http.Redirect(w, r, "/dashboard?username="+username, http.StatusSeeOther)
+				return
+			}
+		}
+
+		// Invalid credentials, render login template with error message
+		data := map[string]interface{}{
+			"Error": true,
+		}
+		tmpl := template.Must(template.ParseFiles("templates/login.html"))
+		tmpl.Execute(w, data)
+	}
+}
+
+// Handler for the dashboard
+func dashboardHandler(w http.ResponseWriter, r *http.Request) {
+	// Check if the user is authenticated
+	username := r.FormValue("username")
+	if username == "" {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
 
+	// Render the dashboard template
+	tmpl := template.Must(template.ParseFiles("templates/dashboard.html"))
+	tmpl.Execute(w, username)
 }
+
+// Handler for logout
+func logoutHandler(w http.ResponseWriter, r *http.Request) {
+	// Redirect the user to the login page after logout
+	http.Redirect(w, r, "/login", http.StatusSeeOther)
+}
+
+// Handler for the forgot password page
+func forgotPasswordHandler(w http.ResponseWriter, r *http.Request) {
+	// Render the forgot password template
+	tmpl := template.Must(template.ParseFiles("templates/forgotpassword.html"))
+	tmpl.Execute(w, nil)
+}
+
+// Handler for the signup page
+func signupHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		// Render the signup template for GET requests
+		tmpl := template.Must(template.ParseFiles("templates/signup.html"))
+		tmpl.Execute(w, nil)
+	} else if r.Method == "POST" {
+		// Process the signup form submission for POST requests
+		// Your signup logic goes here
+		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+	}
+}
+
+func pageNotFoundHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotFound)
+	tmpl := template.Must(template.ParseFiles("templates/404.html"))
+	err := tmpl.Execute(w, nil)
+	if err != nil {
+		// Handle error if template execution fails
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+func main() {
+	// Register handlers
+	http.HandleFunc("/login", loginHandler)
+	http.HandleFunc("/dashboard", dashboardHandler)
+	http.HandleFunc("/logout", logoutHandler)
+	http.HandleFunc("/forgotpassword.html", forgotPasswordHandler)
+	http.HandleFunc("/signup.html", signupHandler)
+	http.HandleFunc("/", pageNotFoundHandler)
+
+	// Serve static files
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("templates/static"))))
+	http.Handle("/terms/", http.StripPrefix("/terms/", http.FileServer(http.Dir("static"))))
+	http.Handle("/privacy/", http.StripPrefix("/privacy/", http.FileServer(http.Dir("static"))))
+
+	// Start the server
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		return
+	}
+}
+
+*/

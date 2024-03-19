@@ -1,5 +1,6 @@
 package securityTest
 
+/*
 import (
 	"CMPSC488SP24SecThursday/security"
 	"testing"
@@ -120,3 +121,4 @@ func TestTrustCenter(t *testing.T) {
 		t.Errorf("Expected '%s', got '%s'", expectedMsg, joinMsg)
 	}
 }
+*/

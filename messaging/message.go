@@ -7,18 +7,23 @@ relevant device nodes.
 
 import (
 	"CMPSC488SP24SecThursday/Helper"
+	"CMPSC488SP24SecThursday/blockchain"
 	"CMPSC488SP24SecThursday/hashing"
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"time"
 )
 
-// globalPiID temp variable simulates the ID representing a message intended for all devices.
-var globalPiID = "all"
+// globalPiID variable will hold the ID representing a message intended for all devices.
+var globalPiID = "all" // TODO - Replace with config variable
 
-// localPiID temp variable simulates the ID of the Pi device to show a case of the receiverID matching the global Pi ID.
-var localPiID = "Pi-2"
+// localPiID variable will hold the ID of the Pi device to show a case of the receiverID matching the local Pi ID.
+var localPiID = "Pi-2" // TODO - Replace with config variable
+
+// configHMACKey will be used to generates the HMAC SHA256 hash along with the encrypted message.
+var configHMACKey = "placeholder" // TODO - Replace with config variable
 
 // EncryptedMessage struct to hold data
 type EncryptedMessage struct {
@@ -147,11 +152,44 @@ func NewMessage(senderID, receiverID, domain, operationID string, data map[strin
 	// Serialize the message into a JSON structure
 	jsonData, err := json.Marshal(message)
 	if err != nil {
-		fmt.Println("Error marshalling JSON:", err)
+		fmt.Println("\nError marshalling JSON:", err)
 		return message
 	}
 	// Add serialized outgoing message to the outgoing queue
 	qMessages.OutgoingMessages = append(qMessages.OutgoingMessages, jsonData)
+	// Returns the un-serialized version of the data.
+	return message
+}
+
+// LocalMessage creates a new Message object with the given parameters.
+/*
+Purpose: Creates a new message object. This message is meant for the local PI that the action was requested from.
+For example, turning on a light that is connected to the PI that the task was requested from, as such, sending out a
+message request over the network is unnecessary. This function creates a message and sends it straight to the
+deserialQueue where the DAL can immediately service it.
+Data:
+- MessageID: The unique ID of the message
+- SenderID: The ID of the sending PI device.
+- ReceiverID: The ID of the target PI device.
+- Domain: The domain of the message (e.g., lighting, HVAC, security).
+- OperationID: The ID of the specific operation that the message wants to invoke.
+- Data: Any additional data/parameters that the message needs to service the operation.
+- oMessages: A list to keep track of opened messages for the sake if giving the message a unique MessageID.
+- qMessages: A queue to add the serialized message too.
+Returns: Message: The newly created Message object.
+*/
+func LocalMessage(senderID, receiverID, domain, operationID string, data map[string]interface{}, oMessages *OpenMessages, qMessages *MessageQueue) Message {
+	messageID := oMessages.generateMessageID()
+	message := Message{
+		MessageID:   messageID,
+		SenderID:    senderID,
+		ReceiverID:  receiverID,
+		Domain:      domain,
+		OperationID: operationID,
+		Data:        data,
+	}
+	// Places the new message right into the deserial queue to be serviced.
+	qMessages.DeserialMessages = append(qMessages.DeserialMessages, message)
 	// Returns the un-serialized version of the data.
 	return message
 }
@@ -171,7 +209,7 @@ Prints:
 Returns: None
 */
 func DisplayMessage(msg Message) {
-	fmt.Println("MessageID:", msg.MessageID)
+	fmt.Println("\nMessageID:", msg.MessageID)
 	fmt.Println("SenderID:", msg.SenderID)
 	fmt.Println("ReceiverID:", msg.ReceiverID)
 	fmt.Println("Domain:", msg.Domain)
@@ -182,6 +220,7 @@ func DisplayMessage(msg Message) {
 		// 'value' is the value associated with the current key
 		fmt.Printf("Key: %s, Value: %v\n", key, value)
 	}
+	return
 }
 
 // MessageCheckIn checks the IDs of a given message.
@@ -204,25 +243,31 @@ func MessageCheckIn(serialMsg []byte, oMessages *OpenMessages, qMessages *Messag
 	// Check if the messageID already exists in the OpenMessages struct
 	for _, existingMsgID := range oMessages.messages {
 		if existingMsgID == msg.MessageID {
-			fmt.Println("Message ID already exists in OpenMessages struct")
+			fmt.Println("\nMessage ID already exists in OpenMessages struct")
 			return false
 		}
 	}
+	// Check if the messages' receiverID matches the global PI ID
 	if msg.ReceiverID == globalPiID {
-		fmt.Println("Global ID matched! Message is meant for all devices")
+		fmt.Println("\nGlobal ID matched! Message is meant for all devices")
 		qMessages.DeserialMessages = append(qMessages.DeserialMessages, msg)
 		oMessages.messages = append(oMessages.messages, msg.MessageID)
 		EchoMessage(msg, qMessages) // call to echo the message out again
 		return true
 	}
+	// Check if the received message originated from this very PI
+	if msg.SenderID == localPiID {
+		fmt.Println("\nMessage already originated from this PI")
+		return false
+	}
 	// Check if the receiverID matches the global Pi ID
 	if msg.ReceiverID != localPiID {
-		fmt.Println("Receiver ID does not match the local Pi ID")
+		fmt.Println("\nReceiver ID does not match the local Pi ID")
 		EchoMessage(msg, qMessages) // call to echo the message out again
 		return false
 	}
 	// If MessageID and ReceiverID checks pass, then it can be serviced. Adds the message of type Message to the deserialized message queue.
-	fmt.Println("Message is serviceable!")
+	fmt.Println("\nMessage is serviceable!")
 	qMessages.DeserialMessages = append(qMessages.DeserialMessages, msg)
 	oMessages.messages = append(oMessages.messages, msg.MessageID)
 	return true
@@ -320,27 +365,29 @@ func EncryptAndHash(qMessages *MessageQueue, key []byte) (string, error) {
 	// Dequeue a message from the outgoing queue
 	deqMsg, err := qMessages.Dequeue("outgoing")
 	if err != nil {
-		fmt.Println("Error dequeuing from outgoing queue:", err)
+		fmt.Println("\nError dequeuing from outgoing queue:", err)
 		return "", nil
 	}
-	fmt.Println("Dequeued from outgoing queue: \n ", deqMsg)
+	//fmt.Println("Dequeued from outgoing queue: \n ", deqMsg)
+
 	// Convert the dequeued message to []byte
 	jsonData, ok := deqMsg.([]byte)
 	if !ok {
-		fmt.Println("Expected dequeued message to be of type []byte")
+		fmt.Println("\nExpected dequeued message to be of type []byte")
 		return "", nil
 	}
 	// Encrypt the JSON data
+	fmt.Println("Encrypting Message...")
 	encrypt, err := hashing.Encrypt(jsonData, key)
 	if err != nil {
-		fmt.Println("Error encrypting JSON:", err)
+		fmt.Println("\nError encrypting JSON:", err)
 		return "", nil
 	}
+	fmt.Println("Message Encrypted!")
 	fmt.Println("Encrypted message: \n ", encrypt)
 
 	// Generate the HMAC hash and append it to the encrypted data:
-	hash, _ := hashing.CalculateSHA256(encrypt)
-	//fmt.Println("Time taken: ", time)
+	hash, _ := hashing.CalculateSHA256(encrypt + configHMACKey)
 
 	// Create the EncryptedMessage struct
 	encryptedMsg := EncryptedMessage{
@@ -351,7 +398,7 @@ func EncryptAndHash(qMessages *MessageQueue, key []byte) (string, error) {
 	// Marshal the EncryptedMessage struct into JSON
 	encryptPlusHash, err := json.Marshal(encryptedMsg)
 	if err != nil {
-		return "", fmt.Errorf("error marshalling encrypted message to JSON: %v", err)
+		return "", fmt.Errorf("\nError marshalling encrypted message to JSON: %v", err)
 	}
 
 	return string(encryptPlusHash), err
@@ -372,36 +419,40 @@ func ValidateAndDecrypt(oMessages *OpenMessages, qMessages *MessageQueue, key []
 	// Dequeue a JSON string message from the incoming queue
 	deqMsg, err := qMessages.Dequeue("incoming")
 	if err != nil {
-		fmt.Println("Error dequeuing from incoming queue:", err)
+		fmt.Println("\nError dequeuing from incoming queue:", err)
 		return err
 	}
-	fmt.Println("Dequeued from incoming queue: \n", deqMsg)
+	//fmt.Println("\nDequeued from incoming queue: \n", deqMsg)
 
 	// Convert the dequeued message to string
 	jsonStr, ok := deqMsg.(string)
 	if !ok {
-		return fmt.Errorf("expected dequeued message to be of type string")
+		return fmt.Errorf("\nExpected dequeued message to be of type string")
 	}
 
 	// Unmarshal the JSON string into EncryptedMessage struct
 	var encryptedPlusHash EncryptedMessage
 	err = json.Unmarshal([]byte(jsonStr), &encryptedPlusHash)
 	if err != nil {
-		return fmt.Errorf("error unmarshalling JSON message: %v", err)
+		return fmt.Errorf("\nError unmarshalling JSON message: %v", err)
 	}
 
+	fmt.Println("Validating Hash...")
 	// Split the encrypted message from the hash and validate the HMAC hash to see if the message was tampered with:
-	hash, _ := hashing.CalculateSHA256(encryptedPlusHash.EncryptedData)
+	hash, _ := hashing.CalculateSHA256(encryptedPlusHash.EncryptedData + configHMACKey)
 	//fmt.Println("Time taken: ", time)
 	if hash == encryptedPlusHash.Hash { // if the generated hash matches the appended hash:
+		fmt.Println("Hash Validated!")
 		// Decrypt the JSON data
+		fmt.Println("decrypting Message...")
 		decrypt, err := hashing.Decrypt(encryptedPlusHash.EncryptedData, key)
 		if err != nil {
-			fmt.Print("Error decrypting JSON:", err)
+			fmt.Print("\nError decrypting JSON:", err)
 			return err
 		}
 		// Use the encrypted message as needed
-		fmt.Println("Decrypted message:", decrypt)
+		fmt.Println("Message Decrypted!")
+		fmt.Println("\nDecrypted message:", string(decrypt))
 
 		// Add decrypted data to message check in function
 		decryptedByte := decrypt
@@ -409,6 +460,44 @@ func ValidateAndDecrypt(oMessages *OpenMessages, qMessages *MessageQueue, key []
 		return err
 	}
 	return nil
+}
+
+// PseudoTest creates three messages.
+/*
+Purpose: To create a few messages for testing purposes.
+Data:
+- oMessages: A list to keep track of opened messages for the sake if giving the message a unique MessageID.
+- qMessages: Pointer to the MessageQueue where the incoming messages are stored.
+Returns:
+- None
+*/
+func PseudoTest(oMessages *OpenMessages, qMessages *MessageQueue) {
+	// Create a new blockchain
+	mainBlockchain := blockchain.NewBlockchain(4)
+
+	//Test Block as data
+	newBlock := blockchain.Block{
+		Index:     3,
+		Timestamp: time.Now().String(),
+		Data: blockchain.EncryptedData{
+			Ciphertext: []byte("Block 1 Data"),
+			Error:      nil},
+		PrevHash: mainBlockchain.Chain[len(mainBlockchain.Chain)-1].Hash,
+		Hash:     "",
+	}
+	// Simulate message being made:
+	data := map[string]interface{}{
+		"Block": newBlock,
+	}
+	NewMessage("Pi-1", "Pi-2", "General", "21", data, oMessages, qMessages)
+
+	NewMessage("Pi-1", "Pi-2", "Lighting", "2", map[string]interface{}{
+		"ApplianceID": "lamp-1",
+	}, oMessages, qMessages)
+
+	NewMessage("Pi-1", "all", "Lighting", "2", map[string]interface{}{
+		"ApplianceID": "lamp-1",
+	}, oMessages, qMessages)
 }
 
 /*
