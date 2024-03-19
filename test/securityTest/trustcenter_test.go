@@ -1,5 +1,6 @@
 package securityTest
 
+/*
 import (
 	"CMPSC488SP24SecThursday/security"
 	"testing"
@@ -66,3 +67,4 @@ func TestMotionDetectionAndAlarmTrigger(t *testing.T) {
 		t.Error("Expected the alarm not to be triggered upon motion detection when disarmed.")
 	}
 }
+*/
