@@ -100,6 +100,8 @@ func pageNotFoundHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+/*
+// ----UNCOMMENT FOR TESTING------
 func main() {
 	// Register handlers
 	http.HandleFunc("/login", loginHandler)
@@ -120,7 +122,7 @@ func main() {
 		return
 	}
 }
-
+*/
 //Hard coded Authentication
 /*
 package main

@@ -37,22 +37,25 @@ var (
 	clients = make(map[*websocket.Conn]bool) // Keep track of connected WebSocket clients
 )
 
-func main() {
-	// Create a file server handler to serve static files from the same directory
-	fs := http.FileServer(http.Dir("."))
+/*
+// ----UNCOMMENT FOR TESTING-----
 
-	// Register the file server handler with the root URL path "/"
-	http.Handle("/", fs)
+	func main() {
+		// Create a file server handler to serve static files from the same directory
+		fs := http.FileServer(http.Dir("."))
 
-	// Register the devicesHandler function with the "/devices" URL path
-	http.HandleFunc("/devices", devicesHandler)
-	http.HandleFunc("/ws", handleWebSocket)
+		// Register the file server handler with the root URL path "/"
+		http.Handle("/", fs)
 
-	// Start the server
-	log.Println("Server is starting and listening on port 8080...")
-	log.Fatal(http.ListenAndServe(":8080", nil))
-}
+		// Register the devicesHandler function with the "/devices" URL path
+		http.HandleFunc("/devices", devicesHandler)
+		http.HandleFunc("/ws", handleWebSocket)
 
+		// Start the server
+		log.Println("Server is starting and listening on port 8080...")
+		log.Fatal(http.ListenAndServe(":8080", nil))
+	}
+*/
 func devicesHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
