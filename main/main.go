@@ -7,10 +7,10 @@ func main() {
 	// set encryption and hashing info
 	// set send device id on network
 	//	- request data for blockchain
-	//constants := Helper.SetConstsants()
+	// constants := Helper.SetConstants()
 
 	//-------------------------------------
-	//listen for messages
+	// listen for messages
 
 	startUp()
 }
