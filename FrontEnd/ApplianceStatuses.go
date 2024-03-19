@@ -6,6 +6,9 @@ import (
 	message "CMPSC488SP24SecThursday/messaging"
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/websocket"
+	_ "github.com/gorilla/websocket"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -25,20 +28,30 @@ type Device struct {
 //navigate to devices tab and click any status to switch on or off
 //this will send the entire list of devices and use the devices Handler to send a list of devices to the server
 
-//func main() {
-//	// Create a file server handler to serve static files from the same directory
-//	fs := http.FileServer(http.Dir("."))
-//
-//	// Register the file server handler with the root URL path "/"
-//	http.Handle("/", fs)
-//
-//	// Register the devicesHandler function with the "/devices" URL path
-//	http.HandleFunc("/devices", devicesHandler)
-//
-//	// Start the server
-//	log.Println("Server is starting and listening on port 8080...")
-//	log.Fatal(http.ListenAndServe(":8080", nil))
-//}
+var (
+	upgrader = websocket.Upgrader{
+		CheckOrigin: func(r *http.Request) bool { // Allow all connections for simplicity
+			return true
+		},
+	}
+	clients = make(map[*websocket.Conn]bool) // Keep track of connected WebSocket clients
+)
+
+func main() {
+	// Create a file server handler to serve static files from the same directory
+	fs := http.FileServer(http.Dir("."))
+
+	// Register the file server handler with the root URL path "/"
+	http.Handle("/", fs)
+
+	// Register the devicesHandler function with the "/devices" URL path
+	http.HandleFunc("/devices", devicesHandler)
+	http.HandleFunc("/ws", handleWebSocket)
+
+	// Start the server
+	log.Println("Server is starting and listening on port 8080...")
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
 
 func devicesHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
@@ -69,6 +82,38 @@ func devicesHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write(responseJSON)
 
+}
+
+func handleWebSocket(w http.ResponseWriter, r *http.Request) {
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Println("WebSocket upgrade error:", err)
+		return
+	}
+	defer conn.Close()
+	clients[conn] = true
+
+	for {
+		var msg message.Message // Corrected to use the import alias 'message'
+		err := conn.ReadJSON(&msg)
+		if err != nil {
+			log.Printf("WebSocket read error: %v", err)
+			delete(clients, conn)
+			break
+		}
+		broadcastToDeviceClients(msg)
+	}
+}
+
+func broadcastToDeviceClients(msg message.Message) { // Corrected to use the import alias 'message'
+	for client := range clients {
+		err := client.WriteJSON(msg)
+		if err != nil {
+			log.Printf("WebSocket write error: %v", err)
+			client.Close()
+			delete(clients, client)
+		}
+	}
 }
 
 // helper function to convert struct into map for message structure

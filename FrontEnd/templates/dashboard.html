@@ -578,7 +578,7 @@
         </div>
     </div>
 
-    <!-- Devices tab content -->
+    !-- Devices tab content -->
     <div id="devices" class="tab-pane">
         <div class="text-center">
             <button type="button" class="btn add-device mb-3" data-toggle="modal" data-target="#addDeviceModal">
@@ -588,17 +588,21 @@
 
         <div class="row justify-content-center" id="deviceList">
             <div class="col-lg-4">
-                <div class="device-card">
+                <div class="device-card" id="device-1">
                     <h5 class="device-name">Appliances</h5>
+                    <p><strong>Category:</strong> Home Appliances</p>
+                    <p><strong>Status:</strong> <span class="status">OFF</span></p>
                     <div class="device-control">
-                        <button class="btn btn-primary">Turn On</button>
-                        <button class="btn btn-secondary">Turn Off</button>
+                        <button class="btn btn-primary" onclick="toggleDeviceStatus(1, 'on')">Turn On</button>
+                        <button class="btn btn-secondary" onclick="toggleDeviceStatus(1, 'off')">Turn Off</button>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="device-card">
+                <div class="device-card" id="device-2">
                     <h5 class="device-name">HVAC</h5>
+                    <p><strong>Category:</strong> Heating, Ventilation, and AC</p>
+                    <p><strong>Status:</strong> <span class="status">OFF</span></p>
                     <div class="device-control">
                         <input type="text" class="form-control" placeholder="Set Temperature">
                         <button class="btn btn-primary">Set</button>
@@ -606,29 +610,35 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="device-card">
+                <div class="device-card" id="device-3">
                     <h5 class="device-name">Lighting</h5>
+                    <p><strong>Category:</strong> Indoor Lighting</p>
+                    <p><strong>Status:</strong> <span class="status">OFF</span></p>
                     <div class="device-control">
-                        <button class="btn btn-primary">Turn On</button>
-                        <button class="btn btn-secondary">Turn Off</button>
+                        <button class="btn btn-primary" onclick="toggleDeviceStatus(3, 'on')">Turn On</button>
+                        <button class="btn btn-secondary" onclick="toggleDeviceStatus(3, 'off')">Turn Off</button>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="device-card">
+                <div class="device-card" id="device-4">
                     <h5 class="device-name">Device 4</h5>
+                    <p><strong>Category:</strong> Category 4</p>
+                    <p><strong>Status:</strong> <span class="status">OFF</span></p>
                     <div class="device-control">
-                        <button class="btn btn-primary">Turn On</button>
-                        <button class="btn btn-secondary">Turn Off</button>
+                        <button class="btn btn-primary" onclick="toggleDeviceStatus(4, 'on')">Turn On</button>
+                        <button class="btn btn-secondary" onclick="toggleDeviceStatus(4, 'off')">Turn Off</button>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="device-card">
+                <div class="device-card" id="device-5">
                     <h5 class="device-name">Device 5</h5>
+                    <p><strong>Category:</strong> Category 5</p>
+                    <p><strong>Status:</strong> <span class="status">OFF</span></p>
                     <div class="device-control">
-                        <button class="btn btn-primary">Turn On</button>
-                        <button class="btn btn-secondary">Turn Off</button>
+                        <button class="btn btn-primary" onclick="toggleDeviceStatus(5, 'on')">Turn On</button>
+                        <button class="btn btn-secondary" onclick="toggleDeviceStatus(5, 'off')">Turn Off</button>
                     </div>
                 </div>
             </div>
