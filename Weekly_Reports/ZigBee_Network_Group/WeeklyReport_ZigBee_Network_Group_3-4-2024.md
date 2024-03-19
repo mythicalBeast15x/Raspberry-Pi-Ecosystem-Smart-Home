@@ -1,5 +1,5 @@
 
-<h1 align="center"> Weekly Report 02/26/2024 </h1>
+<h1 align="center"> Weekly Report 3/4/2024 </h1>
 
 ## ❖ Team Report
 
@@ -59,8 +59,17 @@
 - Collaborate with other teams to define lighting functions for different areas.
 
 #### Key Points
+- The integration of the web certificate requires further adjustment, as warnings persist indicating an insecure connection in the browser. Even the manual addition of the certificate to the Chrome browser did not resolve the issue. To my understanding, the setup was correct, but for a self-signed certificate, it needs to be configured to validate its use relying on a certificate authority.
+- Implemented a template function in the startup Go file for it to check the presence of a device on the ZigBee network. This function makes repeated attempts to communicate with a ZigBee device within a specified number of tries.
 
 #### Next Week Goals
+- Determine how to adapt lighting functions to fit within the backend/frontend structure.
+- Support the communication and interaction of ZigBee devices with the backend.
+- Implementate blockchain functions and conduct testing.
+- Collaborate with other teams to finalize the core logic of the project.
+- Upon completion of the foundational structure, commence physical testing of ZigBee devices while concurrently documenting and capturing visual interactions of these devices.
+- Aid in the development of startup functions.
+- Complete the setup of the web certificate.
 
 ### ❖ Joshua Murillo
 
@@ -84,9 +93,16 @@
 - Help any group that needs it.
 
 #### Key Points
+- Went around asking teams if they need help (No response)
+- Wrote code for doorlock, camera, and motion detection
+- Wrote documentation on secuirty file
+- Created test files
 
 #### Next Week Goals
-
+- Enhance the code for doorlock, camera, and motion detection
+- Keep going around asking groups if they need assistance.
+- Work on anything that needs to get done.
+- 
 ### ❖ Mitkumar Patel
 
 #### Previous Individual Goals/Objectives

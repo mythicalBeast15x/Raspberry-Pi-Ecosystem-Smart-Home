@@ -161,13 +161,14 @@ func SecuritySystem(OID int, s *security.Alarm) bool {
 			panic("System unable to be disarmed")
 			return false
 		}
-	case 7: //Trigger Alarm
+		//The DAL shouldn't be instructing individual devices to trigger an alarm
+		/*case 7: //Trigger Alarm
 		if s.Trigger() {
 			return true
 		} else {
 			panic("Alarm cannot sound")
 			return false
-		}
+		}*/
 	}
 	return false
 }
