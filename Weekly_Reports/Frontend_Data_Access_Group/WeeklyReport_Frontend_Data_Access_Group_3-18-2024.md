@@ -1,47 +1,58 @@
 # Weekly Report 3/18/2024
+
 ## ❖ Team Report
+
 ### Previous Team Goals
+
 - Generate device status map from frontend webpage
 
 ### Key Points
+
 - Generated device status map from frontend webpage
 - Linked map to Go using AJAX
+- Function to create and operate user collection in mongoDB
+- Function to createa and operate blockchain collection in mongoDB
+- Serializing and deserializing user list 
+- Serializing and deserializing blockchian
 
 ### Next Week Goals
+
 - Integrate device status map with messaging structure to ensure data is consistent across all devices
 
 ## Individual Report
 
-
 ### ❖ Catherine Monteith
 
 ### Key Points
+
 - Generated device status map from frontend webpage
 - Linked map to Go using AJAX
 - Worked on DAL
 
 ### Next Week Goals
 
-
 ### ❖ Caitlin Crowe
 
 ### Key Points
+
 - Generated device startup config file
 - Stored config file into in a structure (this is where the aforementioned device map will be held)
 - Generated a map of device statuses with their respective device IDs
 
 ### Next Week Goals
+
 - Properly link FrontEnd package to the main function
 - Send device map to other Pis via messaging structure
-
 
 ### ❖ Joshua Murillo
 
 #### Previous Individual Goals/Objectives
+
 - Work with Zigbee and Network teams to fix issues related to the go-serial library and start consistently sending and receiving data in our Message structured format.
 - Work with the rest of the Frontend-Data-Access team to progress the DAL to service incoming requests.
 
 #### Key Points
+
 - Met with Cat to discuss a clearer picture between the messaging structure, DAL, and the main.go file.
 - Set up two scripts including a sending and receiving script to transmit messages between PIs one-way.
   - Ran tests with three Raspberry PIs to document the frequency of successfully received messages vs missed messages.
@@ -63,7 +74,36 @@
   - Confirmed that the entire message transmission system still operates as expected.
 
 #### Next Week Goals
+
 - Help the DAL converge with the main.go system.
 - Help integrate the main.go startup function into the prototype.
 - Update hardcoded constants related to the messaging package to use the configuration file values instead.
 - Prepare for the MVP demonstration.
+
+### ❖ Xingyu Jiang
+
+#### Previous Individual Goals
+
+* Set up connection with the mongoDB
+
+#### Key Points
+
+* Function for the user collection  creation.
+
+* Function for the blockchain collection creation.
+
+* Basic operation for both the user collection and blockchain collection are set up.
+
+* Serialization and deserialization for the data. Prepare them to be sent over message.
+
+#### Next Week's Goals
+
+* Work with the front end group to complete the user sign-up process.
+  
+  * User credential gathering.
+  
+  * Verification.
+  
+  * Registration.
+  
+  * Storing and announcing. 
