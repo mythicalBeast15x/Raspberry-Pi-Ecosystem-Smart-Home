@@ -1,5 +1,6 @@
 package ZigbeeTests
 
+/*
 import (
 	"CMPSC488SP24SecThursday/blockchain"
 	"CMPSC488SP24SecThursday/messaging"
@@ -146,3 +147,4 @@ func main() {
 
 	fmt.Println("Is receiver block chain verified?", receiverBlockchain.VerifyBlockChain())
 }
+*/

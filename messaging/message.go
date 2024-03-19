@@ -16,11 +16,14 @@ import (
 	"time"
 )
 
-// globalPiID temp variable simulates the ID representing a message intended for all devices.
-var globalPiID = "all"
+// globalPiID variable will hold the ID representing a message intended for all devices.
+var globalPiID = "all" // TODO - Replace with config variable
 
-// localPiID temp variable simulates the ID of the Pi device to show a case of the receiverID matching the global Pi ID.
-var localPiID = "Pi-2"
+// localPiID variable will hold the ID of the Pi device to show a case of the receiverID matching the local Pi ID.
+var localPiID = "Pi-2" // TODO - Replace with config variable
+
+// configHMACKey will be used to generates the HMAC SHA256 hash along with the encrypted message.
+var configHMACKey = "placeholder" // TODO - Replace with config variable
 
 // EncryptedMessage struct to hold data
 type EncryptedMessage struct {
@@ -160,7 +163,10 @@ func NewMessage(senderID, receiverID, domain, operationID string, data map[strin
 
 // LocalMessage creates a new Message object with the given parameters.
 /*
-Purpose: Creates a new message object
+Purpose: Creates a new message object. This message is meant for the local PI that the action was requested from.
+For example, turning on a light that is connected to the PI that the task was requested from, as such, sending out a
+message request over the network is unnecessary. This function creates a message and sends it straight to the
+deserialQueue where the DAL can immediately service it.
 Data:
 - MessageID: The unique ID of the message
 - SenderID: The ID of the sending PI device.
@@ -182,7 +188,8 @@ func LocalMessage(senderID, receiverID, domain, operationID string, data map[str
 		OperationID: operationID,
 		Data:        data,
 	}
-
+	// Places the new message right into the deserial queue to be serviced.
+	qMessages.DeserialMessages = append(qMessages.DeserialMessages, message)
 	// Returns the un-serialized version of the data.
 	return message
 }
@@ -213,6 +220,7 @@ func DisplayMessage(msg Message) {
 		// 'value' is the value associated with the current key
 		fmt.Printf("Key: %s, Value: %v\n", key, value)
 	}
+	return
 }
 
 // MessageCheckIn checks the IDs of a given message.
@@ -239,12 +247,18 @@ func MessageCheckIn(serialMsg []byte, oMessages *OpenMessages, qMessages *Messag
 			return false
 		}
 	}
+	// Check if the messages' receiverID matches the global PI ID
 	if msg.ReceiverID == globalPiID {
 		fmt.Println("\nGlobal ID matched! Message is meant for all devices")
 		qMessages.DeserialMessages = append(qMessages.DeserialMessages, msg)
 		oMessages.messages = append(oMessages.messages, msg.MessageID)
 		EchoMessage(msg, qMessages) // call to echo the message out again
 		return true
+	}
+	// Check if the received message originated from this very PI
+	if msg.SenderID == localPiID {
+		fmt.Println("\nMessage already originated from this PI")
+		return false
 	}
 	// Check if the receiverID matches the global Pi ID
 	if msg.ReceiverID != localPiID {
@@ -373,7 +387,7 @@ func EncryptAndHash(qMessages *MessageQueue, key []byte) (string, error) {
 	fmt.Println("Encrypted message: \n ", encrypt)
 
 	// Generate the HMAC hash and append it to the encrypted data:
-	hash, _ := hashing.CalculateSHA256(encrypt)
+	hash, _ := hashing.CalculateSHA256(encrypt + configHMACKey)
 
 	// Create the EncryptedMessage struct
 	encryptedMsg := EncryptedMessage{
@@ -425,7 +439,7 @@ func ValidateAndDecrypt(oMessages *OpenMessages, qMessages *MessageQueue, key []
 
 	fmt.Println("Validating Hash...")
 	// Split the encrypted message from the hash and validate the HMAC hash to see if the message was tampered with:
-	hash, _ := hashing.CalculateSHA256(encryptedPlusHash.EncryptedData)
+	hash, _ := hashing.CalculateSHA256(encryptedPlusHash.EncryptedData + configHMACKey)
 	//fmt.Println("Time taken: ", time)
 	if hash == encryptedPlusHash.Hash { // if the generated hash matches the appended hash:
 		fmt.Println("Hash Validated!")
