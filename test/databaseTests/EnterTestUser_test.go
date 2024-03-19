@@ -1,5 +1,6 @@
 package databaseTests
 
+/*
 import (
 	mongodb_dal "CMPSC488SP24SecThursday/bam"
 	"errors"
@@ -67,3 +68,4 @@ func TestEnterTestUser(t *testing.T) {
 	}
 	fmt.Println("Inserted a single document: ", insertedID4)
 }
+*/

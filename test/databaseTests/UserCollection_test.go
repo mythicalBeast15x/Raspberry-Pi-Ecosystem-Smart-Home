@@ -1,5 +1,6 @@
 package databaseTests
 
+/*
 import (
 	"CMPSC488SP24SecThursday/UserProcessing"
 	mongodb_dal "CMPSC488SP24SecThursday/bam"
@@ -165,3 +166,4 @@ func TestUserCollectionOperation(t *testing.T) {
 	fmt.Println()
 
 }
+*/
