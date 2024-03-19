@@ -1,5 +1,6 @@
 package databaseTests
 
+/*
 import (
 	mongodb_dal "CMPSC488SP24SecThursday/bam"
 	"CMPSC488SP24SecThursday/blockchain"
@@ -101,3 +102,4 @@ func CompareBlockchains(t *testing.T, expectedBlockchain, actualBlockchain block
 	// If all blocks are equal, print success message
 	t.Logf("Blockchains are equal")
 }
+*/

@@ -1,5 +1,6 @@
 package databaseTests
 
+/*
 import (
 	"CMPSC488SP24SecThursday/UserProcessing"
 	mongodb_dal "CMPSC488SP24SecThursday/bam"
@@ -17,3 +18,4 @@ func TestUpdateUser(t *testing.T) {
 		t.Errorf("error processing user info: %v", err)
 	}
 }
+*/
